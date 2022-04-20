@@ -7,19 +7,13 @@ services:
       - 33307:3306
       - 3000:3000
       - 3001:3001
-    volumes:
-      - /opt/october_cms_9784023.ru/framework:/opt/framework
-      - /opt/october_cms_9784023.ru.mysql:/var/lib/mysql
     environment:
-      CONTAINER_HOST: "www.9784023.ru"
-      CLIENT_HOST: "172.18.7.126"
       CONTAINER_PROTO: "http"
       APP_LOCALE: "en"
       DB_DATABASE: "october"
       DB_USERNAME: "october"
       DB_PASSWORD: "12345"
       DB_HOST: "127.0.0.1"
-      LICENSE_KEY: "H6OJB-3CH7H-YH8CH-GIFXW"
       ACTIVE_THEME: "demo"
       BACKEND_URI: '\/backend'
 networks:

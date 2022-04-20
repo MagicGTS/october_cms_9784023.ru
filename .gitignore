@@ -2,6 +2,7 @@ framework/node_modules
 framework/public/hot
 framework/public/storage
 framework/storage/*.key
+framework/auth.json
 vendor
 framework/.env
 framework/.env.backup
