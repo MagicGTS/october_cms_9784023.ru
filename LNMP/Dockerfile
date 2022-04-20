@@ -1,4 +1,5 @@
-FROM localhost/rockylinux-updated:latest
+ARG CI_REGISTRY=localhost
+FROM ${CI_REGISTRY}/rockylinux-updated:latest
 
 LABEL org.opencontainers.image.title="RockyLinux LNMP base (Nginx, PHP-FPM, MySQL)" \
     org.opencontainers.image.authors="Andrey Leshkevich <magicgts@gmail.com>" \

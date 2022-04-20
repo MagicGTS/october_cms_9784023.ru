@@ -1,10 +1,11 @@
-FROM localhost/lnmp:latest
+ARG BUILD_LICENSE_KEY=demo
+ARG CI_REGISTRY=localhost
+FROM ${CI_REGISTRY}/lnmp:latest
 
 LABEL org.opencontainers.image.title="Laravel LDAP user manager" \
     org.opencontainers.image.authors="Andrey Leshkevich <magicgts@gmail.com>" \
     org.opencontainers.image.description="Web appliance for manage LDAP users" \
     org.opencontainers.image.version="0.8"
-ARG BUILD_LICENSE_KEY=demo
 RUN set -eux && \
     touch /var/log/php-fpm.log && \
     chown --quiet -R nginx:root /etc/nginx/ /etc/php-fpm.d/ /etc/php-fpm.conf /var/log/php-fpm /var/log/php-fpm.log /var/log/nginx && \
