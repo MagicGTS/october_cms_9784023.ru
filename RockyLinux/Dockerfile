@@ -1,4 +1,4 @@
-ARG CI_REGISTRY=localhost
+ARG CI_REGISTRY=docker.io/library
 FROM ${CI_REGISTRY}/rockylinux:latest
 
 LABEL org.opencontainers.image.title="RockyLinux Updated" \

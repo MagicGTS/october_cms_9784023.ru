@@ -3,3 +3,4 @@
 Dockerfile eol=lf
 docker-entrypoint.sh eol=lf
 docker-compose.yml eol=lf
+.gitlab-ci.yml eol=lf

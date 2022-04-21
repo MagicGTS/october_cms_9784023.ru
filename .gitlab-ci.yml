@@ -1,0 +1,96 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
+
+# This is a sample GitLab CI/CD configuration file that should run without any modifications.
+# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
+# it uses echo commands to simulate the pipeline execution.
+#
+# A pipeline is composed of independent jobs that run scripts, grouped into stages.
+# Stages run in sequential order, but jobs within stages run in parallel.
+#
+# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - push
+docker build:
+  image: docker:latest
+  variables:
+    DOCKER_DRIVER: overlay2
+  stage: build
+  services: 
+    - docker:dind
+  script:
+    - echo -n $GITLAB_CI_PASSWORD | docker login -u $GITLAB_CI_USER --password-stdin $CI_REGISTRY
+    - docker pull $PROJECT_CI_REGISTRY/rockylinux-updated:latest || true
+    - >
+      `find RockyLinux/Dockerfile -mmin +2430` | DOCKER_BUILDKIT=1 docker build
+      --pull
+      --cache-from $PROJECT_CI_REGISTRY/rockylinux-updated:latest
+      --label "org.opencontainers.image.title=RockyLinux Updated"
+      --label "org.opencontainers.image.created=$CI_JOB_STARTED_AT"
+      --label "org.opencontainers.image.revision=$CI_COMMIT_SHA"
+      --label "org.opencontainers.image.version=0.8.1"
+      --tag $PROJECT_CI_REGISTRY/rockylinux-updated:$CI_COMMIT_SHA
+      --tag $PROJECT_CI_REGISTRY/rockylinux-updated:latest
+      ./RockyLinux
+    - docker push $PROJECT_CI_REGISTRY/rockylinux-updated:$CI_COMMIT_SHA
+    - docker push $PROJECT_CI_REGISTRY/rockylinux-updated:latest
+    - docker pull $PROJECT_CI_REGISTRY/lnmp:latest || true
+    - >
+      `find LNMP/Dockerfile -mmin +2430` | DOCKER_BUILDKIT=1 docker build
+      --pull
+      --cache-from $PROJECT_CI_REGISTRY/lnmp:latest
+      --label "org.opencontainers.image.title=RockyLinux LNMP base (Nginx, PHP-FPM, MySQL)"
+      --label "org.opencontainers.image.created=$CI_JOB_STARTED_AT"
+      --label "org.opencontainers.image.revision=$CI_COMMIT_SHA"
+      --label "org.opencontainers.image.version=0.8.1"
+      --tag $PROJECT_CI_REGISTRY/lnmp:$CI_COMMIT_SHA
+      --tag $PROJECT_CI_REGISTRY/lnmp:latest
+      --build-arg CI_REGISTRY=$PROJECT_CI_REGISTRY
+      --build-arg IMAGE_VERSION=latest
+      ./LNMP
+    - docker push $PROJECT_CI_REGISTRY/lnmp:$CI_COMMIT_SHA
+    - docker push $PROJECT_CI_REGISTRY/lnmp:latest
+    - docker pull $PROJECT_CI_REGISTRY/9784023:latest || true
+    - >
+      DOCKER_BUILDKIT=1 docker build
+      --pull
+      --cache-from $PROJECT_CI_REGISTRY/9784023:latest
+      --label "org.opencontainers.image.title=9784023 site"
+      --label "org.opencontainers.image.created=$CI_JOB_STARTED_AT"
+      --label "org.opencontainers.image.revision=$CI_COMMIT_SHA"
+      --label "org.opencontainers.image.version=0.8.1"
+      --tag $PROJECT_CI_REGISTRY/9784023:$CI_COMMIT_SHA
+      --build-arg BUILD_LICENSE_KEY=$LICENSE_KEY
+      --build-arg CI_REGISTRY=$PROJECT_CI_REGISTRY
+      --build-arg IMAGE_VERSION=latest
+      .
+    - docker push $PROJECT_CI_REGISTRY/9784023:$CI_COMMIT_SHA
+
+# Here, the goal is to tag the "master" branch as "latest"
+Push latest:
+  image: docker:latest
+  services: 
+    - docker:dind
+  variables:
+    # We are just playing with Docker here. 
+    # We do not need GitLab to clone the source code.
+    GIT_STRATEGY: none
+    DOCKER_DRIVER: overlay2
+  stage: push
+#  only:
+    # Only "master" should be tagged "latest"
+#    - master
+  script:
+    # Because we have no guarantee that this job will be picked up by the same runner 
+    # that built the image in the previous step, we pull it again locally
+    - echo -n $GITLAB_CI_PASSWORD | docker login -u $GITLAB_CI_USER --password-stdin $CI_REGISTRY
+    - docker pull $PROJECT_CI_REGISTRY/9784023:$CI_COMMIT_SHA
+    # Then we tag it "latest"
+    - docker tag $PROJECT_CI_REGISTRY/9784023:$CI_COMMIT_SHA $PROJECT_CI_REGISTRY/9784023:latest
+    # Annnd we push it.
+    - docker push $PROJECT_CI_REGISTRY/9784023:latest
