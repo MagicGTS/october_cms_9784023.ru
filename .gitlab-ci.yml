@@ -27,7 +27,7 @@ docker build:
     - echo -n $GITLAB_CI_PASSWORD | docker login -u $GITLAB_CI_USER --password-stdin $CI_REGISTRY
     - docker pull $PROJECT_CI_REGISTRY/rockylinux-updated:latest || true
     - >
-      `find RockyLinux/Dockerfile -mmin +2430` | DOCKER_BUILDKIT=1 docker build
+      DOCKER_BUILDKIT=1 docker build
       --pull
       --cache-from $PROJECT_CI_REGISTRY/rockylinux-updated:latest
       --label "org.opencontainers.image.title=RockyLinux Updated"
@@ -41,7 +41,7 @@ docker build:
     - docker push $PROJECT_CI_REGISTRY/rockylinux-updated:latest
     - docker pull $PROJECT_CI_REGISTRY/lnmp:latest || true
     - >
-      `find LNMP/Dockerfile -mmin +2430` | DOCKER_BUILDKIT=1 docker build
+      DOCKER_BUILDKIT=1 docker build
       --pull
       --cache-from $PROJECT_CI_REGISTRY/lnmp:latest
       --label "org.opencontainers.image.title=RockyLinux LNMP base (Nginx, PHP-FPM, MySQL)"
