@@ -1,3 +1,24 @@
+[viewBag]
+==
+<?php
+function onStart()
+{
+    $this->addCss([
+        'assets/less/app.less',
+        'assets/less/partial/header.less',
+        'assets/less/partial/nav-link.less',
+        'assets/less/partial/nav-menu.less',
+        'assets/less/partial/search.less',
+        'assets/less/partial/location.less',
+        'assets/less/partial/contacts-small.less',
+        'assets/less/partial/contacts-big.less',
+        'assets/less/partial/login-place.less',
+        'assets/less/partial/footer.less',
+        'assets/less/partial/yandex-map.less',
+        ]);
+}
+?>
+==
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -5,7 +26,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>{{ this.page.meta_title }}</title>
+    <title>{{ this.page.meta_title }}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -18,8 +39,9 @@
 </head>
 
 <body class="font-sans antialiased">
-    {% partial "header" %}
+    {% partial "header" menu=menu %}
     {% page %}
+    {% partial "footer" %}
 </body>
 
 </html>

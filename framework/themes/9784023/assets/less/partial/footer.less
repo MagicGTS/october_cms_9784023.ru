@@ -1,0 +1,80 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+
+.footer {
+    background-color: @color_10;
+    align-items: center;
+    width: 100%;
+    &-ribbon {
+        &-top {
+            &-wrap {
+                & .contacts_big {
+                    max-width: 32%;
+                    padding-right: 1.5rem;
+                }
+                & .ya_map {
+                }
+                display: flex;
+                flex-wrap: wrap;
+                padding-right: 0;
+            }
+        }
+        &-midle {
+                background-color: @color_04;
+            &-wrap {
+                padding-top: 2.5em;
+                padding-bottom: 2.5em;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                align-content: stretch;
+                & .column {
+                    max-width: 33.33%;
+                    min-width: 23rem;
+                    & h2 {
+                        color: @color_white;
+                        .fonts(1em;1.125em;500;-0.02em;);
+                    }
+                    &-logo {
+                        padding-top: 3em;
+                    }
+                }
+            }
+        }
+        &-bottom {
+            &-wrap {
+                padding-top: 2.5em;
+                padding-bottom: 2.5em;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-content: stretch;
+                & .column {
+                    max-width: 33.33%;
+                    min-width: 20rem;
+                    & h2 {
+                        .fonts(1em;1.125em;500;-0.02em;);
+                    }
+                    &.copyright {
+                        color: @color_02;
+                        .fonts(0.875em;1.0625em);
+                        text-align: center;
+                        & .gdpr_link {
+                            color: @color_02;
+                            text-decoration: none;
+                            &:hover {
+                                color: @color_06;
+                                transition: 500ms;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@media (max-width: 1510px) {
+    .footer-ribbon-top .contacts.contacts_big {
+        max-width: 100%;
+    }
+}

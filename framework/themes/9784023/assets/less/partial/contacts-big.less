@@ -1,0 +1,31 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+.contacts {
+    & address {
+        font-style: normal;
+    }
+    & h1 {
+        .fonts(2.5em; 1.5em; 700;-0.02em;);
+        color: @color_07;
+    }
+    & h2 {
+        .fonts(1.5em; 1.5em; 500;-0.02em;);
+        color: @color_07;
+        margin-top: 0em;
+    }
+    & p,
+    a {
+        margin: 0.3em 0;
+        .fonts(1em;1.2em;400;-0.02em;);
+        color: @color_07;
+        text-decoration: none;
+    }
+    a {
+        &:hover {
+            transition: 500ms;
+            color: @color_06;
+            text-decoration: underline;
+            font-weight: 700;
+        }
+    }
+}

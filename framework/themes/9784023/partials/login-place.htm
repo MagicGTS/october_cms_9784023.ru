@@ -1,0 +1,12 @@
+<section class="login">
+    {% if canLogin %}
+    <form method="POST" @submit.prevent="logout">
+        <a href="/" @click.prevent="logout">Log Out</a>
+    </form>
+    {% else %}
+    <a href="/login" class="text-sm text-gray-700 underline">Log in</a>
+    {% if canRegister %}
+    <a href="/register" class="ml-4 text-sm text-gray-700 underline">Register</a>
+    {% endif %}
+    {% endif %}
+</section>

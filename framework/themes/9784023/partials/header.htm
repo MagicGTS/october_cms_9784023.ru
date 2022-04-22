@@ -4,15 +4,17 @@
 function onStart()
 {
     $this->addCss(['assets/less/partial/header.less']);
+    $this['canLogin'] = false;
+    $this['canRegister'] = true;
 }
 ?>
 ==
 <header class="header">
-  <search-menu />
+  {% partial "search" %}
   <section class="ribbon-top wrap padding-global">
-    {% partial "nav-menu" %}
-    <location-menu />
-    <contacts-small />
-    <login-place :canLogin="canLogin" :canRegister="canRegister" />
+    {% partial "nav-menu" menu=menu %}
+    {% partial "location" %}
+    {% partial "contacts-small" %}
+    {% partial "login-place" canLogin=canLogin canRegister=canRegister %}
   </section>
 </header>

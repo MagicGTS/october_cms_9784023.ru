@@ -6,11 +6,15 @@ meta_title = "Обучение по охране труда - УЦ Амулет"
 <?php
 function onStart()
 {
-    $this->addCss([
-        'assets/less/partial/header.less',
-        'assets/less/partial/nav-link.less',
-        'assets/less/partial/nav-menu.less',
-        ]);
+    use Symfony\Component\Yaml\Yaml;
+    use Cms\Classes\Theme;
+    $theme = Theme::getActiveTheme();
+    $theme_path = $theme->getPath();
+    $yamlMenu = Yaml::parse(file_get_contents($theme_path . '/content/menu.txt'));
+    $menu = [];
+    $this['yamlMenu']=$yamlMenu;
+    YamlRouteList($yamlMenu, $menu);
+    $this['menu'] = $menu;
 }
 ?>
 ==

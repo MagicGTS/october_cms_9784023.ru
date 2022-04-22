@@ -1,0 +1,23 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+.location {
+    margin-bottom: auto;
+    margin-top: 1em;
+    & p {
+        .fonts();
+        margin: 0.7em 0;
+        color: @color_01;
+    }
+    &_link {
+        & a {
+            color: @color_04;
+            & svg {
+                display: inline-block;
+            }
+            &:hover {
+                color: @color_06;
+                transition: 500ms;
+            }
+        }
+    }
+}

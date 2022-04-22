@@ -1,0 +1,26 @@
+@import (less) "../colors.less";
+.search {
+    color: @color_02;
+    margin: 1em 1rem;
+    & form {
+        display: flex;
+        align-items: center;
+        & svg {
+            margin-right: 0.5rem;
+        }
+    }
+    &-input {
+        visibility: hidden;
+        border: none;
+        border-bottom: 0.0001rem solid @color_04;
+        &:focus {
+            outline: none;
+        }
+    }
+    &:hover {
+        color: @color_04;
+        & .search-input {
+            visibility: visible;
+        }
+    }
+}
