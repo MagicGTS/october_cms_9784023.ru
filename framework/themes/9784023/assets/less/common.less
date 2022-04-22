@@ -1,0 +1,51 @@
+.clear-fix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.padding-global {
+    padding-left: 10.8rem;
+    padding-right: 10rem;
+}
+
+.wrap {
+    max-width: 1440px;
+    min-width: 515px;
+    margin: 0 auto 0 5rem;
+}
+@text_fs: 0.75em;
+@text_lh: 0.875em;
+@text_w: normal;
+@text_ls: normal;
+.fonts(@fs: @text_fs; @lh: @text_lh; @w: @text_w; @ls: @text_ls) {
+    font-size: @fs;
+    line-height: @lh;
+    font-weight: @w;
+    letter-spacing: @ls;
+}
+@media (max-width: 1295px) {
+    .padding-global {
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
+}
+@media (max-width: 1120px) {
+    .padding-global {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .wrap {
+        margin-left: auto;
+    }
+}
+@media (max-width: 995px) {
+    .padding-global {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+@media (max-width: 490px) {
+    .ribbon-top {
+        display: block;
+    }
+}

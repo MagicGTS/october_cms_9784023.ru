@@ -1,0 +1,18 @@
+[viewBag]
+==
+<?php
+function onStart()
+{
+    $this->addCss(['assets/less/partial/header.less']);
+}
+?>
+==
+<header class="header">
+  <search-menu />
+  <section class="ribbon-top wrap padding-global">
+    {% partial "nav-menu" %}
+    <location-menu />
+    <contacts-small />
+    <login-place :canLogin="canLogin" :canRegister="canRegister" />
+  </section>
+</header>

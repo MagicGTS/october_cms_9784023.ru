@@ -1,0 +1,7 @@
+<nav>
+  <ul class="nav_list">
+    <li v-for="item in menu" :key="item.id">
+      {% partial "nav-link" %}
+    </li>
+  </ul>
+</nav>

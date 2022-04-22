@@ -1,0 +1,30 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+.nav {
+    &_link {
+        text-decoration: none;
+        /* (@size: @textBaseSize; @lHeight: @textBaseLineHeight; @weight: @textBaseWeight; @ls: @textLS) */
+        .fonts();
+        color: @color_01;
+        padding: 0.4em 0.625rem;
+        display: inline-block;
+    }
+    &_item {
+        margin: auto 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        &__active {
+            background-color: @color_04;
+            color: @color_white;
+            text-decoration: underline;
+        }
+        &:hover {
+            background-color: @color_06;
+            transition: 500ms;
+            & a {
+                color: @color_white;
+            }
+        }
+    }
+}

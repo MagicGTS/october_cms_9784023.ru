@@ -1,0 +1,29 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+@import (css) "../../css/hamburgers.css";
+
+.header {
+    background-color: @color_10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: @color_05;
+    width: 100%;
+    & .ribbon-top {
+        padding-left: 0;
+        margin-left: 0;
+    }
+}
+.ribbon-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    padding-left: 13rem;
+    & > * {
+        align-self: stretch;
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+}
