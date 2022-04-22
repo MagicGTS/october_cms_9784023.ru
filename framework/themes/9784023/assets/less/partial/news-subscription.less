@@ -1,0 +1,37 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+.newsubscription {
+    &-form {
+        margin-top: 0.5em;
+        display: flex;
+        height: 2.5rem;
+        width: 13.4375rem;
+        & > * {
+            display: block;
+        }
+    }
+    &__input {
+        border-style: solid;
+        border-color: transparent;
+        padding-left: 1rem;
+    }
+    &__btn {
+        padding: 0.75rem;
+        background-color: @color_04;
+        color: @color_white;
+        &_disabled {
+            background-color: @color_12;
+            border-color: @color_08;
+            pointer-events: none;
+            cursor: default;
+        }
+        &:hover {
+            background-color: @color_06;
+            transition: 500ms;
+        }
+    }
+    & h2 {
+        color: @color_04;
+        .fonts(1em;1.3em;);
+    }
+}

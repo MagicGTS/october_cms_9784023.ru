@@ -1,0 +1,33 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+.socialmedia {
+    text-align: center;
+    & h2 {
+        .fonts(1em;1.1875em;700);
+        color: @color_04;
+    }
+    & .sitemap_link {
+        color: @color_02;
+        .fonts(0.875em;1.0625em);
+        text-decoration: none;
+        &:hover {
+            color: @color_06;
+            transition: 500ms;
+        }
+    }
+    & .sochialnets {
+        a {
+            margin-right: 0.5em;
+            color: @color_04;
+            .fonts(1.5625em;1.6em);
+            text-decoration: none;
+            &:hover {
+                color: @color_02;
+                transition: 500ms;
+            }
+        }
+    }
+    & p {
+        margin: 0 0.5em;
+    }
+}

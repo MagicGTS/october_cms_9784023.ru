@@ -1,3 +1,4 @@
+@import (less) "colors.less";
 * {
     box-sizing: border-box;
     font-family: "Rubik", sans-serif;
@@ -26,29 +27,37 @@ body {
     min-width: 515px;
     margin: 0 auto 0 5rem;
 }
-@media (max-width: 1295px) {
-    .padding-global {
-        padding-left: 5rem;
-        padding-right: 5rem;
-    }
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
 }
-@media (max-width: 1120px) {
-    .padding-global {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-    .wrap {
-        margin-left: auto;
-    }
-}
-@media (max-width: 995px) {
-    .padding-global {
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-    }
-}
-@media (max-width: 490px) {
-    .ribbon-top {
-        display: block;
-    }
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
 }

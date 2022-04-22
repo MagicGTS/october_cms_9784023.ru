@@ -3,6 +3,27 @@
 <?php
 function onStart()
 {
+    use Symfony\Component\Yaml\Yaml;
+    use Cms\Classes\Theme;
+    $theme = Theme::getActiveTheme();
+    $theme_path = $theme->getPath();
+
+    $yamlMenu = Yaml::parse(file_get_contents($theme_path . '/content/menu.txt'));
+    $menu = [];
+    $this['yamlMenu']=$yamlMenu;
+    YamlRouteList($yamlMenu, $menu);
+    $this['menu'] = $menu;
+
+    $yamlMenu = Yaml::parse(file_get_contents($theme_path . '/content/site-nav.txt'));
+    $menu = [];
+    $this['yamlMenu']=$yamlMenu;
+    YamlRouteList($yamlMenu, $menu, [], 'Information');
+    $site_nav = ['Information' => $menu];
+    $menu = [];
+    YamlRouteList($yamlMenu, $menu, [], 'Learning');
+    $site_nav['Learning']=$menu;
+    $this['site_nav_menu'] = $site_nav;
+
     $this->addCss([
         'assets/less/app.less',
         'assets/less/partial/header.less',
@@ -15,6 +36,11 @@ function onStart()
         'assets/less/partial/login-place.less',
         'assets/less/partial/footer.less',
         'assets/less/partial/yandex-map.less',
+        'assets/less/partial/logo.less',
+        'assets/less/partial/site-nav-menu.less',
+        'assets/less/partial/site-nav-link.less',
+        'assets/less/partial/news-subscription.less',
+        'assets/less/partial/social-media.less',
         ]);
 }
 ?>

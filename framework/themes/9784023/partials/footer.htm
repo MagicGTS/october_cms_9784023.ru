@@ -1,43 +1,39 @@
 <footer class="footer">
     <section class="footer-ribbon-top">
       <div class="footer-ribbon-top-wrap wrap padding-global">
-        <section class="contacts_big">
-            {% partial "contacts-big" %}
-        </section>
-        <section class="ya_map">
-            {% partial "yandex-map" %}
-        </section>
+          {% partial "contacts-big" %}
+          {% partial "yandex-map" %}
       </div>
-    </section><!--
+    </section>
     <section class="footer-ribbon-midle">
       <div class="footer-ribbon-midle-wrap wrap padding-global">
         <section class="column column-logo">
-          <app-logo />
+            {% partial "logo" %}
         </section>
         <section class="column">
           <h2>Информация</h2>
-          <site-nav-menu section="Information" />
+          {% partial "site-nav-menu" section=site_nav_menu['Information'] %}
         </section>
         <section class="column">
           <h2>Обучение</h2>
-          <site-nav-menu section="Learning" />
+          {% partial "site-nav-menu" section=site_nav_menu['Learning'] %}
         </section>
       </div>
     </section>
     <section class="footer-ribbon-bottom">
       <div class="footer-ribbon-bottom-wrap wrap padding-global">
         <section class="column">
-          <news-subscription />
+            {% partial "news-subscription" %}
         </section>
         <section class="column copyright">
           <h2>Учебный центр “Амулет” 2021</h2>
           <p>
-            <Link :href="route('Stub')" class="gdpr_link"
+            <a href="/Stub" class="gdpr_link"
               >Политика персональных данных
-            </Link>
+            </a>
           </p>
         </section>
-        <section class="column"><social-media /></section>
+        <section class="column">{% partial "social-media" %}</section>
       </div>
-    </section> -->
+    </section>
   </footer>

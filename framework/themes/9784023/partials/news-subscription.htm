@@ -1,0 +1,16 @@
+<section class="newsubscription">
+    <h2>Подписка на новости</h2>
+    <form @submit.prevent="submit" class="newsubscription-form">
+      <input
+        name="email"
+        id="email"
+        v-model="form.email"
+        type="email"
+        class="newsubscription__input"
+        placeholder="Введите ваш e-mail"
+      />
+      <a href="/" @click.prevent="submit" class="newsubscription__btn"
+        ><svg width="1.125rem" height="1.125rem">
+          <use xlink:href="{{ 'assets/img/svg/message.svg#message'|theme }}" /></svg></a>
+    </form>
+  </section>

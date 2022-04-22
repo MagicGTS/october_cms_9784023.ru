@@ -1,0 +1,9 @@
+<nav>
+    <ul class="site_nav_list">
+    {% for item in section %}
+        <li>
+        {% partial "site-nav-link" item=item %}
+        </li>
+        {% endfor %}
+    </ul>
+</nav>

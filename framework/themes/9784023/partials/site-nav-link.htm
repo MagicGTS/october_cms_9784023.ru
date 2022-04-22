@@ -1,5 +1,5 @@
-    <a target="_blank" rel="nofollow noreferrer"
-        class="nav_item nav_link {{ ( page.id == item.reference ) ? 'nav_item__active' }}"
+<a target="_blank" rel="nofollow noreferrer"
+        class="site_nav_item site_nav_link {{ ( page.id == item.reference ) ? 'site_nav_item__active' }}"
         href="{{ ( item.reference is empty ) ? '/' : item.reference }}"
         >
         {{ ( ( item.display is empty ) ? item.title:item.display ) | raw }}

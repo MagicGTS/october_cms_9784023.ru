@@ -1,46 +1,14 @@
 @import (less) "../colors.less";
 @import (less) "../common.less";
-.contacts {
-    & .caption,
-    .phone_link,
-    .button {
-        margin: 0;
-        padding-top: 0.5em;
-        color: @color_01;
-        text-align: right;
+.login {
+    height: 100%;
+    margin: auto 0;
+    &_link {
         .fonts();
-    }
-    .phone_link {
-        .fonts(1.5em; 1.5em; 700);
-        text-decoration: none;
-        color: @color_04;
-
+        color: @color_01;
         &:hover {
-            color: @color_06;
             transition: 500ms;
-        }
-    }
-    & .button {
-        margin-bottom: 1.5em;
-        & .btn_rnd_lw {
-            &__link {
-                padding: 0.4em 1rem;
-                background-color: @color_04;
-                border-radius: 0.4rem;
-                text-decoration: none;
-
-                &:hover {
-                    background-color: @color_06;
-                    transition: 500ms;
-                    color: @color_white;
-                }
-            }
-            &__text {
-                color: @color_white;
-                font-size: 0.9em;
-                line-height: 0.9em;
-                font-weight: 500;
-            }
+            color: @color_07;
         }
     }
 }

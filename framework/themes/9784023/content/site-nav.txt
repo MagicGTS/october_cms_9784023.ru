@@ -1,0 +1,88 @@
+---
+title: 'УЦ Амулет - Карта сайта'
+display: 'Карта сайта'
+reference: ''
+component: SiteMap
+items:
+    -
+        title: 'Информация'
+        reference: information
+        component: Information
+        items:
+            -
+                title: 'История компании'
+                reference: stub
+                component: Stub
+            -
+                title: 'Штрафы'
+                reference: stub
+                component: Stub
+            -
+                title: 'Новости Rss-канал'
+                reference: stub
+                component: Stub
+            -
+                title: 'Акции'
+                reference: stub
+                component: Stub
+            -
+                title: 'Статьи Rss-канал'
+                reference: stub
+                component: Stub
+            -
+                title: 'Магазин охраны труда'
+                reference: stub
+                component: Stub
+            -
+                title: 'Мы на портале поставщиков'
+                reference: stub
+                component: Stub
+            -
+                title: 'Для зачисления на обучение'
+                reference: stub
+                component: Stub
+            -
+                title: 'Разработка и внедрение системы управления охраной труда'
+                reference: stub
+                component: Stub
+    -
+        title: 'Обучение'
+        reference: learning
+        component: Learning
+        items:
+            -
+                title: 'Часто задаваемые вопросы'
+                reference: stub
+                component: Stub
+            -
+                title: 'Проведение СОУТ'
+                reference: stub
+                component: Stub
+            -
+                title: 'Аутсорсинг и аккредитация'
+                reference: stub
+                component: Stub
+            -
+                title: 'Разработка документов по охране труда'
+                reference: stub
+                component: Stub
+            -
+                title: 'Расследование несчастных случаев на производстве'
+                reference: stub
+                component: Stub
+            -
+                title: 'Оценка профессиональных рисков'
+                reference: stub
+                component: Stub
+            -
+                title: 'Контролирующие органы'
+                reference: stub
+                component: Stub
+            -
+                title: 'Отзывы'
+                reference: stub
+                component: Stub
+            -
+                title: 'Оплата'
+                reference: stub
+                component: Stub

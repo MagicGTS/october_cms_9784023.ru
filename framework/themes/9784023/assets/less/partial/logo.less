@@ -1,0 +1,20 @@
+@import (less) "../colors.less";
+@import (less) "../common.less";
+.logo {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    text-align: right;
+    text-decoration: none;
+    &-img {
+        margin-right: 0.4rem;
+    }
+    & p {
+        color: @color_white;
+        margin: 0;
+        .fonts(0.6em; 0.7em);
+        .hightlite {
+            .fonts(3.1em; 1.1em);
+        }
+    }
+}
