@@ -1,6 +1,8 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 Dockerfile eol=lf
+*.yml eol=lf
+*.yaml eol=lf
 docker-entrypoint.sh eol=lf
 docker-compose.yml eol=lf
 .gitlab-ci.yml eol=lf

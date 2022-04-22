@@ -5,6 +5,7 @@ framework/storage/*.key
 framework/auth.json
 vendor
 framework/.env
+framework/auth.json
 framework/.env.backup
 .phpunit.result.cache
 docker-compose.override.yml

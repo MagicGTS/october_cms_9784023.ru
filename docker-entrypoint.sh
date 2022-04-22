@@ -35,6 +35,7 @@ if [ -f "/opt/framework/.firstrun" ]; then
     echo "######################init################################"
     /usr/bin/mysql_install_db --auth-root-authentication-method=normal
     /usr/bin/mysqld_safe --socket /tmp/mysql &
+    composer dump-autoload
     sed -i "s/^\s*APP_URL\s*=.*$/APP_URL=${CONTAINER_PROTO}:\/\/${CONTAINER_HOST}/g;\
     s/^\s*APP_LOCALE\s*=.*$/APP_LOCALE=${APP_LOCALE}/g;\
     s/^\s*DB_DATABASE\s*=.*$/DB_DATABASE=${DB_DATABASE}/g;\

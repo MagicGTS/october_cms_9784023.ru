@@ -1,7 +1,28 @@
+[viewBag]
+==
+<?php
+function onStart()
+{
+
+use Symfony\Component\Yaml\Yaml;
+use Cms\Classes\Theme;
+$theme = Theme::getActiveTheme();
+$theme_path = $theme->getPath();
+
+$yamlMenu = Yaml::parse(file_get_contents($theme_path . '/content/menu.txt'));
+$menu = [];
+$this['yamlMenu']=$yamlMenu;
+YamlRouteList($yamlMenu, $menu);
+$this['menu']=$menu;
+}
+?>
+==
 <nav>
   <ul class="nav_list">
-    <li v-for="item in menu" :key="item.id">
-      {% partial "nav-link" %}
-    </li>
+    {% for item in menu %}
+        {% partial "nav-link" item=item %}
+    {% endfor %}
   </ul>
+  {{ dump(yamlMenu) }}
+  {{ dump(menu) }}
 </nav>

@@ -1,0 +1,24 @@
+---
+title: "Обучение по охране труда"
+display: "Главная"
+reference: ""
+component: Index
+items:
+    - title: "О&nbsp;центре"
+      reference: about
+      component: About
+    - title: "Каталог&nbsp;услуг"
+      reference: services
+      component: Services
+    - title: "Цены"
+      reference: prices
+      component: Prices
+    - title: "Акции"
+      reference: promotions
+      component: Promotions
+    - title: "Новости"
+      reference: news
+      component: News
+    - title: "Контакты"
+      reference: contacts
+      component: Contacts
