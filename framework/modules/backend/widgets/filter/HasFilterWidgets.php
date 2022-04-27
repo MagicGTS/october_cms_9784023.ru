@@ -84,10 +84,14 @@ trait HasFilterWidgets
         }
 
         if (is_string($scopeConfig)) {
-            $scopeConfig = ['name' => $scopeConfig];
+            $scopeConfig = ['scopeName' => $scopeConfig];
         }
 
         if (is_array($scopeConfig)) {
+            if (isset($fieldConfig['name'])) {
+                $fieldConfig['scopeName'] = $fieldConfig['name'];
+            }
+
             $filterScope = new FilterScope($scopeConfig);
             $filterScope->displayAs('widget');
         }

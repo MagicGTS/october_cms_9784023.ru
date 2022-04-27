@@ -34,13 +34,10 @@ class ServiceProvider extends ModuleServiceProvider
         $this->registerCombinerEvents();
         $this->registerHalcyonModels();
 
-        /*
-         * Backend specific
-         */
+        // Backend specific
         if (App::runningInBackend()) {
             $this->registerBackendReportWidgets();
             $this->registerBackendPermissions();
-            $this->registerBackendWidgets();
             $this->registerBackendSettings();
         }
 
@@ -57,10 +54,7 @@ class ServiceProvider extends ModuleServiceProvider
         $this->bootEditorEvents();
         $this->bootMenuItemEvents();
         $this->bootRichEditorEvents();
-
-        if (App::runningInBackend()) {
-            $this->bootThemesForBackend();
-        }
+        $this->bootThemeTranslations();
     }
 
     /**
@@ -74,6 +68,7 @@ class ServiceProvider extends ModuleServiceProvider
         $this->registerConsoleCommand('theme.use', \Cms\Console\ThemeUse::class);
         $this->registerConsoleCommand('theme.copy', \Cms\Console\ThemeCopy::class);
         $this->registerConsoleCommand('theme.check', \Cms\Console\ThemeCheck::class);
+        $this->registerConsoleCommand('theme.seed', \Cms\Console\ThemeSeed::class);
     }
 
     /**
@@ -98,7 +93,7 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Registers events for the asset combiner.
+     * registerCombinerEvents for the asset combiner.
      */
     protected function registerCombinerEvents()
     {
@@ -116,8 +111,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register report widgets
+    /**
+     * registerBackendReportWidgets
      */
     protected function registerBackendReportWidgets()
     {
@@ -129,8 +124,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register permissions
+    /**
+     * registerBackendPermissions
      */
     protected function registerBackendPermissions()
     {
@@ -182,18 +177,7 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * registerBackendWidgets
-     */
-    protected function registerBackendWidgets()
-    {
-        // @deprecated
-        WidgetManager::instance()->registerFormWidgets(function ($manager) {
-            $manager->registerFormWidget(\Cms\FormWidgets\Components::class);
-        });
-    }
-
-    /*
-     * Register settings
+     * registerBackendSettings
      */
     protected function registerBackendSettings()
     {
@@ -232,7 +216,7 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Registers events for menu items.
+     * bootMenuItemEvents for menu items.
      */
     protected function bootMenuItemEvents()
     {
@@ -256,7 +240,7 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Registers events for rich editor page links.
+     * bootRichEditorEvents for rich editor page links.
      */
     protected function bootRichEditorEvents()
     {
@@ -274,15 +258,20 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * bootThemesForBackend localization from an active theme for backend items.
+     * bootThemeTranslations localization from an active theme.
      */
-    protected function bootThemesForBackend()
+    protected function bootThemeTranslations()
     {
-        ThemeManager::instance()->bootAllBackend();
+        if (App::runningInBackend()) {
+            ThemeManager::instance()->bootAllBackend();
+        }
+        else {
+            ThemeManager::instance()->bootAllFrontend();
+        }
     }
 
     /**
-     * Registers the models to be made available to the theme database layer
+     * registerHalcyonModels to be made available to the theme database layer
      */
     protected function registerHalcyonModels()
     {
@@ -298,7 +287,7 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Handle Editor events
+     * bootEditorEvents handles editor events
      */
     protected function bootEditorEvents()
     {

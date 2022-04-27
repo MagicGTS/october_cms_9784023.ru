@@ -104,6 +104,13 @@ class GetAttrNode extends GetAttrExpression
                 $ignoreStrictCheck = true;
             }
 
+            // Halycon relies on fillable to know what is a certain attribute
+            if ($object instanceof \October\Rain\Halcyon\Model) {
+                if ($object->isFillable($item)) {
+                    return $object->$item;
+                }
+            }
+
             // Related attributes are lazy loaded and are therefore always defined
             if ($object instanceof \October\Rain\Database\Model) {
                 if ($object->hasRelation($item)) {

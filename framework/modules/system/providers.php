@@ -31,7 +31,6 @@ return [
     October\Rain\Parse\ParseServiceProvider::class,
     October\Rain\Html\HtmlServiceProvider::class,
     October\Rain\Html\UrlServiceProvider::class,
-    October\Rain\Network\NetworkServiceProvider::class,
     October\Rain\Scaffold\ScaffoldServiceProvider::class,
     October\Rain\Flash\FlashServiceProvider::class,
     October\Rain\Mail\MailServiceProvider::class,

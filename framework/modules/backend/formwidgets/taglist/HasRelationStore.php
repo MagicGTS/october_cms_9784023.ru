@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Collection;
 use October\Rain\Database\Relations\Relation as RelationBase;
+use SystemException;
 
 /**
  * HasRelationStore contains logic for related tag items
@@ -86,6 +87,11 @@ trait HasRelationStore
         // Allow custom tags
         if ($this->customTags) {
             $newTags = array_diff($names, $existingTags);
+
+            // Cannot create new tags when read-only options are supplied
+            if ($newTags && $this->formField->hasOptions()) {
+                throw new SystemException("[{$this->valueFrom}] Options are read-only so new tags cannot be created. Try setting customTags: false in the field configuration.");
+            }
 
             foreach ($newTags as $newTag) {
                 $newModel = $relationModel->newInstance();

@@ -128,11 +128,6 @@
         BaseProto.dispose.call(this);
     }
 
-    // @deprecated
-    Repeater.prototype.unbind = function() {
-        this.dispose();
-    }
-
     Repeater.prototype.bindSorting = function() {
         this.$sortableBody = $(this.selectorSortable, this.$el);
 

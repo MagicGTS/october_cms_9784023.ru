@@ -1,5 +1,6 @@
 <?php namespace System\Classes;
 
+use App;
 use Event;
 use Backend;
 use BackendAuth;
@@ -97,25 +98,25 @@ class SettingsManager
      */
     protected function loadItems()
     {
-        /*
-         * Load module items
-         */
+        // Load module items
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
 
-        /*
-         * Load plugin items
-         */
-        $plugins = $this->pluginManager->getPlugins();
-
-        foreach ($plugins as $id => $plugin) {
+        // Load plugin items
+        foreach ($this->pluginManager->getPlugins() as $id => $plugin) {
             $items = $plugin->registerSettings();
-            if (!is_array($items)) {
-                continue;
+            if (is_array($items)) {
+                $this->registerSettingItems($id, $items);
             }
+        }
 
-            $this->registerSettingItems($id, $items);
+        // Load app items
+        if ($app = App::getProvider(\App\Provider::class)) {
+            $items = $app->registerSettings();
+            if (is_array($items)) {
+                $this->registerSettingItems('October.App', $items);
+            }
         }
 
         /**
@@ -132,22 +133,16 @@ class SettingsManager
          */
         Event::fire('system.settings.extendItems', [$this]);
 
-        /*
-         * Sort settings items
-         */
+        // Sort settings items
         usort($this->items, function ($a, $b) {
             return $a->order - $b->order;
         });
 
-        /*
-         * Filter items user lacks permission for
-         */
+        // Filter items user lacks permission for
         $user = BackendAuth::getUser();
         $this->items = $this->filterItemPermissions($user, $this->items);
 
-        /*
-         * Process each item in to a category array
-         */
+        // Process each item in to a category array
         $catItems = [];
         foreach ($this->items as $code => $item) {
             // For YAML, eg: CATEGORY_SYSTEM
@@ -168,7 +163,7 @@ class SettingsManager
     }
 
     /**
-     * Returns a collection of all settings by group, filtered by context
+     * listItems returns a collection of all settings by group, filtered by context
      * @param  string $context
      * @return array
      */
@@ -186,7 +181,7 @@ class SettingsManager
     }
 
     /**
-     * Filters a set of items by a given context.
+     * filterByContext filters a set of items by a given context.
      * @param  array $items
      * @param  string $context
      * @return array

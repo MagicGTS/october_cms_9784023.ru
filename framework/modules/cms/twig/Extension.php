@@ -2,6 +2,7 @@
 
 use Block;
 use Event;
+use Response;
 use Redirect;
 use Twig\TwigFilter as TwigSimpleFilter;
 use Twig\TwigFunction as TwigSimpleFunction;
@@ -46,6 +47,8 @@ class Extension extends TwigExtension
             new TwigSimpleFunction('component', [$this, 'componentFunction'], ['is_safe' => ['html']]),
             new TwigSimpleFunction('placeholder', [$this, 'placeholderFunction'], ['is_safe' => ['html']]),
             new TwigSimpleFunction('hasPlaceholder', [$this, 'hasPlaceholderFunction'], ['is_safe' => ['html']]),
+            new TwigSimpleFunction('ajaxHandler', [$this, 'ajaxHandlerFunction'], []),
+            new TwigSimpleFunction('response', [$this, 'responseFunction'], []),
             new TwigSimpleFunction('redirect', [$this, 'redirectFunction'], []),
             new TwigSimpleFunction('abort', [$this, 'abortFunction'], []),
         ];
@@ -191,6 +194,33 @@ class Extension extends TwigExtension
     public function hasPlaceholderFunction($name)
     {
         return Block::has($name);
+    }
+
+    /**
+     * ajaxHandlerFunction runs an ajax handler
+     * @param string $name
+     */
+    public function ajaxHandlerFunction($name = '')
+    {
+        return $this->controller->runAjaxHandlerResponse($name);
+    }
+
+    /**
+     * responseFunction returns a new response from the application.
+     * @param \Illuminate\Contracts\View\View|string|array|null $content
+     * @param int $status
+     * @param array $headers
+     */
+    public function responseFunction($content = '', $status = 200, array $headers = [])
+    {
+        if ($content instanceof \Illuminate\Http\Response) {
+            $response = $content;
+        }
+        else {
+            $response = Response::make($content, $status, $headers);
+        }
+
+        $this->controller->setResponse($response);
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php namespace System\Classes;
 
+use App;
 use Str;
 use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
 use Twig\TwigFilter as TwigSimpleFilter;
@@ -48,7 +49,7 @@ class MarkupManager
     /**
      * loadExtensions parses all registrations and adds them to this class
      */
-    protected function loadExtensions(): void
+    protected function loadExtensions()
     {
         // Load module items
         foreach ($this->callbacks as $callback) {
@@ -56,21 +57,31 @@ class MarkupManager
         }
 
         // Load plugin items
-        $plugins = $this->pluginManager->getPlugins();
+        foreach ($this->pluginManager->getPlugins() as $plugin) {
+            $this->loadExtensionsFromArray($plugin->registerMarkupTags());
+        }
 
-        foreach ($plugins as $id => $plugin) {
-            $items = $plugin->registerMarkupTags();
-            if (!is_array($items)) {
-                continue;
+        // Load app items
+        if ($app = App::getProvider(\App\Provider::class)) {
+            $this->loadExtensionsFromArray($app->registerMarkupTags());
+        }
+    }
+
+    /**
+     * loadExtensionsFromArray helper
+     */
+    protected function loadExtensionsFromArray($items)
+    {
+        if (!is_array($items)) {
+            return;
+        }
+
+        foreach ($items as $type => $definitions) {
+            if (!is_array($definitions)) {
+                return;
             }
 
-            foreach ($items as $type => $definitions) {
-                if (!is_array($definitions)) {
-                    continue;
-                }
-
-                $this->registerExtensions($type, $definitions);
-            }
+            $this->registerExtensions($type, $definitions);
         }
     }
 

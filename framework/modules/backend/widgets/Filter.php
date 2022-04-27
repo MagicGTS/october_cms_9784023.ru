@@ -3,6 +3,7 @@
 use Lang;
 use DbDongle;
 use Backend\Classes\WidgetBase;
+use October\Rain\Element\ElementHolder;
 use October\Rain\Element\Filter\ScopeDefinition;
 use October\Contracts\Element\FilterElement;
 use Backend\Classes\FilterScope;
@@ -211,7 +212,7 @@ class Filter extends WidgetBase implements FilterElement
     public function addScopes(array $scopes)
     {
         foreach ($scopes as $name => $config) {
-            $scopeObj = $this->makeFilterScope($name, $config);
+            $scopeObj = $this->makeFilterScope($name, (array) $config);
 
             // Check that the filter scope matches the active context
             if ($scopeObj->context !== null) {
@@ -261,15 +262,17 @@ class Filter extends WidgetBase implements FilterElement
         $scopeType = $config['type'] ?? null;
         [$scopeName, $scopeContext] = $this->evalScopeName($name);
 
-        $scope = new FilterScope($config);
+        $scope = new FilterScope(['scopeName' => $scopeName]);
+        $scope->useConfig($config);
+        $scope->idPrefix($this->getId());
 
         if ($scopeContext) {
             $scope->context($scopeContext);
         }
 
-        $scope->scopeName($scopeName);
-        $scope->displayAs($scopeType);
-        $scope->idPrefix($this->getId());
+        if ($scopeType) {
+            $scope->displayAs($scopeType);
+        }
 
         return $scope;
     }
@@ -446,9 +449,10 @@ class Filter extends WidgetBase implements FilterElement
      */
     public function defineScope(string $scopeName = null, string $label = null): ScopeDefinition
     {
-        $scopeObj = new FilterScope;
-        $scopeObj->scopeName($scopeName);
-        $scopeObj->label($label);
+        $scopeObj = new FilterScope([
+            'scopeName' => $scopeName,
+            'label' => $label
+        ]);
 
         $this->allScopes[$scopeName] = $scopeObj;
 
@@ -693,9 +697,12 @@ class Filter extends WidgetBase implements FilterElement
 
         $targetModel = clone $this->model;
 
+        // For passing to events
+        $holder = new ElementHolder($this->allScopes);
+
         // Standard usage
         if (method_exists($targetModel, 'filterScopes')) {
-            $targetModel->filterScopes((object) $this->allScopes, $this->getContext());
+            $targetModel->filterScopes($holder, $this->getContext());
         }
 
         // Advanced usage
@@ -713,7 +720,7 @@ class Filter extends WidgetBase implements FilterElement
              *     });
              *
              */
-            $targetModel->fireEvent('model.filter.filterScopes', [$this, (object) $this->allScopes, $this->getContext()]);
+            $targetModel->fireEvent('model.filter.filterScopes', [$this, $holder, $this->getContext()]);
         }
     }
 

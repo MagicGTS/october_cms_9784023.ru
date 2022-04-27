@@ -152,18 +152,14 @@ class MailManager
             'subject' => $sMessage->getSubject()
         ];
 
+        // HTML contents
         if (!$plainOnly) {
-            /*
-             * HTML contents
-             */
             $html = $this->renderTemplate($template, $data);
 
             $message->html($html);
         }
 
-        /*
-         * Text contents
-         */
+        // Text contents
         $text = $this->renderTextTemplate($template, $data);
 
         $message->text($text);
@@ -252,7 +248,7 @@ class MailManager
 
         $templateText = $template->content_text;
 
-        if (!strlen($template->content_text)) {
+        if (!empty($template->content_text)) {
             $templateText = $template->content_html;
         }
 
@@ -310,24 +306,37 @@ class MailManager
      */
     public function loadRegisteredTemplates()
     {
+        // Load module templates
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
 
-        $plugins = PluginManager::instance()->getPlugins();
-        foreach ($plugins as $pluginId => $pluginObj) {
-            $layouts = $pluginObj->registerMailLayouts();
-            if (is_array($layouts)) {
+        // Load plugin widgets
+        foreach (PluginManager::instance()->getPlugins() as $pluginObj) {
+            if (is_array($layouts = $pluginObj->registerMailLayouts())) {
                 $this->registerMailLayouts($layouts);
             }
 
-            $templates = $pluginObj->registerMailTemplates();
-            if (is_array($templates)) {
+            if (is_array($templates = $pluginObj->registerMailTemplates())) {
                 $this->registerMailTemplates($templates);
             }
 
-            $partials = $pluginObj->registerMailPartials();
-            if (is_array($partials)) {
+            if (is_array($partials = $pluginObj->registerMailPartials())) {
+                $this->registerMailPartials($partials);
+            }
+        }
+
+        // Load app widgets
+        if ($app = App::getProvider(\App\Provider::class)) {
+            if (is_array($layouts = $app->registerMailLayouts())) {
+                $this->registerMailLayouts($layouts);
+            }
+
+            if (is_array($templates = $app->registerMailTemplates())) {
+                $this->registerMailTemplates($templates);
+            }
+
+            if (is_array($partials = $app->registerMailPartials())) {
                 $this->registerMailPartials($partials);
             }
         }

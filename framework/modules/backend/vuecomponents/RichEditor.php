@@ -24,7 +24,7 @@ class RichEditor extends VueComponentBase
     {
         $configuration = [
             'editorLang' => $this->getValidEditorLang(),
-            'useMediaManager' => BackendAuth::getUser()->hasAccess('media.manage_media'),
+            'useMediaManager' => BackendAuth::userHasAccess('media.manage_media'),
             'iframeStylesFile' => Url::asset('/modules/backend/vuecomponents/richeditor/assets/css/iframestyles.css'),
 
             'globalToolbarButtons' => $this->getGlobalButtons(),

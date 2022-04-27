@@ -407,7 +407,7 @@ class Controller extends Extendable
     }
 
     /**
-     * Returns the AJAX handler for the current request, if available.
+     * getAjaxHandler returns the AJAX handler for the current request, if available.
      * @return string
      */
     public function getAjaxHandler()
@@ -431,9 +431,7 @@ class Controller extends Extendable
     {
         if ($handler = $this->getAjaxHandler()) {
             try {
-                /*
-                 * Validate the handler partial list
-                 */
+                // Validate the handler partial list
                 if ($partialList = trim(Request::header('X_OCTOBER_REQUEST_PARTIALS'))) {
                     $partialList = explode('&', $partialList);
 
@@ -449,47 +447,35 @@ class Controller extends Extendable
 
                 $responseContents = [];
 
-                /*
-                 * Execute the handler
-                 */
+                // Execute the handler
                 if (!$result = $this->runAjaxHandler($handler)) {
                     throw new ApplicationException(Lang::get('backend::lang.ajax_handler.not_found', ['name'=>$handler]));
                 }
 
-                /*
-                 * Render partials and return the response as array that will be converted to JSON automatically.
-                 */
+                // Render partials and return the response as array that will be converted to JSON automatically.
                 foreach ($partialList as $partial) {
                     $responseContents[$partial] = $this->makePartial($partial);
                 }
 
-                /*
-                 * If the handler returned a redirect, process the URL and dispose of it so
-                 * framework.js knows to redirect the browser and not the request!
-                 */
+                // If the handler returned a redirect, process the URL and dispose of it so
+                // framework.js knows to redirect the browser and not the request!
                 if ($result instanceof RedirectResponse) {
                     $responseContents['X_OCTOBER_REDIRECT'] = $result->getTargetUrl();
                     $result = null;
                 }
-                /*
-                 * No redirect is used, look for any flash messages
-                 */
+                // No redirect is used, look for any flash messages
                 elseif (Flash::check()) {
                     $responseContents['#layout-flash-messages'] = $this->makeLayoutPartial('flash_messages');
                 }
 
-                /*
-                 * Detect assets
-                 */
+                // Detect assets
                 if ($this->hasAssetsDefined()) {
                     $responseContents['X_OCTOBER_ASSETS'] = $this->getAssetPaths();
                 }
 
-                /*
-                 * If the handler returned an array, we should add it to output for rendering.
-                 * If it is a string, add it to the array with the key "result".
-                 * If an object, pass it to Laravel as a response object.
-                 */
+                // If the handler returned an array, we should add it to output for rendering.
+                // If it is a string, add it to the array with the key "result".
+                // If an object, pass it to Laravel as a response object.
                 if (is_array($result)) {
                     $responseContents = array_merge($responseContents, $result);
                 }
@@ -503,9 +489,7 @@ class Controller extends Extendable
                 return Response::make()->setContent($responseContents);
             }
             catch (ValidationException $ex) {
-                /*
-                 * Handle validation error gracefully
-                 */
+                // Handle validation error gracefully
                 Flash::error($ex->getMessage());
                 $responseContents = [];
                 $responseContents['#layout-flash-messages'] = $this->makeLayoutPartial('flash_messages', [

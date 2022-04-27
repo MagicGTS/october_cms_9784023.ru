@@ -19,9 +19,7 @@ class ServiceProvider extends ModuleServiceProvider
     {
         parent::register('editor');
 
-        /*
-         * Backend specific
-         */
+        // Backend specific
         if (App::runningInBackend()) {
             $this->registerBackendNavigation();
             $this->registerBackendPermissions();
@@ -36,8 +34,8 @@ class ServiceProvider extends ModuleServiceProvider
         parent::boot('editor');
     }
 
-    /*
-     * Register navigation
+    /**
+     * registerBackendNavigation
      */
     protected function registerBackendNavigation()
     {
@@ -57,8 +55,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register permissions
+    /**
+     * registerBackendPermissions
      */
     protected function registerBackendPermissions()
     {

@@ -57,14 +57,15 @@ trait WidgetMaker
         }
 
         if (is_string($fieldConfig)) {
-            $fieldConfig = ['name' => $fieldConfig];
+            $fieldConfig = ['fieldName' => $fieldConfig];
         }
 
         if (is_array($fieldConfig)) {
-            $formField = new FormField(
-                array_get($fieldConfig, 'name'),
-                array_get($fieldConfig, 'label')
-            );
+            if (isset($fieldConfig['name'])) {
+                $fieldConfig['fieldName'] = $fieldConfig['name'];
+            }
+
+            $formField = new FormField($fieldConfig);
             $formField->displayAs('widget', $fieldConfig);
         }
         else {

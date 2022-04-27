@@ -129,7 +129,6 @@ trait CanFormatCsv
             $csv->output($options['fileName']);
         }
 
-        // @deprecated
-        return method_exists($csv, 'toString') ? $csv->toString() : $csv->__toString();
+        return $csv->toString();
     }
 }

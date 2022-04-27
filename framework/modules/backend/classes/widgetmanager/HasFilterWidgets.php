@@ -1,5 +1,6 @@
 <?php namespace Backend\Classes\WidgetManager;
 
+use App;
 use Str;
 
 /**
@@ -35,25 +36,30 @@ trait HasFilterWidgets
         if ($this->filterWidgets === null) {
             $this->filterWidgets = [];
 
-            /*
-             * Load module widgets
-             */
+            // Load module widgets
             foreach ($this->filterWidgetCallbacks as $callback) {
                 $callback($this);
             }
 
-            /*
-             * Load plugin widgets
-             */
-            $plugins = $this->pluginManager->getPlugins();
-
-            foreach ($plugins as $plugin) {
-                if (!is_array($widgets = $plugin->registerFilterWidgets())) {
+            // Load plugin widgets
+            foreach ($this->pluginManager->getPlugins() as $plugin) {
+                $widgets = $plugin->registerFilterWidgets();
+                if (!is_array($widgets)) {
                     continue;
                 }
 
                 foreach ($widgets as $className => $widgetInfo) {
                     $this->registerFilterWidget($className, $widgetInfo);
+                }
+            }
+
+            // Load app widgets
+            if ($app = App::getProvider(\App\Provider::class)) {
+                $widgets = $app->registerFilterWidgets();
+                if (is_array($widgets)) {
+                    foreach ($widgets as $className => $widgetInfo) {
+                        $this->registerFilterWidget($className, $widgetInfo);
+                    }
                 }
             }
         }

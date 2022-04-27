@@ -20,10 +20,10 @@
     ];
 
     $scripts = [
-        Backend::skinAsset('assets/js/vendor/jquery.min.js'),
+        Url::asset('modules/system/assets/js/vendor/jquery.min.js'),
         Url::asset('modules/system/assets/js/framework.js'),
         Url::asset('modules/system/assets/ui/storm-min.js'),
-        Url::asset('modules/system/assets/vue/bundle-min.js'),
+        Url::asset('modules/system/assets/js/vue.bundle-min.js'),
         Backend::skinAsset('assets/js/october-min.js'),
         Url::asset('modules/system/assets/js/lang/lang.'.App::getLocale().'.js'),
         Backend::skinAsset('assets/js/october.flyout.js'),

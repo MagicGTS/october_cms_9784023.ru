@@ -21,7 +21,7 @@
             font-size: @font-size-small;
             height: @input-height-small;
             line-height: @line-height-small;
-            padding: @padding-small-vertical @padding-small-horizontal + @caret-width-base*3 @padding-small-vertical @padding-small-horizontal;
+            padding: @padding-small-vertical (@padding-small-horizontal + (@caret-width-base * 3)) @padding-small-vertical @padding-small-horizontal;
 
             /* 2 */
             .select2-selection__arrow b {
@@ -35,7 +35,7 @@
             .select2-selection__choice {
                 font-size: @font-size-small;
                 line-height: @line-height-small;
-                margin: (@padding-small-vertical - 2) 0 0 @padding-small-horizontal/2;
+                margin: (@padding-small-vertical - 2) 0 0 (@padding-small-horizontal / 2);
                 padding: 0 (@padding-small-vertical - 2);
             }
 
@@ -60,7 +60,7 @@
             font-size: @font-size-large;
             height: @input-height-large;
             line-height: @line-height-large;
-            padding: @padding-large-vertical @padding-large-horizontal + @caret-width-large*3 @padding-large-vertical @padding-large-horizontal;
+            padding: @padding-large-vertical (@padding-large-horizontal + (@caret-width-large * 3)) @padding-large-vertical @padding-large-horizontal;
 
             /* 1 */
             .select2-selection__arrow {
@@ -70,7 +70,7 @@
                     border-width: @caret-width-large @caret-width-large 0 @caret-width-large;
                     margin-left: -@caret-width-large;
                     margin-left: -@padding-large-vertical;
-                    margin-top: -@caret-width-large/2;
+                    margin-top: -(@caret-width-large / 2);
                 }
             }
         }
@@ -82,7 +82,7 @@
                 font-size: @font-size-large;
                 line-height: @line-height-large;
                 border-radius: 4px;
-                margin: (@padding-large-vertical - 1) 0 0 @padding-large-horizontal/2;
+                margin: (@padding-large-vertical - 1) 0 0 (@padding-large-horizontal / 2);
                 padding: 0 @padding-large-vertical;
             }
 

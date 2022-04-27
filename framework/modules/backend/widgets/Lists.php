@@ -836,7 +836,10 @@ class Lists extends WidgetBase implements ListElement
      */
     public function defineColumn(string $columnName = null, string $label = null): ColumnDefinition
     {
-        return $this->allColumns[$columnName] = new ListColumn($columnName, $label);
+        return $this->allColumns[$columnName] = new ListColumn([
+            'columnName' => $columnName,
+            'label' => $label
+        ]);
     }
 
     /**
@@ -1010,7 +1013,10 @@ class Lists extends WidgetBase implements ListElement
 
         $columnType = $config['type'] ?? null;
 
-        $column = new ListColumn($name, $label);
+        $column = new ListColumn([
+            'columnName' => $name,
+            'label' => $label
+        ]);
 
         if ($config) {
             $column->useConfig($config);
@@ -1291,13 +1297,13 @@ class Lists extends WidgetBase implements ListElement
     //
 
     /**
-     * evalCustomListType processes a custom list types registered by plugins.
+     * evalCustomListType processes a custom list types registered by plugins and the app.
      */
     protected function evalCustomListType($type, $record, $column, $value)
     {
-        $plugins = PluginManager::instance()->getRegistrationMethodValues('registerListColumnTypes');
-
-        foreach ($plugins as $availableTypes) {
+        // Load plugin and app column types
+        $methodValues = PluginManager::instance()->getRegistrationMethodValues('registerListColumnTypes');
+        foreach ($methodValues as $availableTypes) {
             if (!isset($availableTypes[$type])) {
                 continue;
             }
@@ -1586,7 +1592,10 @@ class Lists extends WidgetBase implements ListElement
      */
     protected function evalSelectableTypeValue($record, $column, $value)
     {
-        $formField = new \Backend\Classes\FormField($column->columnName, $column->label);
+        $formField = new \Backend\Classes\FormField([
+            'fieldName' => $column->columnName,
+            'label' => $column->label
+        ]);
 
         $fieldOptions = $column->config['options'] ?? null;
 

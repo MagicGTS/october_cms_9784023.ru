@@ -2,7 +2,6 @@
 
 use Composer\Installer\PackageEvent;
 use Composer\Script\Event;
-use Exception;
 
 /**
  * ComposerScript is a collection of composer script logic
@@ -40,6 +39,11 @@ class ComposerScript
 
         if (self::isOfType($package, 'plugin')) {
             passthru("php artisan plugin:remove ${package} --composer");
+        }
+
+        // Purge discovered package cache to prevent errors
+        if (file_exists($packagesMeta = __DIR__ . '/../../../storage/framework/packages.php')) {
+            @unlink($packagesMeta);
         }
     }
 

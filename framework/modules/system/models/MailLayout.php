@@ -23,17 +23,17 @@ class MailLayout extends Model
     protected $table = 'system_mail_layouts';
 
     /**
-     * @var array Guarded fields
+     * @var array guarded fields
      */
     protected $guarded = [];
 
     /**
-     * @var array Fillable fields
+     * @var array fillable fields
      */
     protected $fillable = [];
 
     /**
-     * @var array Validation rules
+     * @var array rules for validation
      */
     public $rules = [
         'code' => 'required|unique:system_mail_layouts',
@@ -48,8 +48,14 @@ class MailLayout extends Model
         'options'
     ];
 
+    /**
+     * @var array codeCache
+     */
     public static $codeCache;
 
+    /**
+     * beforeDelete
+     */
     public function beforeDelete()
     {
         if ($this->is_locked) {
@@ -57,6 +63,9 @@ class MailLayout extends Model
         }
     }
 
+    /**
+     * listCodes
+     */
     public static function listCodes()
     {
         if (self::$codeCache !== null) {
@@ -66,13 +75,32 @@ class MailLayout extends Model
         return self::$codeCache = self::lists('id', 'code');
     }
 
+    /**
+     * getIdFromCode
+     */
     public static function getIdFromCode($code)
     {
         return array_get(self::listCodes(), $code);
     }
 
     /**
-     * Loops over each mail layout and ensures the system has a layout,
+     * findOrMakeLayout
+     */
+    public static function findOrMakeLayout($code)
+    {
+        $layout = self::whereCode($code)->first();
+
+        if (!$layout && View::exists($code)) {
+            $layout = new self;
+            $layout->code = $code;
+            $layout->fillFromView($code);
+        }
+
+        return $layout;
+    }
+
+    /**
+     * createLayouts loops over each mail layout and ensures the system has a layout,
      * if the layout does not exist, it will create one.
      * @return void
      */
@@ -94,6 +122,9 @@ class MailLayout extends Model
         }
     }
 
+    /**
+     * fillFromCode
+     */
     public function fillFromCode($code = null)
     {
         $definitions = MailManager::instance()->listRegisteredLayouts();
@@ -109,6 +140,9 @@ class MailLayout extends Model
         $this->fillFromView($definition);
     }
 
+    /**
+     * fillFromView
+     */
     public function fillFromView($path)
     {
         $sections = self::getTemplateSections($path);
@@ -133,10 +167,13 @@ class MailLayout extends Model
 
         $this->name = array_get($sections, 'settings.name', '???');
         $this->content_css = $css;
-        $this->content_html =  array_get($sections, 'html');
-        $this->content_text = array_get($sections, 'text');
+        $this->content_html =  $sections['html'] ?? '';
+        $this->content_text = $sections['text'] ?? '';
     }
 
+    /**
+     * getTemplateSections
+     */
     protected static function getTemplateSections($code)
     {
         return MailParser::parse(FileHelper::get(View::make($code)->getPath()));

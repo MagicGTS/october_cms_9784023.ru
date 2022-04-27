@@ -1,5 +1,6 @@
 <?php namespace Backend\Classes;
 
+use App;
 use System\Classes\PluginManager;
 use October\Rain\Auth\Manager as RainAuthManager;
 use October\Rain\Exception\SystemException;
@@ -83,6 +84,18 @@ class AuthManager extends RainAuthManager
     protected $permissionCache = false;
 
     /**
+     * userHasAccess is identical to User::hasAccess
+     */
+    public function userHasAccess($permissions, $all = true)
+    {
+        if ($user = $this->getUser()) {
+            return $user->hasAccess($permissions, $all);
+        }
+
+        return false;
+    }
+
+    /**
      * registerCallback registers a callback function that defines authentication permissions.
      * The callback function should register permissions by calling the manager's
      * registerPermissions() function. The manager instance is passed to the
@@ -154,30 +167,28 @@ class AuthManager extends RainAuthManager
             return $this->permissionCache;
         }
 
-        /*
-         * Load module items
-         */
+        // Load module items
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
 
-        /*
-         * Load plugin items
-         */
-        $plugins = PluginManager::instance()->getPlugins();
-
-        foreach ($plugins as $id => $plugin) {
+        // Load plugin items
+        foreach (PluginManager::instance()->getPlugins() as $id => $plugin) {
             $items = $plugin->registerPermissions();
-            if (!is_array($items)) {
-                continue;
+            if (is_array($items)) {
+                $this->registerPermissions($id, $items);
             }
-
-            $this->registerPermissions($id, $items);
         }
 
-        /*
-         * Sort permission items
-         */
+        // Load app items
+        if ($app = App::getProvider(\App\Provider::class)) {
+            $items = $app->registerPermissions();
+            if (is_array($items)) {
+                $this->registerPermissions('October.App', $items);
+            }
+        }
+
+        // Sort permission items
         usort($this->permissions, function ($a, $b) {
             if ($a->order === $b->order) {
                 return 0;

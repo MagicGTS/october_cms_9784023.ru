@@ -84,12 +84,12 @@ class Controller
     protected $twig;
 
     /**
-     * @var string Contains the rendered page contents string.
+     * @var string pageContents contains the rendered page contents string.
      */
     protected $pageContents;
 
     /**
-     * @var array A list of variables to pass to the page.
+     * @var array vars is a list of variables to pass to the page.
      */
     public $vars = [];
 
@@ -290,10 +290,8 @@ class Controller
     {
         $this->page = $page;
 
-        /*
-         * If the page doesn't refer any layout, create the fallback layout.
-         * Otherwise load the layout specified in the page.
-         */
+        // If the page doesn't refer any layout, create the fallback layout.
+        // Otherwise load the layout specified in the page.
         if (!$page->layout) {
             $layout = Layout::initFallback($this->theme);
         }
@@ -303,22 +301,19 @@ class Controller
 
         $this->layout = $layout;
 
-        /*
-         * The 'this' variable is reserved for default variables.
-         */
-        $this->vars['this'] = [
+        // The 'this' variable is reserved for default variables.
+        $this->vars['this'] = new ThisVariable([
             'page' => $this->page,
             'layout' => $this->layout,
             'theme' => $this->theme,
             'param' => $this->router->getParameters(),
             'controller' => $this,
-            'environment' => App::environment(),
-            'session' => App::make('session')
-        ];
+            'environment' => fn() => App::environment(),
+            'method' => fn() => Request::method(),
+            'session' => fn() => App::make('session')
+        ]);
 
-        /*
-         * Check for validation errors and old input in the session.
-         */
+        // Check for validation errors and old input in the session.
         $this->vars['errors'] = (Config::get('session.driver') && Session::has('errors'))
             ? Session::get('errors')
             : new \Illuminate\Support\ViewErrorBag;
@@ -327,17 +322,13 @@ class Controller
             ? Session::getOldInput()
             : array_get($this->vars, 'oldInput', []);
 
-        /*
-         * Handle AJAX requests and execute the life cycle functions
-         */
+        // Handle AJAX requests and execute the life cycle functions
         $this->initCustomObjects();
 
         $this->initComponents();
 
-        /*
-         * Give the layout and page an opportunity to participate
-         * after components are initialized and before AJAX is handled.
-         */
+        // Give the layout and page an opportunity to participate
+        // after components are initialized and before AJAX is handled.
         if ($this->layoutObj) {
             CmsException::mask($this->layout, 300);
             $this->layoutObj->onInit();
@@ -369,30 +360,22 @@ class Controller
             return $event;
         }
 
-        /*
-         * Execute AJAX event
-         */
+        // Execute AJAX event
         if ($useAjax && $ajaxResponse = $this->execAjaxHandlers()) {
             return $ajaxResponse;
         }
 
-        /*
-         * Execute postback handler
-         */
+        // Execute postback handler
         if ($useAjax && $handlerResponse = $this->execPostbackHandler()) {
             return $handlerResponse;
         }
 
-        /*
-         * Execute page lifecycle
-         */
+        // Execute page lifecycle
         if ($cycleResponse = $this->execPageCycle()) {
             return $cycleResponse;
         }
 
-        /*
-         * Parse dynamic attributes on templates and components
-         */
+        // Parse dynamic attributes on templates and components
         $this->parseAllEnvironmentVars();
 
         /**
@@ -416,9 +399,7 @@ class Controller
             $this->pageContents = $event;
         }
         else {
-            /*
-             * Render the page
-             */
+            // Render the page
             CmsException::mask($this->page, 400);
             $this->loader->setObject($this->page);
             $template = $this->twig->load($this->page->getFilePath());
@@ -426,9 +407,7 @@ class Controller
             CmsException::unmask();
         }
 
-        /*
-         * Render the layout
-         */
+        // Render the layout
         CmsException::mask($this->layout, 400);
         $this->loader->setObject($this->layout);
         $template = $this->twig->load($this->layout->getFilePath());
@@ -439,7 +418,7 @@ class Controller
     }
 
     /**
-     * Invokes the current page cycle without rendering the page,
+     * pageCycle invokes the current page cycle without rendering the page,
      * used by AJAX handler that may rely on the logic inside the action.
      */
     public function pageCycle()
@@ -448,7 +427,7 @@ class Controller
     }
 
     /**
-     * Executes the page life cycle.
+     * execPageCycle executes the page life cycle.
      * Creates an object from the PHP sections of the page and
      * it's layout, then executes their life cycle functions.
      */
@@ -475,9 +454,7 @@ class Controller
             return $event;
         }
 
-        /*
-         * Run layout functions
-         */
+        // Run layout functions
         if ($this->layoutObj) {
             CmsException::mask($this->layout, 300);
             $response = (
@@ -492,9 +469,7 @@ class Controller
             }
         }
 
-        /*
-         * Run page functions
-         */
+        // Run page functions
         CmsException::mask($this->page, 300);
         $response = (
             ($result = $this->pageObj->onStart()) ||
@@ -507,9 +482,7 @@ class Controller
             return $response;
         }
 
-        /*
-         * Run remaining layout functions
-         */
+        // Run remaining layout functions
         if ($this->layoutObj) {
             CmsException::mask($this->layout, 300);
             $response = ($result = $this->layoutObj->onEnd()) ? $result : null;
@@ -580,7 +553,7 @@ class Controller
     //
 
     /**
-     * Initializes the Twig environment and loader.
+     * initTwigEnvironment initializes the Twig environment and loader.
      * Registers the \Cms\Twig\Extension object with Twig.
      * @return void
      */
@@ -609,25 +582,18 @@ class Controller
         $twig->addExtension(new CmsTwigExtension($this));
         $twig->addExtension(new SystemTwigExtension);
 
-        // @deprecated use code below in v3
+        // @deprecated use the main policy in safe mode only
         if (System::checkSafeMode()) {
-            if (env('CMS_SECURITY_POLICY_V2', false)) {
-                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
+            if (env('CMS_SECURITY_POLICY_V1', false)) {
+                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicyLegacy, true));
             }
             else {
-                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicyLegacy, true));
+                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
             }
         }
 
-        // @deprecated use the main policy in safe mode only
-        // if (System::checkSafeMode()) {
-        //     if (env('CMS_SECURITY_POLICY_V1', false)) {
-        //         $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicyLegacy, true));
-        //     }
-        //     else {
-        //         $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
-        //     }
-        // }
+        // Desired logic
+        // $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
 
         if ($isDebugMode) {
             $twig->addExtension(new DebugExtension($this));
@@ -638,7 +604,7 @@ class Controller
     }
 
     /**
-     * Initializes the custom layout and page objects.
+     * initCustomObjects initializes the custom layout and page objects.
      * @return void
      */
     protected function initCustomObjects()
@@ -659,7 +625,7 @@ class Controller
     }
 
     /**
-     * Initializes the components for the layout and page.
+     * initComponents initializes the components for the layout and page.
      * @return void
      */
     protected function initComponents()
@@ -707,7 +673,7 @@ class Controller
     //
 
     /**
-     * Returns the AJAX handler for the current request, if available.
+     * getAjaxHandler returns the AJAX handler for the current request, if available.
      * @return string
      */
     public function getAjaxHandler()
@@ -731,16 +697,12 @@ class Controller
     {
         if ($handler = $this->getAjaxHandler()) {
             try {
-                /*
-                 * Validate the handler name
-                 */
+                // Validate the handler name
                 if (!preg_match('/^(?:\w+\:{2})?on[A-Z]{1}[\w+]*$/', $handler)) {
                     throw new CmsException(Lang::get('cms::lang.ajax_handler.invalid_name', ['name'=>$handler]));
                 }
 
-                /*
-                 * Validate the handler partial list
-                 */
+                // Validate the handler partial list
                 if ($partialList = trim(Request::header('X_OCTOBER_REQUEST_PARTIALS'))) {
                     $partialList = explode('&', $partialList);
 
@@ -756,40 +718,30 @@ class Controller
 
                 $responseContents = [];
 
-                /*
-                 * Execute the handler
-                 */
+                // Execute the handler
                 if (!$result = $this->runAjaxHandler($handler)) {
                     throw new CmsException(Lang::get('cms::lang.ajax_handler.not_found', ['name'=>$handler]));
                 }
 
-                /*
-                 * Render partials and return the response as array that will be converted to JSON automatically.
-                 */
+                // Render partials and return the response as array that will be converted to JSON automatically.
                 foreach ($partialList as $partial) {
                     $responseContents[$partial] = $this->renderPartial($partial);
                 }
 
-                /*
-                 * If the handler returned a redirect, process the URL and dispose of it so
-                 * framework.js knows to redirect the browser and not the request!
-                 */
+                // If the handler returned a redirect, process the URL and dispose of it so
+                // framework.js knows to redirect the browser and not the request!
                 if ($result instanceof RedirectResponse) {
                     $responseContents['X_OCTOBER_REDIRECT'] = $result->getTargetUrl();
                     $result = null;
                 }
-                /*
-                 * No redirect is used, look for any flash messages
-                 */
+                // No redirect is used, look for any flash messages
                 elseif (Request::header('X_OCTOBER_REQUEST_FLASH') && Flash::check()) {
                     $responseContents['X_OCTOBER_FLASH_MESSAGES'] = Flash::all();
                 }
 
-                /*
-                 * If the handler returned an array, we should add it to output for rendering.
-                 * If it is a string, add it to the array with the key "result".
-                 * If an object, pass it to Laravel as a response object.
-                 */
+                // If the handler returned an array, we should add it to output for rendering.
+                // If it is a string, add it to the array with the key "result".
+                // If an object, pass it to Laravel as a response object.
                 if (is_array($result)) {
                     $responseContents = array_merge($responseContents, $result);
                 }
@@ -803,9 +755,7 @@ class Controller
                 return Response::make($responseContents, $this->statusCode);
             }
             catch (ValidationException $ex) {
-                /*
-                 * Handle validation errors
-                 */
+                // Handle validation errors
                 $responseContents['X_OCTOBER_ERROR_FIELDS'] = $ex->getFields();
                 $responseContents['X_OCTOBER_ERROR_MESSAGE'] = $ex->getMessage();
                 throw new AjaxException($responseContents);
@@ -816,6 +766,25 @@ class Controller
         }
 
         return null;
+    }
+
+    /**
+     * runAjaxHandlerResponse
+     */
+    public function runAjaxHandlerResponse($handler)
+    {
+        $response = new AjaxResponse;
+
+        try {
+            $result = $this->runAjaxHandler($handler);
+            $response->setHandlerVars($this->pageObj->vars);
+            $response->setHandlerResponse($result);
+        }
+        catch (Exception $ex) {
+            $response->setHandlerException($ex);
+        }
+
+        return $response;
     }
 
     /**
@@ -846,7 +815,7 @@ class Controller
     }
 
     /**
-     * runAjaxHandler Tries to find and run an AJAX handler in the page, layout, components and plugins.
+     * runAjaxHandler tries to find and run an AJAX handler in the page, layout, components and plugins.
      * The method stops as soon as the handler is found. It will return the response from the handler,
      * or true if the handler was found. Returns false otherwise.
      */
@@ -885,9 +854,7 @@ class Controller
             return $event;
         }
 
-        /*
-         * Process Component handler
-         */
+        // Process Component handler
         if (strpos($handler, '::')) {
             [$componentName, $handlerName] = explode('::', $handler);
             $componentObj = $this->findComponentByName($componentName);
@@ -898,9 +865,7 @@ class Controller
                 return $result ?: true;
             }
         }
-        /*
-         * Process code section handler
-         */
+        // Process code section handler
         else {
             if (method_exists($this->pageObj, $handler)) {
                 $result = $this->pageObj->$handler();
@@ -912,9 +877,7 @@ class Controller
                 return $result ?: true;
             }
 
-            /*
-             * Cycle each component to locate a usable handler
-             */
+            // Cycle each component to locate a usable handler
             if (($componentObj = $this->findComponentByHandler($handler)) !== null) {
                 $this->componentContext = $componentObj;
                 $result = $componentObj->runAjaxHandler($handler);
@@ -922,9 +885,7 @@ class Controller
             }
         }
 
-        /*
-         * Generic handler that does nothing
-         */
+        // Generic handler that does nothing
         if ($handler === 'onAjax') {
             return true;
         }
@@ -1086,23 +1047,32 @@ class Controller
                     ? explode(' ', $component)
                     : [$component, $component];
 
-                if (!$componentObj = $manager->makeComponent($name, $this->pageObj, $properties)) {
-                    throw new CmsException(Lang::get('cms::lang.component.not_found', ['name'=>$name]));
+                $componentObj = $manager->makeComponent($name, $this->pageObj, $properties);
+
+                if (!$componentObj) {
+                    $strictMode = Config::get('cms.strict_components', false);
+                    if ($strictMode) {
+                        throw new CmsException(Lang::get('cms::lang.component.not_found', ['name' => $name]));
+                    }
+                    else {
+                        $parameters[$alias] = null;
+                    }
                 }
+                else {
+                    $componentObj->alias = $alias;
 
-                $componentObj->alias = $alias;
+                    $partial->components[$alias] = $componentObj;
 
-                $partial->components[$alias] = $componentObj;
+                    $parameters[$alias] = $componentObj->makePrimaryAccessor();
 
-                $parameters[$alias] = $componentObj->makePrimaryAccessor();
+                    $this->partialStack->addComponent($alias, $componentObj);
 
-                $this->partialStack->addComponent($alias, $componentObj);
+                    $this->parseRouteParamsOnComponent($componentObj, $this->router->getParameters());
 
-                $this->parseRouteParamsOnComponent($componentObj, $this->router->getParameters());
+                    $componentObj->init();
 
-                $componentObj->init();
-
-                $this->parseEnvironmentVarsOnComponent($componentObj, $parameters + $this->vars);
+                    $this->parseEnvironmentVarsOnComponent($componentObj, $parameters + $this->vars);
+                }
             }
 
             CmsException::mask($this->page, 300);
