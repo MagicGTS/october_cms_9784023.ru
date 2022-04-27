@@ -46,3 +46,5 @@ framework/nbproject
 # Project
 /framework/bootstrap/compiled.php
 /framework/vendor
+framework/storage/cms/autoexec.json
+framework/storage/cms/project.json
