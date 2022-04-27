@@ -5,7 +5,7 @@ reference: ""
 component: Index
 items:
     - title: "О&nbsp;центре"
-      reference: about
+      reference: svedeniya-ob-obrazovatelnoj-organizacii
       component: About
     - title: "Каталог&nbsp;услуг"
       reference: services
