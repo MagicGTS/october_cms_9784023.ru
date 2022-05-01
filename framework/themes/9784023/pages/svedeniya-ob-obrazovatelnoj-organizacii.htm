@@ -1,6 +1,55 @@
-title = "Сведения об образовательной организации"
 url = "/svedeniya-ob-obrazovatelnoj-organizacii"
-meta_title = "Сведения об образовательной организации"
 layout = "layout"
+title = "Сведения об образовательной организации"
+meta_title = "Сведения об образовательной организации"
 ==
-ппппппппппппппппппппппппппппппппппп
+<?php
+function onStart()
+{
+ $this['contingents'] = [
+     ['content'=>'asdfg','counter'=>'5'],
+     ['content'=>'resjytfj','counter'=>'6'],
+     ['content'=>'fdxgchjk','counter'=>'7']
+     ];
+}
+?>
+==
+<section name="infocontingent-students">  
+   <div class="infocontingen">    
+    <div class="info-aboutstudents">Информация о контингенте обучающихся
+    <i class="fa fa-angle-down"></i>   
+    </div>  
+    <div class=line></div>
+    <div class="infocontingen-content" 
+       <p>На сегодняшний день зачислены и проходят обучение по очно-заочной форме обучения с применением дистанционных технологий:</p>
+       /*это просто техт какой должен быть выведен для просмотра из базы данных*/
+       <p>по дополнительным профессиональным образовательным программам повышения квалификации 10 обучающихся;</p>
+       <p>по дополнительным профессиональным образовательным программам профессиональной переподготовке 5 обучающихся;</p>       
+       <p>по программам профессионального обучения 12 обучающихся.</p>
+
+       <ul>
+          {% for contingent in contingents %}
+          <li>{% partial "contingent" contingent=contingent %}</li>    
+          {% endfor %}
+       </ul> 
+     </div>
+    </div>
+
+</section> 
+<section name="info for students">
+   
+   <div class="info-for-students">
+     <div>
+         <div></div>
+     </div>
+     <a href="#">Условия проведения занятий, материально-техническое оснащение ОЧУ ДПО «Учебный центр «Амулет»<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Руководство<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Обеспечение помещений средствами и оборудованием, для обеспечения образовательной дейтельности<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Информация о наименовании структурных подразделений и местах нахождения<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Руководство и преподаватели учебного центра<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+   </div>
+</section>
+
+
+
+<div class="footer-ribbon-midle-wrap wrap padding-global">

@@ -1,0 +1,119 @@
+
+/* секция информации о контенгенте*/
+
+.infocontingen{
+    width: 1108px;
+    margin-left: auto;
+    margin-right: auto;    
+    max-height: 100%;  
+    background-color: #E5E5E5;
+    border: 1px solid #6F7185;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 38px;
+}
+
+.info-aboutstudents{
+    padding-right: 14px;  
+    padding-left: 14px;
+    padding-top: 12px;
+    
+   
+   /* border: 1px solid #6F7185;*/
+   .fonts(1.2em; 1.2em; 700;);
+    height: 46px;
+    display: block;   
+    align-items: center;
+    color: @color_07;    
+    cursor: pointer;   
+ 
+}
+
+.info-aboutstudents i{
+    float: right;
+    color: #6F7185;
+}
+
+
+.line {
+  border: 1px solid #6F7185;
+}
+
+/*добавляем цвет фона при наведении*/
+.infocontinge:hover, .info-aboutstudents:hover, .info-aboutstudents i:hover {
+    background-color: #FAFAFF;
+    color: @color_07;
+}  
+  
+
+/*выпадающяя информация*/
+ 
+  .infocontingen-content {
+    /*display: none;*/
+    padding-left: 14px;
+    padding-right: 14px;  
+    padding-top: 18px; 
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    z-index: 1;
+  }
+  
+  .infocontingen-content p + p {
+      margin-top: 1rem;
+  }
+
+
+ 
+   /*отражение скрытой информации*/
+     .info-aboutstudents i:hover 
+     .infocontingen-content {        
+       display: block;
+  }  
+    
+   
+    
+    /*информация для студентов*/
+    .info-for-students{
+        margin-left: auto;
+        margin-right: auto;
+        width: 1110px;
+    }
+
+    .info-for-students a {
+        
+        width: 1110px;
+        height: 40px;
+        border: 1px solid #6F7185;
+        box-sizing: border-box;
+        border-radius: 3px;
+        padding-right: 16px;
+        padding-left: 16px;
+        padding-top: 10px;
+        background: #E5E5E5;
+        color: #152536;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 19px;
+        display: block;
+        text-decoration: none;
+
+    }
+
+    .info-for-students a + a {
+        margin-top: 20px;
+    }
+
+     .info-for-students a i {         
+         float: right;
+         color: #6F7185;
+         height: 4px;
+         width: 6px;
+     }
+
+/*добавляем цвет фона при наведении*/
+.info-for-students a:hover, .info-for-students a i:hover {
+    background-color: #FAFAFF;
+    color: @color_07;
+}  
