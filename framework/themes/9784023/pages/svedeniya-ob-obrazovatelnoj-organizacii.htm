@@ -14,24 +14,19 @@ function onStart()
 }
 ?>
 ==
-<section name="infocontingent-students">  
+<section calss="wrap" name="infocontingent-students ">  
    <div class="infocontingen">    
     <div class="info-aboutstudents">Информация о контингенте обучающихся
     <i class="fa fa-angle-down"></i>   
     </div>  
-    <div class=line></div>
+   
     <div class="infocontingen-content" 
        <p>На сегодняшний день зачислены и проходят обучение по очно-заочной форме обучения с применением дистанционных технологий:</p>
-       /*это просто техт какой должен быть выведен для просмотра из базы данных*/
-       <p>по дополнительным профессиональным образовательным программам повышения квалификации 10 обучающихся;</p>
-       <p>по дополнительным профессиональным образовательным программам профессиональной переподготовке 5 обучающихся;</p>       
-       <p>по программам профессионального обучения 12 обучающихся.</p>
-
-       <ul>
+        <div class="infocontingen-content-counts">
           {% for contingent in contingents %}
-          <li>{% partial "contingent" contingent=contingent %}</li>    
+          <p>{% partial "contingent" contingent=contingent %}</p>    
           {% endfor %}
-       </ul> 
+       </div> 
      </div>
     </div>
 
@@ -49,7 +44,3 @@ function onStart()
      <a href="#">Руководство и преподаватели учебного центра<i class="fa fa-angle-right" aria-hidden="true"></i></a>
    </div>
 </section>
-
-
-
-<div class="footer-ribbon-midle-wrap wrap padding-global">
