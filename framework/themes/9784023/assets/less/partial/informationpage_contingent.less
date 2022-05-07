@@ -1,5 +1,5 @@
 
-/* секция информации о контенгенте*/
+/*---- section intelligence about organisation-----*/
 .wrap{
     margin-left: auto;
     margin-right: auto;
@@ -70,6 +70,8 @@
      padding-bottom: 1.50em;
 }
 
+/*-----section infocontingent-students ----*/
+
 .infocontingen{
     max-width: 1108px;
     margin-left: auto;
@@ -130,13 +132,14 @@
        display: block;
   }  
     
-   
+  /*------section info for students------*/ 
     
-    /*информация для студентов*/
+    
     .info-for-students{
         margin-left: auto;
         margin-right: auto;
         max-width: 1110px;
+        margin-bottom: 6.5em;
     }
 
     .info-for-students a {     
@@ -172,3 +175,54 @@
     background-color: @color_50;
     color: @color_07;
 }  
+
+/*---------- section info documents organization ---------*/
+
+   .info-documentorgo{
+       margin-left: auto;
+       margin-right: auto;
+       max-width: 1111px;
+       max-height: auto;
+       margin-bottom: 9.5em;
+   }
+
+   .info-documentorgo-title{
+       .fonts(1em; 1.19rem; 700);  
+       color: @color_07;
+       margin-bottom: 1.9em;
+   }
+
+   .info-documentorgo-list{       
+       padding-left: 1.5rem;
+       padding-right: 1.5rem;
+     
+
+   }
+
+   .info-documentorgo-list:nth-of-type(2n+1) img {
+       display: none;
+   }
+   
+    .info-documentorgo-list a{    
+       display: flex;  
+       align-items: center;     
+       justify-content: space-between;
+       text-decoration: none;
+       .fonts(1.13em; 1.5rem; 400);         
+       color: @color_07;
+       min-height: 44px;
+    }
+
+   .info-documentorgo-list:nth-child(odd){
+        background-color:  @color_11;      
+   } 
+
+   
+ 
+    
+
+  
+       
+       
+
+    

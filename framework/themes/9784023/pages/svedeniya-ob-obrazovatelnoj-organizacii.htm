@@ -17,6 +17,30 @@ function onStart()
      ['content'=>'resjytfj','counter'=>'6'],
      ['content'=>'fdxgchjk','counter'=>'7']
      ];
+
+$this['documents'] =[
+    ['link'=>'link.infozzzzzzzzz1', 'document'=>'Карточка контрагента' ],
+    ['link'=>'link.infozzzzzzzzz2', 'document'=>'Регистрационные документы' ],
+    ['link'=>'link.infozzzzzzzzz3', 'document'=>'Копия лицензии на осуществление образовательной деятельности' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Копия устава образовательной организации' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Документы учебного центра' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Копия плана финансово-хозяйственной деятельности' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Отчёты о результатах самообследованияйственной деятельности	' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Финансовые документы' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Результаты проведения специальной оценки условий труда' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Образцы договоров оказания платных образовательных услуг' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Образцы выдаваемых документов об обучении' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Условия проведения занятий, материально-техническое оснащение ОЧУ ДПО «Учебный центр «Амулет»' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Информационно-методическое обеспечение учебного процесса ОЧУ ДПО «Учебный центр «Амулет»' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Предписания органов осуществляющих государственный контроль в сфере образования и отчеты об их исполнении' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Структура и органы управления ОЧУ ДПО «Учебный центр «Амулет»' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Заключение о соответствии объекта защиты требованиям пожарной безопасности ОЧУ ДПО «Учебный центр «Амулет»(ул. Монтажная)' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Санитарно-эпидемиологическое заключение ОЧУ ДПО «Учебный центр «Амулет»(ул. Монтажная)' ],
+    ['link'=>'link.infozzzzzzzzz', 'document'=>'Результаты самообследования ОЧУ ДПО «Учебный центр «Амулет» за 2018 календарный год' ],
+
+];
+
+
 }
 ?>
 ==
@@ -84,4 +108,31 @@ function onStart()
      <a href="#">Информация о наименовании структурных подразделений и местах нахождения<i class="fa fa-angle-right" aria-hidden="true"></i></a>
      <a href="#">Руководство и преподаватели учебного центра<i class="fa fa-angle-right" aria-hidden="true"></i></a>
    </div>
+</section>
+<section name="info documents organization">
+   
+   <div class="wrap">
+
+     <div class="info-documentorgo">
+         <div class="info-documentorgo-title"><h3>Документы учебного центра</h3></div>
+          {% for document in documents %}
+         <div class="info-documentorgo-list">
+          
+           <a href="{% partial "documents-orgo" link=link %}">
+             <div class="info-documentorgo-listtext">         
+                {% partial "documents-orgo" document=document %}            
+             </div>        
+            
+                <div class="document-img"> <img  src="{{ 'assets/img/svg/document.svg'|theme }}" alt="" width="" height=""></div>
+              
+           </a>
+          
+         </div>
+           {% endfor %}
+      </div>  
+     
+
+    </div>
+     
+   
 </section>
