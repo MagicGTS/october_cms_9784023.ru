@@ -1,5 +1,7 @@
  
 .licenses_block{
+    margin-top: 0;
+    margin-bottom: 7.5rem;
     display: flex;
     flex-direction: column;
     align-content: space-between;
@@ -18,17 +20,32 @@
          justify-content: space-between;
          align-items: center;
 
-         .licenses_item{
-             width: 10rem;
-             height: 13rem;
-             background-color: @color_white;  
-                
-            padding: 0.6rem;
-            
+         .prev_next:hover{
+             background: black;
+             width: 3rem;
+             text-align: center;
+             
            
-            
+             
+         }
+
+         .licenses_item{
+             width: 11rem;
+             height: 14rem;
+             text-align: center;
+             background-color: @color_white;  
+             padding: 0.6rem;
+             
+                   
+           
+            transform-origin: opaciti 1s;
              
 
+         }
+
+         .licenses_item:hover{
+              background-color: @color_07;  
+             
          }
 
      }

@@ -9,13 +9,12 @@ function displayInfoorgo()
   
 }
 
-
 function onStart()
 {
  $this['contingents'] = [
-     ['content'=>'asdfg','counter'=>'5'],
-     ['content'=>'resjytfj','counter'=>'6'],
-     ['content'=>'fdxgchjk','counter'=>'7']
+     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся;','counter'=>'5'],
+     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся;','counter'=>'6'],
+     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся;','counter'=>'7']
      ];
 
 $this['documents'] =[
@@ -85,7 +84,7 @@ $this['documents'] =[
     <i class="fa fa-angle-down"></i>   
     </div>  
    
-    <div class="infocontingen-content" 
+    <div class="infocontingen-content hidden" 
        <p>На сегодняшний день зачислены и проходят обучение по очно-заочной форме обучения с применением дистанционных технологий:</p>
         <div class="infocontingen-content-counts">
           {% for contingent in contingents %}
