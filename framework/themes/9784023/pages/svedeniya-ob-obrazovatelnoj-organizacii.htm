@@ -12,9 +12,9 @@ function displayInfoorgo()
 function onStart()
 {
  $this['contingents'] = [
-     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся;','counter'=>'5'],
-     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся;','counter'=>'6'],
-     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся;','counter'=>'7']
+     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся','counter'=>'5'],
+     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся','counter'=>'6'],
+     ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся','counter'=>'7']
      ];
 
 $this['documents'] =[
@@ -56,83 +56,10 @@ $this['documents'] =[
       </div>
    </div>
    
-   <div class="intelligence-about-organisation">
-      <div class="intelligence-organisationblock">
-           <div class="intelligence-organisationblockinfo">
-               <a href="#">Основные сведения</a>
-               <a href="#">Структура и органы управления образовательной организацией</a>
-               <a href="#">Документы</a>
-               <a href="#">Образование</a>
-               <a href="#">Образовательные стандарты</a>
-               <a href="#">Руководство. Педагогический (научно-педагогический) состав</a>              
-           </div>
-           <div class="intelligence-organisationblockinfo">            
-              <a href="#">Материально-техническое обеспечение и оснащенность образовательного процесса</a>
-              <a href="#"> Стипендии и иные виды материальной поддержки</a>
-              <a href="#">Платные образовательные услуги</a>
-              <a href="#">Финансово-хозяйственная деятельность</a>
-              <a href="#">  Вакантные места для приема(перевода)</a>
-           </div>
-      </div>
-   </div>
+  
 
 
-</section>
-<section class="wrap" name="infocontingent-students ">  
-   <div class="infocontingen">    
-    <div class="info-aboutstudents">Информация о контингенте обучающихся
-    <i class="fa fa-angle-down"></i>   
-    </div>  
-   
-    <div class="infocontingen-content hidden" 
-       <p>На сегодняшний день зачислены и проходят обучение по очно-заочной форме обучения с применением дистанционных технологий:</p>
-        <div class="infocontingen-content-counts">
-          {% for contingent in contingents %}
-          <p>{% partial "contingent" contingent=contingent %}</p>    
-          {% endfor %}
-       </div> 
-     </div>
-    </div>
-
-</section> 
-<section name="info for students">
-   
-   <div class="info-for-students">
-     <div>
-         <div></div>
-     </div>
-     <a href="#">Условия проведения занятий, материально-техническое оснащение ОЧУ ДПО «Учебный центр «Амулет»<i class="fa fa-angle-right" aria-hidden="true"></i></a>
-     <a href="#">Руководство<i class="fa fa-angle-right" aria-hidden="true"></i></a>
-     <a href="#">Обеспечение помещений средствами и оборудованием, для обеспечения образовательной дейтельности<i class="fa fa-angle-right" aria-hidden="true"></i></a>
-     <a href="#">Информация о наименовании структурных подразделений и местах нахождения<i class="fa fa-angle-right" aria-hidden="true"></i></a>
-     <a href="#">Руководство и преподаватели учебного центра<i class="fa fa-angle-right" aria-hidden="true"></i></a>
-   </div>
-</section>
-<section name="info documents organization">
-   
-   <div class="wrap">
-
-     <div class="info-documentorgo">
-         <div class="info-documentorgo-title"><h3>Документы учебного центра</h3></div>
-          {% for document in documents %}
-         <div class="info-documentorgo-list">
-          
-           <a href="{% partial "documents-orgo" link=link %}">
-             <div class="info-documentorgo-listtext">         
-                {% partial "documents-orgo" document=document %}            
-             </div>        
-            
-                <div class="document-img"> <img  src="{{ 'assets/img/svg/document.svg'|theme }}" alt="" width="" height=""></div>
-              
-           </a>
-          
-         </div>
-           {% endfor %}
-      </div>  
-     
-
-    </div>
-     
-   
-</section>
+{% partial "info-about-orgo" %}
+{% partial "info-for-students" %}
+{% partial "documents-orgo-info" %}
 {% partial "licenses" %}
