@@ -4,11 +4,6 @@ title = "Сведения об образовательной организац
 meta_title = "Сведения об образовательной организации"
 ==
 <?php
-function displayInfoorgo()
-{
-  
-}
-
 function onStart()
 {
  $this['contingents'] = [
@@ -43,20 +38,8 @@ $this['documents'] =[
 }
 ?>
 ==
-<section class="wrap" name="intelligence_about_organisation">
-   <div class="intelligence-nave-infopage">    
-      Главная/О компании/Сведения об образовательной организации
-   </div>
-   <div class="intelligence-infotitle">
-      <div class="intelligence-title">
-          <h2 class="">Сведения об образовательной организации</h2>
-      </div>
-      <div >
-          <img class="bigsearch" src="{{ 'assets/img/jpg/bigSearch.jpg'|theme }}" alt="" width="" height="" />
-      </div>
-   </div>
-   
-  
+{% partial "dubnew-menu" %}
+{% partial "bady-header" %}
 
 
 {% partial "info-about-orgo" %}
