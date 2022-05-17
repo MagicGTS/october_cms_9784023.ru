@@ -5,7 +5,7 @@ use Model;
 /**
  * Schedules Model
  */
-class Schedules extends Model
+class Schedule extends Model
 {
     use \October\Rain\Database\Traits\Validation;
 
@@ -22,7 +22,11 @@ class Schedules extends Model
     /**
      * @var array fillable attributes are mass assignable
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'begin_at',
+        'location',
+        'url'
+    ];
 
     /**
      * @var array rules for validation

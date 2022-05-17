@@ -24,14 +24,11 @@ class HighAltitudeWorks extends Model
      */
     protected $fillable = [
         'cost',
-        'img_background_id',
-        'img_rounded_id',
         'description',
         'hours',
         'learning_form',
         'fines_description',
         'fines_links',
-        'schedule_id',
         'whom_needs',
         'what_will_learn',
         'schedule_description',
@@ -78,7 +75,12 @@ class HighAltitudeWorks extends Model
      * @var array hasOne and other relations
      */
     public $hasOne = [];
-    public $hasMany = [];
+    public $hasMany = [
+        'img_background' => [\T9784023\Images\Models\Image::class, 'key' => 'img_background_id'],
+        'img_rounded' => [\T9784023\Images\Models\Image::class, 'key' => 'img_rounded_id'],
+        'schedule' => [\T9784023\Schedules\Models\Schedule::class, 'key' => 'schedule_id'],
+        'program' => [\T9784023\LearningPrograms\Models\Program::class, 'key' => 'program_id'],
+    ];
     public $belongsTo = [];
     public $belongsToMany = [];
     public $morphTo = [];

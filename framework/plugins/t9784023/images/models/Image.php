@@ -64,8 +64,10 @@ class Image extends Model
     public $belongsTo = [];
     public $belongsToMany = [
         'lists' => [
-            \T9784023\Images\Models\Image::class,
-            'table' => 't9784023_images_lists'
+            \T9784023\Images\Models\ImagesList::class,
+            'table' => 't9784023_images_lists_links',
+            'key'      => 'image_id',
+            'otherKey' => 'images_list_id'
         ]
     ];
     public $morphTo = [];

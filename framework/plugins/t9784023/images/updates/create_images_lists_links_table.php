@@ -13,14 +13,14 @@ class CreateImagesListsLinksTable extends Migration
     {
         Schema::create('t9784023_images_lists_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('image_list_id');
+            $table->foreignId('images_list_id');
             $table->foreignId('image_id');
             $table->string('tag', 60)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
 // TODO что-то с индексом, не удается создать уникальный на три поля
             //  $table->unique('image_list_id', 'image_id', 'tag');
-            $table->foreign('image_list_id')
+            $table->foreign('images_list_id')
                 ->references('id')
                 ->on('t9784023_images_lists');
             $table->foreign('image_id')

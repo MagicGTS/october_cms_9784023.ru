@@ -31,6 +31,7 @@ class CreateHighAltitudeWorksTable extends Migration
             $table->string('result_img_folder', 256);
             $table->mediumText('schould_to_know')->nullable();
             $table->string('youtube_url', 256);
+            $table->foreignId('program_id')->nullable();
 
             $table->foreign('img_background_id')
                 ->references('id')
@@ -45,6 +46,11 @@ class CreateHighAltitudeWorksTable extends Migration
             $table->foreign('schedule_id')
                 ->references('id')
                 ->on('t9784023_schedules')
+                ->onDelete('cascade');
+
+            $table->foreign('program_id')
+                ->references('id')
+                ->on('t9784023_learningprograms')
                 ->onDelete('cascade');
 
         });

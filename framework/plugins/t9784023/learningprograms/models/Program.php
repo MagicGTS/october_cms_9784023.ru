@@ -22,7 +22,10 @@ class Program extends Model
     /**
      * @var array fillable attributes are mass assignable
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'hours',
+        'name'
+    ];
 
     /**
      * @var array rules for validation
