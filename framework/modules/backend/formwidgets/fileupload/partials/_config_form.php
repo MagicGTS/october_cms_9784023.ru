@@ -4,18 +4,18 @@
 
         <?php if (starts_with($displayMode, 'image')): ?>
             <div class="file-upload-modal-image-header">
-                <button type="button" class="close" data-dismiss="popup">&times;</button>
+                <button type="button" class="btn-close" data-dismiss="popup"></button>
                 <img
                     src="<?= $file->thumbUrl ?>"
-                    class="img-responsive center-block"
+                    class="img-fluid center-block"
                     alt=""
                     title="<?= e(trans('backend::lang.fileupload.attachment')) ?>: <?= e($file->file_name) ?>"
                     style="<?= $cssDimensions ?>" />
             </div>
         <?php else: ?>
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="popup">&times;</button>
                 <h4 class="modal-title"><?= e(trans('backend::lang.fileupload.attachment')) ?>: <?= $file->file_name ?></h4>
+                <button type="button" class="btn-close" data-dismiss="popup"></button>
             </div>
         <?php endif ?>
         <div class="modal-body">
@@ -23,9 +23,6 @@
             <?= $this->getConfigFormWidget()->render() ?>
         </div>
         <div class="modal-footer">
-            <a href="<?= $file->pathUrl ?>" class="pull-right btn btn-link fileupload-url-button" target="_blank">
-                <i class="oc-icon-link"></i><?= e(trans('backend::lang.fileupload.attachment_url')) ?>
-            </a>
             <button
                 type="submit"
                 class="btn btn-primary"
@@ -39,6 +36,9 @@
                 data-dismiss="popup">
                 <?= e(trans('backend::lang.form.cancel')) ?>
             </button>
+            <a href="<?= $file->pathUrl ?>" class="pull-right btn btn-link fileupload-url-button" target="_blank">
+                <i class="oc-icon-link"></i><?= e(trans('backend::lang.fileupload.attachment_url')) ?>
+            </a>
         </div>
     <?= Form::close() ?>
 </div>

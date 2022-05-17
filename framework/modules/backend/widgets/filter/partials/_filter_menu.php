@@ -5,11 +5,7 @@
         title="<?= __("Filter Setup") ?>">
         <span><i class="octo-icon-filter"></i></span>
     </a>
-    <ul
-        class="dropdown-menu"
-        role="menu"
-        data-dropdown-title="<?= __("Filter Setup") ?>"
-    >
+    <ul class="dropdown-menu" role="menu">
         <li role="presentation">
             <a
                 data-filter-clear

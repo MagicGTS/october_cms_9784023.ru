@@ -6,8 +6,10 @@
     <p><?= e(trans('backend::lang.account.enter_login')) ?></p>
 
     <div class="form-elements" role="form">
-        <div class="form-group text-field">
-            <label for="login-input">
+
+        <!-- Username -->
+        <div class="form-group">
+            <label class="form-label" for="login-input">
                 <?= e(trans('backend::lang.account.input_username')) ?>
             </label>
 

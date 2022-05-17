@@ -590,10 +590,10 @@ class Controller
             else {
                 $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
             }
-        }
 
-        // Desired logic
-        // $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
+            // Desired logic
+            // $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
+        }
 
         if ($isDebugMode) {
             $twig->addExtension(new DebugExtension($this));
@@ -777,7 +777,13 @@ class Controller
 
         try {
             $result = $this->runAjaxHandler($handler);
-            $response->setHandlerVars($this->pageObj->vars);
+
+            $response->addHandlerVars($this->pageObj->vars);
+
+            if (Flash::check()) {
+                $response->addFlashMessages(Flash::all());
+            }
+
             $response->setHandlerResponse($result);
         }
         catch (Exception $ex) {

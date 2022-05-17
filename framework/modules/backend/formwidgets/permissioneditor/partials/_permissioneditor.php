@@ -68,76 +68,68 @@
 
                     <?php if ($this->mode === 'radio'): ?>
                         <td class="permission-value">
-                            <div class="radio custom-radio">
-                                 <input
-                                    id="<?= $allowId ?>"
-                                    name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
-                                    value="1"
-                                    type="radio"
-                                    <?= $permissionValue == 1 ? 'checked="checked"' : '' ?>
-                                    data-radio-color="green"
-                                >
-                                <label title="<?= e(trans('backend::lang.user.allow')) ?>" class="storm-icon-pseudo" for="<?= $allowId ?>"><span><?= e(trans('backend::lang.user.allow')) ?></span></label>
-                            </div>
+                            <input
+                                class="form-check-input"
+                                id="<?= $allowId ?>"
+                                name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
+                                value="1"
+                                type="radio"
+                                <?= $permissionValue == 1 ? 'checked="checked"' : '' ?>
+                                data-radio-color="green"
+                                title="<?= e(trans('backend::lang.user.allow')) ?>"
+                            />
+                        </td>
+                        <td class="permission-value" title="<?= e(trans('backend::lang.user.inherit')) ?>">
+                            <input
+                                class="form-check-input"
+                                id="<?= $inheritId ?>"
+                                name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
+                                value="0"
+                                <?= $permissionValue == 0 ? 'checked="checked"' : '' ?>
+                                type="radio"
+                            />
                         </td>
                         <td class="permission-value">
-                            <div class="radio custom-radio">
-                                 <input
-                                    id="<?= $inheritId ?>"
-                                    name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
-                                    value="0"
-                                    <?= $permissionValue == 0 ? 'checked="checked"' : '' ?>
-                                    type="radio"
-                                >
-                                <label title="<?= e(trans('backend::lang.user.inherit')) ?>" class="storm-icon-pseudo" for="<?= $inheritId ?>"><span><?= e(trans('backend::lang.user.inherit')) ?></span></label>
-                            </div>
-                        </td>
-                        <td class="permission-value">
-                            <div class="radio custom-radio">
-                                 <input
-                                    id="<?= $denyId ?>"
-                                    name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
-                                    value="-1"
-                                    <?= $permissionValue == -1 ? 'checked="checked"' : '' ?>
-                                    type="radio"
-                                    data-radio-color="red"
-                                >
-                                <label title="<?= e(trans('backend::lang.user.deny')) ?>" class="storm-icon-pseudo" for="<?= $denyId ?>"><span><?= e(trans('backend::lang.user.deny')) ?></span></label>
-                            </div>
+                            <input
+                                class="form-check-input"
+                                id="<?= $denyId ?>"
+                                name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
+                                value="-1"
+                                <?= $permissionValue == -1 ? 'checked="checked"' : '' ?>
+                                type="radio"
+                                data-radio-color="red"
+                                title="<?= e(trans('backend::lang.user.deny')) ?>"
+                            />
                         </td>
                     <?php elseif ($this->mode === 'switch'): ?>
                         <td class="permission-value">
-                            <input
-                                type="hidden"
-                                name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
-                                value="-1"
-                            >
-
-                            <label class="custom-switch">
+                            <div class="form-check form-switch">
                                 <input
+                                    type="hidden"
+                                    name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
+                                    value="-1"
+                                >
+                                <input
+                                    class="form-check-input"
                                     id="<?= $allowId ?>"
                                     name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
                                     value="1"
                                     type="checkbox"
                                     <?= $isChecked ? 'checked="checked"' : '' ?>
                                 >
-                                <span><span><?= e(trans('backend::lang.list.column_switch_true')) ?></span><span><?= e(trans('backend::lang.list.column_switch_false')) ?></span></span>
-                                <a class="slide-button"></a>
-                            </label>
+                            </div>
                         </td>
                     <?php else: ?>
                         <td class="permission-value">
-                            <div class="checkbox custom-checkbox">
-                                 <input
-                                    id="<?= $allowId ?>"
-                                    name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
-                                    value="1"
-                                    type="checkbox"
-                                    <?= $isChecked ? 'checked="checked"' : '' ?>
-                                >
-
-                                <label title="<?= e(trans('backend::lang.user.allow')) ?>" class="storm-icon-pseudo" for="<?= $allowId ?>"><span><?= e(trans('backend::lang.user.allow')) ?></span></label>
-                            </div>
+                            <input
+                                class="form-check-input"
+                                id="<?= $allowId ?>"
+                                name="<?= e($baseFieldName) ?>[<?= e($permission->code) ?>]"
+                                value="1"
+                                type="checkbox"
+                                <?= $isChecked ? 'checked="checked"' : '' ?>
+                                title="<?= e(trans('backend::lang.user.allow')) ?>"
+                            />
                         </td>
                     <?php endif ?>
 

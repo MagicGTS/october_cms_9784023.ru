@@ -30,19 +30,17 @@ trait EncodesCsv
     /**
      * processExportDataAsCsv returns the export data as a CSV string
      */
-    protected function processExportDataAsCsv($columns, $results, $options): string
+    protected function processExportDataAsCsv($columns, $results, $options)
     {
         // Parse options
-        $defaultOptions = [
+        $options = array_merge([
             'firstRowTitles' => true,
             'useOutput' => false,
-            'fileName' => 'export.csv',
+            'fileName' => null,
             'delimiter' => null,
             'enclosure' => null,
             'escape' => null
-        ];
-
-        $options = array_merge($defaultOptions, $options);
+        ], $options);
 
         // Prepare CSV
         $csv = CsvWriter::createFromFileObject(new SplTempFileObject);
@@ -76,6 +74,7 @@ trait EncodesCsv
         // Output
         if ($options['useOutput']) {
             $csv->output($options['fileName']);
+            return;
         }
 
         return $csv->toString();

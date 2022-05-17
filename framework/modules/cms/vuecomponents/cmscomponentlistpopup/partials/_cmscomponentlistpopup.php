@@ -11,18 +11,21 @@
         :base-z-index="500"
     >
         <template v-slot:content>
-            <div class="modal-header flex-layout-item fix">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cms-component-list-popup-title"><?= e(trans('cms::lang.editor.component_list')) ?></h4>
                 <button
                     @click.prevent="$refs.modal.hide()"
                     type="button"
-                    class="close backend-icon-background-pseudo"
-                    aria-label="Close"
+                    class="btn-close"
+                    aria-label="<?= __("Close") ?>"
                     tabindex="0"
-                ><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="cms-component-list-popup-title"><?= e(trans('cms::lang.editor.component_list')) ?></h4>
-                <p><?= e(trans('cms::lang.editor.component_list_description')) ?></p>
+                ></button>
             </div>
-            
+            <div>
+                <p class="px-4 py-2 m-0 text-muted">
+                    <small><?= e(trans('cms::lang.editor.component_list_description')) ?></small>
+                </p>
+            </div>
             <div class="flex-layout-item stretch relative cms-component-list-popup-treeview">
                 <div ref="componentDragHostImageContainer" class="cms-component-ghost-image-container">
                     <img

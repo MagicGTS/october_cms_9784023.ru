@@ -70,7 +70,7 @@ class ActiveTheme extends ReportWidgetBase
         }
 
         $this->vars['theme'] = $theme;
-        $this->vars['inMaintenance'] = MaintenanceSetting::isEnabled();
+        $this->vars['inMaintenance'] = MaintenanceSetting::get('is_enabled');
         $this->vars['canManage'] = BackendAuth::getUser()->hasAccess('cms.manage_themes');
         $this->vars['canConfig'] = BackendAuth::getUser()->hasAccess('cms.manage_theme_options');
     }

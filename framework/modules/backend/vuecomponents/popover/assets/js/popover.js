@@ -70,7 +70,7 @@ $.oc.module.register('backend.component.popover', function () {
                 let result = this.containerCssClass;
 
                 if (this.in) {
-                    result += ' in ';
+                    result += ' show ';
                 }
 
                 if (this.position === 'bottom-right') {

@@ -10,10 +10,8 @@
             <input type="hidden" name="_relation_field" value="<?= $relationField ?>" />
 
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="popup">&times;</button>
-                <h4 class="modal-title">
-                    <?= e($relationPivotTitle) ?>
-                </h4>
+                <h4 class="modal-title"><?= e($relationPivotTitle) ?></h4>
+                <button type="button" class="btn-close" data-dismiss="popup"></button>
             </div>
             <div class="modal-body">
                 <?= $relationPivotWidget->render(['preview' => $this->readOnly]) ?>
@@ -56,10 +54,8 @@
             <?php endforeach ?>
 
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="popup">&times;</button>
-                <h4 class="modal-title">
-                    <?= e($relationPivotTitle) ?>
-                </h4>
+                <h4 class="modal-title"><?= e($relationPivotTitle) ?></h4>
+                <button type="button" class="btn-close" data-dismiss="popup"></button>
             </div>
             <div class="modal-body">
                 <?= $relationPivotWidget->render() ?>

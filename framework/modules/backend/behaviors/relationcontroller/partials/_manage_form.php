@@ -14,10 +14,8 @@
             <input type="hidden" name="_relation_session_key" value="<?= $relationSessionKey ?>" />
 
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="popup">&times;</button>
-                <h4 class="modal-title">
-                    <?= e($relationManageTitle) ?>
-                </h4>
+                <h4 class="modal-title"><?= e($relationManageTitle) ?></h4>
+                <button type="button" class="btn-close" data-dismiss="popup"></button>
             </div>
 
             <div class="modal-body">
@@ -63,10 +61,8 @@
             <input type="hidden" name="_relation_session_key" value="<?= $relationSessionKey ?>" />
 
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="popup">&times;</button>
-                <h4 class="modal-title">
-                    <?= e($relationManageTitle) ?>
-                </h4>
+                <h4 class="modal-title"><?= e($relationManageTitle) ?></h4>
+                <button type="button" class="btn-close" data-dismiss="popup"></button>
             </div>
 
             <div class="modal-body">

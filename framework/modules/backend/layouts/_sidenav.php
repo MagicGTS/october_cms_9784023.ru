@@ -14,7 +14,7 @@
                     class="layout-sidenav"
                     data-active-class="active"
                     data-control="sidenav">
-                    <ul class="nav mainmenu-items">
+                    <ul class="mainmenu-items">
                         <?= $this->makeLayoutPartial('submenu_items', [
                             'sideMenuItems' => $sideMenuItems,
                             'mainMenuItemActive' => true,

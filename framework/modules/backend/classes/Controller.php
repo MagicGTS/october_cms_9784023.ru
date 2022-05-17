@@ -115,44 +115,30 @@ class Controller extends Extendable
             $this->implement = [];
         }
 
-        /*
-         * Allow early access to route data.
-         */
+        // Allow early access to route data.
         $this->action = BackendController::$action;
         $this->params = BackendController::$params;
 
-        /*
-         * Apply $guarded methods to hidden actions
-         */
+        // Apply $guarded methods to hidden actions
         $this->hiddenActions = array_merge($this->hiddenActions, $this->guarded);
 
-        /*
-         * Define layout and view paths
-         */
+        // Define layout and view paths
         $this->layout = $this->layout ?: 'default';
         $this->layoutPath = Skin::getActive()->getLayoutPaths();
         $this->viewPath = $this->configPath = $this->guessViewPath();
 
-        /*
-         * Add layout paths from the plugin / module context
-         */
+        // Add layout paths from the plugin / module context
         $relativePath = dirname(dirname(strtolower(str_replace('\\', '/', get_called_class()))));
         $this->layoutPath[] = '~/modules/' . $relativePath . '/layouts';
         $this->layoutPath[] = '~/plugins/' . $relativePath . '/layouts';
 
-        /*
-         * Create a new instance of the admin user
-         */
+        // Create a new instance of the admin user
         $this->user = BackendAuth::getUser();
 
-        /*
-         * Boot behavior constructors
-         */
+        // Boot behavior constructors
         parent::__construct();
 
-        /*
-         * Impersonate backend role
-         */
+        // Impersonate backend role
         if (BackendAuth::isRoleImpersonator()) {
             (new \Backend\Widgets\RoleImpersonator($this))->bindToController();
         }
@@ -171,46 +157,34 @@ class Controller extends Extendable
         $this->action = $action;
         $this->params = $params;
 
-        /*
-         * Check security token.
-         * @see \System\Traits\SecurityController
-         */
+        // Check security token.
+        // @see \System\Traits\SecurityController
         if (!$this->verifyCsrfToken()) {
             return Response::make(Lang::get('system::lang.page.invalid_token.label'), 403);
         }
 
-        /*
-         * Check forced HTTPS protocol.
-         * @see \System\Traits\SecurityController
-         */
+        // Check forced HTTPS protocol.
+        // @see \System\Traits\SecurityController
         if (!$this->verifyForceSecure()) {
             return Redirect::secure(Request::path());
         }
 
-        /*
-         * Check that user is logged in and has permission to view this page
-         */
+        // Check that user is logged in and has permission to view this page
         if (!$this->isPublicAction($action)) {
-            /*
-             * Not logged in, redirect to login screen or show ajax error.
-             */
+            // Not logged in, redirect to login screen or show ajax error.
             if (!BackendAuth::check()) {
                 return Request::ajax()
                     ? Response::make(Lang::get('backend::lang.page.access_denied.label'), 403)
                     : Backend::redirectGuest('backend/auth');
             }
 
-            /*
-             * Check access groups against the page definition
-             */
+            // Check access groups against the page definition
             if ($this->requiredPermissions && !$this->user->hasAnyAccess($this->requiredPermissions)) {
                 return Response::make(View::make('backend::access_denied'), 403);
             }
         }
 
-        /*
-         * Logic hook for all actions
-         */
+        // Logic hook for all actions
         $this->beforeDisplay();
 
         /**
@@ -236,35 +210,25 @@ class Controller extends Extendable
             return $event;
         }
 
-        /*
-         * Set the admin preference locale
-         */
+        // Set the admin preference locale
         BackendPreference::setAppLocale();
         BackendPreference::setAppFallbackLocale();
 
-        /*
-         * Execute AJAX event
-         */
+        // Execute AJAX event
         if ($ajaxResponse = $this->execAjaxHandlers()) {
             $result = $ajaxResponse;
         }
-        /*
-         * Execute postback handler
-         */
+        // Execute postback handler
         elseif ($handlerResponse = $this->execPostbackHandler()) {
             $result = $handlerResponse;
         }
-        /*
-         * Execute page action
-         */
+        // Execute page action
         else {
             $result = $this->execPageAction($action, $params);
         }
 
-        /*
-         * Prepare and return response
-         * @see \System\Traits\ResponseMaker
-         */
+        // Prepare and return response
+        // @see \System\Traits\ResponseMaker
         return $this->makeResponse($result);
     }
 
@@ -342,8 +306,7 @@ class Controller extends Extendable
     }
 
     /**
-     * pageAction invokes the current controller action without rendering a view,
-     * used by AJAX handler that may rely on the logic inside the action.
+     * pageAction invokes the current controller action without rendering a view.
      */
     public function pageAction()
     {
@@ -447,6 +410,9 @@ class Controller extends Extendable
 
                 $responseContents = [];
 
+                // Execute the page action so behaviors and widgets are initialized
+                $this->pageAction();
+
                 // Execute the handler
                 if (!$result = $this->runAjaxHandler($handler)) {
                     throw new ApplicationException(Lang::get('backend::lang.ajax_handler.not_found', ['name'=>$handler]));
@@ -539,9 +505,7 @@ class Controller extends Extendable
      */
     protected function runAjaxHandler($handler)
     {
-        /*
-         * Validate the handler name
-         */
+        // Validate the handler name
         if (!preg_match('/^(?:\w+\:{2})?on[A-Z]{1}[\w+]*$/', $handler)) {
             throw new ApplicationException(Lang::get('backend::lang.ajax_handler.invalid_name', ['name'=>$handler]));
         }
@@ -579,16 +543,9 @@ class Controller extends Extendable
             return $event;
         }
 
-        /*
-         * Process Widget handler
-         */
+        // Process Widget handler
         if (strpos($handler, '::')) {
             [$widgetName, $handlerName] = explode('::', $handler);
-
-            /*
-             * Execute the page action so widgets are initialized
-             */
-            $this->pageAction();
 
             if ($this->fatalError) {
                 throw new SystemException($this->fatalError);
@@ -604,9 +561,7 @@ class Controller extends Extendable
             }
         }
         else {
-            /*
-             * Process page specific handler (index_onSomething)
-             */
+            // Process page specific handler (index_onSomething)
             $pageHandler = $this->action . '_' . $handler;
 
             if ($this->methodExists($pageHandler)) {
@@ -614,17 +569,13 @@ class Controller extends Extendable
                 return $result ?: true;
             }
 
-            /*
-             * Process page global handler (onSomething)
-             */
+            // Process page global handler (onSomething)
             if ($this->methodExists($handler)) {
                 $result = $this->makeCallMethod($this, $handler, $this->params);
                 return $result ?: true;
             }
 
-            /*
-             * Cycle each widget to locate a usable handler (widget::onSomething)
-             */
+            // Cycle each widget to locate a usable handler (widget::onSomething)
             $this->suppressView = true;
             $this->execPageAction($this->action, $this->params);
 
@@ -636,9 +587,7 @@ class Controller extends Extendable
             }
         }
 
-        /*
-         * Generic handler that does nothing
-         */
+        // Generic handler that does nothing
         if ($handler === 'onAjax') {
             return true;
         }
@@ -683,7 +632,7 @@ class Controller extends Extendable
     }
 
     /**
-     * Returns a unique ID for the controller and route. Useful in creating HTML markup.
+     * getId returns a unique ID for the controller and route. Useful in creating HTML markup.
      */
     public function getId($suffix = null)
     {
@@ -700,7 +649,7 @@ class Controller extends Extendable
     //
 
     /**
-     * Renders a hint partial, used for displaying informative information that
+     * makeHintPartial renders a hint partial, used for displaying informative information that
      * can be hidden by the user. If you don't want to render a partial, you can
      * supply content via the 'content' key of $params.
      * @param  string $name    Unique key name
@@ -728,7 +677,7 @@ class Controller extends Extendable
     }
 
     /**
-     * Ajax handler to hide a backend hint, once hidden the partial
+     * onHideBackendHint ajax handler to hide a backend hint, once hidden the partial
      * will no longer display for the user.
      * @return void
      */
@@ -746,7 +695,7 @@ class Controller extends Extendable
     }
 
     /**
-     * Checks if a hint has been hidden by the user.
+     * isBackendHintHidden checks if a hint has been hidden by the user.
      * @param  string $name Unique key name
      * @return boolean
      */

@@ -357,7 +357,7 @@ class Filter extends WidgetBase implements FilterElement
         if ($scopeConditions) {
             // Switch scope: multiple conditions, value either 1 or 2
             if (is_array($scopeConditions)) {
-                $conditionNum = $scopeValue - 1;
+                $conditionNum = ((int) $scopeValue) - 1;
                 [$scopeConditions] = array_slice($scopeConditions, $conditionNum);
             }
 

@@ -148,7 +148,7 @@
 
         // If the filter is running in a modal, popovers should be
         // attached to the modal container. This prevents z-index issues.
-        var modalParent = $scope.parents('.modal-dialog');
+        var modalParent = $scope.closest('.modal');
         if (modalParent.length > 0) {
             container = modalParent[0];
         }
@@ -173,6 +173,10 @@
 
         var $container = $scope.ocPopover('getContainer'),
             $form = $('form:first', $container);
+
+        if (!this.popoverContent) {
+            this.popoverContent = {};
+        }
 
         if (this.popoverContent[scopeName]) {
             self.setPopoverContent($container, this.popoverContent[scopeName]);

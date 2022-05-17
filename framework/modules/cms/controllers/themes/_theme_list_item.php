@@ -8,7 +8,7 @@
 <div class="layout-cell min-height theme-description">
     <h3><?= e($theme->getConfigValue('name', $theme->getDirName())) ?></h3>
     <?php if (strlen($author)): ?>
-        <p class="author"><?= trans('cms::lang.theme.by_author', ['name' => $author]) ?></p>
+        <p class="author"><?= trans('cms::lang.theme.by_author', ['name' => e($author)]) ?></p>
     <?php endif ?>
     <p class="description">
         <?= e($theme->getConfigValue('description', 'The theme description is not provided.')) ?>
@@ -49,7 +49,7 @@
                 <i class="icon-wrench"></i>
                 <?= e(trans('cms::lang.theme.manage_button')) ?>
             </button>
-            <ul class="dropdown-menu" role="menu" data-dropdown-title="<?= e(trans('cms::lang.theme.manage_title')) ?>">
+            <ul class="dropdown-menu" role="menu">
                 <li role="presentation">
                     <a
                         role="menuitem"

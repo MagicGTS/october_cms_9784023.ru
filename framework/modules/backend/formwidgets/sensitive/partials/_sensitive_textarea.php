@@ -25,7 +25,7 @@
             data-sensitive-input
         ><?= $hasValue ? $hiddenPlaceholder : '' ?></textarea>
 
-        <div class="input-group" style="margin-top:5px">
+        <div class="mt-2">
             <?php if ($allowCopy): ?>
                 <a
                     href="javascript:;"
@@ -41,8 +41,8 @@
                 <i class="icon-eye" data-sensitive-icon></i> Reveal Contents
             </a>
         </div>
-        <div class="loading-indicator hide" data-sensitive-loader>
-            <span class="p-a"></span>
+        <div class="loading-indicator oc-hide" data-sensitive-loader>
+            <span class="p-4"></span>
         </div>
     </div>
 </div>

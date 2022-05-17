@@ -12,7 +12,7 @@
     <?php else: ?>
         <div class="filter-facet">
             <div class="facet-item is-grow">
-                <select name="Filter[condition]" class="form-control custom-select select-no-search input-sm">
+                <select name="Filter[condition]" class="form-control form-control-sm custom-select select-no-search">
                     <?php foreach ((array) $scope->conditions as $condition => $value): ?>
                         <option
                             value="<?= $condition ?>"
@@ -31,11 +31,11 @@
     <?php endif ?>
 
     <div class="filter-buttons">
-        <button class="btn btn-xs btn-primary" data-filter-action="apply">
+        <button class="btn btn-sm btn-primary" data-filter-action="apply">
             <?= __("Apply") ?>
         </button>
         <div class="flex-grow-1"></div>
-        <button class="btn btn-xs btn-secondary" data-filter-action="clear">
+        <button class="btn btn-sm btn-secondary" data-filter-action="clear">
             <?= __("Clear") ?>
         </button>
     </div>

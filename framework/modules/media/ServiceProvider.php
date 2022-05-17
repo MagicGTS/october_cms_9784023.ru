@@ -49,7 +49,7 @@ class ServiceProvider extends ModuleServiceProvider
             $manager->registerMenuItems('October.Media', [
                 'media' => [
                     'label' => 'backend::lang.media.menu_label',
-                    'icon' => 'icon-folder',
+                    'icon' => 'icon-image',
                     'iconSvg' => 'modules/media/assets/images/media-icon.svg',
                     'url' => Backend::url('media'),
                     'permissions' => ['media.*'],

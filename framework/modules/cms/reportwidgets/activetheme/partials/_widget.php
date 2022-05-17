@@ -3,10 +3,10 @@
 
     <?php if (!isset($error)): ?>
         <div class="theme-thumbnail">
-            <img src="<?= $theme->getPreviewImageUrl() ?>" alt="" class="img-responsive" />
+            <img src="<?= $theme->getPreviewImageUrl() ?>" alt="" class="img-fluid" />
         </div>
         <ul class="list-inline">
-            <li>
+            <li class="list-inline-item">
             <?php if ($canManage): ?>
                 <a href="<?= Backend::url('system/settings/update/october/cms/maintenance_settings') ?>">
             <?php endif ?>
@@ -26,14 +26,14 @@
             <?php endif ?>
             </li>
         <?php if ($canManage): ?>
-            <li>
+            <li class="list-inline-item">
                 <a href="<?= Backend::url('cms/themes') ?>">
                     <?= e(trans('cms::lang.dashboard.active_theme.manage_themes')) ?>
                 </a>
             </li>
         <?php endif ?>
         <?php if ($canConfig && $theme->hasCustomData()): ?>
-            <li>
+            <li class="list-inline-item">
                 <a href="<?= Backend::url('cms/themeoptions/update/'.$theme->getDirName()) ?>">
                     <?= e(trans('cms::lang.dashboard.active_theme.customize_theme')) ?>
                 </a>

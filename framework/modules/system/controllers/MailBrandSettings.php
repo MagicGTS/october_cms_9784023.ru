@@ -104,8 +104,6 @@ class MailBrandSettings extends SettingsController
      */
     public function onUpdateSampleMessage()
     {
-        $this->pageAction();
-
         $this->formGetWidget()->setFormValues();
 
         return ['previewHtml' => $this->renderSampleMessage()];

@@ -3,14 +3,12 @@
         <input type="hidden" name="_relation_field" value="<?= $relationField ?>" />
 
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="popup">&times;</button>
-            <h4 class="modal-title">
-                <?= e($relationManageTitle) ?>
-            </h4>
+            <h4 class="modal-title"><?= e($relationManageTitle) ?></h4>
+            <button type="button" class="btn-close" data-dismiss="popup"></button>
         </div>
         <?php if (!$relationSearchWidget): ?>
-            <div class="modal-body">
-                <p><?= e(trans('backend::lang.relation.help')) ?></p>
+            <div class="modal-body py-3">
+                <p class="mb-0 text-muted"><?= e(trans('backend::lang.relation.help')) ?></p>
             </div>
         <?php endif ?>
         <div class="list-flush">

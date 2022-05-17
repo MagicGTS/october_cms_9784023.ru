@@ -1,7 +1,7 @@
 <?= Form::open(['id' => 'pluginForm']) ?>
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="popup">&times;</button>
         <h4 class="modal-title"><?= e(trans('system::lang.install.plugin_label')) ?></h4>
+        <button type="button" class="btn-close" data-dismiss="popup"></button>
     </div>
     <div class="modal-body">
 
@@ -17,7 +17,7 @@
                 class="form-control"
                 id="pluginCode"
                 value="<?= e(post('code')) ?>" />
-            <p class="help-block"><?= e(trans('system::lang.plugin.name.help')) ?></p>
+            <p class="form-text"><?= e(trans('system::lang.plugin.name.help')) ?></p>
         </div>
 
     </div>

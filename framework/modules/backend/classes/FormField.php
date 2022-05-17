@@ -19,9 +19,11 @@ use Exception;
  * @method FormField required(bool $required) Specifies if this field is mandatory.
  * @method FormField stretch(bool $stretch) Specifies if this field stretch to fit the page height.
  * @method FormField attributes(array $attributes) Contains a list of attributes specified in the field configuration.
+ * @method FormField containerAttributes(array $containerAttributes) Contains a list of attributes for the field container.
  * @method FormField cssClass(string $cssClass) Specifies a CSS class to attach to the field container.
  * @method FormField path(string $path) Specifies a path for partial-type fields.
  * @method FormField dependsOn(array $dependsOn) Other field names this field depends on, when the other fields are modified, this field will update.
+ * @method FormField changeHandler(string $changeHandler) AJAX handler for the change event.
  * @method FormField trigger(array $trigger) Other field names this field can be triggered by, see the Trigger API documentation.
  * @method FormField preset(array $preset) Other field names text is converted in to a URL, slug or file name value in this field.
  * @method FormField permissions(array $permissions) permissions needed to view this field
@@ -82,40 +84,6 @@ class FormField extends FieldDefinition
     }
 
     /**
-     * containerAttributes
-     */
-    public function containerAttributes($items): FormField
-    {
-        return $this->attributes($items, 'container');
-    }
-
-    /**
-     * attributes for this field in a given position.
-     * - field: Attributes are added to the form field element (input, select, textarea, etc)
-     * - container: Attributes are added to the form field container (div.form-group)
-     * @param  array $items
-     * @param  string $position
-     */
-    public function attributes($items, $position = 'field'): FormField
-    {
-        if (!is_array($items)) {
-            return $this;
-        }
-
-        $multiArray = array_filter($items, 'is_array');
-        if (!$multiArray) {
-            $this->config['attributes'][$position] = $items;
-            return $this;
-        }
-
-        foreach ($items as $_position => $_items) {
-            $this->attributes($_items, $_position);
-        }
-
-        return $this;
-    }
-
-    /**
      * hasAttribute checks if the field has the supplied [unfiltered] attribute.
      * @param  string $name
      * @param  string $position
@@ -123,11 +91,13 @@ class FormField extends FieldDefinition
      */
     public function hasAttribute($name, $position = 'field')
     {
-        if (!isset($this->config['attributes'][$position])) {
+        $posKey = $position === 'container' ? 'containerAttributes' : 'attributes';
+
+        if (!isset($this->config[$posKey])) {
             return false;
         }
 
-        return array_key_exists($name, $this->config['attributes'][$position]);
+        return array_key_exists($name, $this->config[$posKey]);
     }
 
     /**
@@ -137,7 +107,9 @@ class FormField extends FieldDefinition
      */
     public function getAttributes($position = 'field', $htmlBuild = true)
     {
-        $result = array_get($this->config['attributes'], $position, []);
+        $posKey = $position === 'container' ? 'containerAttributes' : 'attributes';
+
+        $result = $this->config[$posKey] ?? [];
         $result = $this->filterAttributes($result, $position);
 
         return $htmlBuild ? Html::attributes($result) : $result;

@@ -14,7 +14,7 @@ class SeedArtisanAutoexec extends Seeder
      */
     public function run()
     {
-        $this->command->line('');
+        $this->line('');
 
         $seedFile = storage_path('cms/autoexec.json');
         if (!File::exists($seedFile)) {
@@ -27,8 +27,9 @@ class SeedArtisanAutoexec extends Seeder
         }
 
         try {
+            $out = isset($this->command) ? $this->command->getOutput() : null;
             foreach ($contents as $artisanCmd) {
-                Artisan::call($artisanCmd, [], $this->command->getOutput());
+                Artisan::call($artisanCmd, [], $out);
             }
         }
         finally {
