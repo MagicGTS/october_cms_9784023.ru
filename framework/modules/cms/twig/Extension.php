@@ -1,14 +1,18 @@
 <?php namespace Cms\Twig;
 
+use App;
 use Block;
 use Event;
+use Response;
 use Redirect;
+use Cms\Classes\Controller;
+use System\Classes\ResourceResolver;
+use October\Rain\Support\Collection;
 use Twig\TwigFilter as TwigSimpleFilter;
 use Twig\TwigFunction as TwigSimpleFunction;
 use Twig\Extension\AbstractExtension as TwigExtension;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Cms\Classes\Controller;
 
 /**
  * Extension implements the basic CMS Twig functions and filters.
@@ -46,6 +50,11 @@ class Extension extends TwigExtension
             new TwigSimpleFunction('component', [$this, 'componentFunction'], ['is_safe' => ['html']]),
             new TwigSimpleFunction('placeholder', [$this, 'placeholderFunction'], ['is_safe' => ['html']]),
             new TwigSimpleFunction('hasPlaceholder', [$this, 'hasPlaceholderFunction'], ['is_safe' => ['html']]),
+            new TwigSimpleFunction('ajaxHandler', [$this, 'ajaxHandlerFunction'], []),
+            new TwigSimpleFunction('response', [$this, 'responseFunction'], []),
+            new TwigSimpleFunction('resource', [$this, 'resourceFunction'], []),
+            new TwigSimpleFunction('collect', [$this, 'collectFunction'], []),
+            new TwigSimpleFunction('pager', [$this, 'pagerFunction'], []),
             new TwigSimpleFunction('redirect', [$this, 'redirectFunction'], []),
             new TwigSimpleFunction('abort', [$this, 'abortFunction'], []),
         ];
@@ -191,6 +200,86 @@ class Extension extends TwigExtension
     public function hasPlaceholderFunction($name)
     {
         return Block::has($name);
+    }
+
+    /**
+     * ajaxHandlerFunction runs an ajax handler
+     * @param string $name
+     */
+    public function ajaxHandlerFunction($name = '')
+    {
+        return $this->controller->runAjaxHandlerResponse($name);
+    }
+
+    /**
+     * responseFunction returns a new response from the application.
+     * @param \Illuminate\Contracts\View\View|string|array|null $content
+     * @param int|null $status
+     * @param array $headers
+     */
+    public function responseFunction($content = '', $status = null, array $headers = [])
+    {
+        if ($content instanceof \Illuminate\Contracts\Support\Responsable) {
+            $response = $content->toResponse(App::make('request'));
+        }
+        elseif ($content instanceof \Cms\Classes\AjaxResponse && $content->isAjaxRedirect()) {
+            $response = Redirect::to($content->getAjaxRedirectUrl(), $status ?: 302, $headers);
+        }
+        elseif ($content instanceof \Symfony\Component\HttpFoundation\Response) {
+            $response = $content;
+        }
+        else {
+            $response = Response::make($content, $status ?: 200, $headers);
+        }
+
+        if ($status !== null) {
+            $response->setStatusCode($status);
+        }
+
+        $this->controller->setResponse($response);
+    }
+
+    /**
+     * resourceFunction will resolve a resouce before responding
+     * @param mixed $resource
+     */
+    public function resourceFunction($resource)
+    {
+        return ResourceResolver::instance()->resolve($resource);
+    }
+
+    /**
+     * collectFunction spawns a new collection
+     * @param mixed $value
+     */
+    public function collectFunction($value = null)
+    {
+        return new Collection($value);
+    }
+
+    /**
+     * pagerFunction converts a pagination instance to usable attributes
+     * @param mixed $pagination
+     */
+    public function pagerFunction($pagination)
+    {
+        $paginated = $pagination->toArray();
+
+        return [
+            'links' => [
+                'first' => $paginated['first_page_url'] ?? null,
+                'last' => $paginated['last_page_url'] ?? null,
+                'prev' => $paginated['prev_page_url'] ?? null,
+                'next' => $paginated['next_page_url'] ?? null,
+            ],
+            'meta' => array_except($paginated, [
+                'data',
+                'first_page_url',
+                'last_page_url',
+                'prev_page_url',
+                'next_page_url',
+            ])
+        ];
     }
 
     /**

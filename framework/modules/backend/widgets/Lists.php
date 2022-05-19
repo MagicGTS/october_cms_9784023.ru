@@ -16,6 +16,7 @@ use Backend\Classes\WidgetBase;
 use October\Rain\Database\Model;
 use October\Rain\Element\Lists\ColumnDefinition;
 use October\Contracts\Element\ListElement;
+use Illuminate\Pagination\UrlWindow;
 use ApplicationException;
 use BackendAuth;
 use Exception;
@@ -266,6 +267,7 @@ class Lists extends WidgetBase implements ListElement
             $this->putSession('lastVisitedPage', $this->vars['pageCurrent']);
 
             if ($this->showPageNumbers) {
+                $this->vars['recordElements'] = $this->getPaginationElements($this->records);
                 $this->vars['recordTotal'] = $this->records->total();
                 $this->vars['pageLast'] = $this->records->lastPage();
                 $this->vars['pageFrom'] = $this->records->firstItem();
@@ -282,7 +284,26 @@ class Lists extends WidgetBase implements ListElement
     }
 
     /**
-     * Event handler for refreshing the list.
+     * getPaginationElements get the array of elements to pass to the view.
+     * @return array
+     */
+    protected function getPaginationElements($records)
+    {
+        $records->onEachSide(1);
+
+        $window = UrlWindow::make($records);
+
+        return array_filter([
+            $window['first'],
+            is_array($window['slider']) ? '...' : null,
+            $window['slider'],
+            is_array($window['last']) ? '...' : null,
+            $window['last'],
+        ]);
+    }
+
+    /**
+     * onRefresh event handler for refreshing the list.
      */
     public function onRefresh()
     {
@@ -836,7 +857,10 @@ class Lists extends WidgetBase implements ListElement
      */
     public function defineColumn(string $columnName = null, string $label = null): ColumnDefinition
     {
-        return $this->allColumns[$columnName] = new ListColumn($columnName, $label);
+        return $this->allColumns[$columnName] = new ListColumn([
+            'columnName' => $columnName,
+            'label' => $label
+        ]);
     }
 
     /**
@@ -979,6 +1003,7 @@ class Lists extends WidgetBase implements ListElement
     {
         if (is_string($config)) {
             $label = $config;
+            $config = [];
         }
         elseif (isset($config['label'])) {
             $label = $config['label'];
@@ -1010,7 +1035,10 @@ class Lists extends WidgetBase implements ListElement
 
         $columnType = $config['type'] ?? null;
 
-        $column = new ListColumn($name, $label);
+        $column = new ListColumn([
+            'columnName' => $name,
+            'label' => $label
+        ]);
 
         if ($config) {
             $column->useConfig($config);
@@ -1291,13 +1319,13 @@ class Lists extends WidgetBase implements ListElement
     //
 
     /**
-     * evalCustomListType processes a custom list types registered by plugins.
+     * evalCustomListType processes a custom list types registered by plugins and the app.
      */
     protected function evalCustomListType($type, $record, $column, $value)
     {
-        $plugins = PluginManager::instance()->getRegistrationMethodValues('registerListColumnTypes');
-
-        foreach ($plugins as $availableTypes) {
+        // Load plugin and app column types
+        $methodValues = PluginManager::instance()->getRegistrationMethodValues('registerListColumnTypes');
+        foreach ($methodValues as $availableTypes) {
             if (!isset($availableTypes[$type])) {
                 continue;
             }
@@ -1586,7 +1614,10 @@ class Lists extends WidgetBase implements ListElement
      */
     protected function evalSelectableTypeValue($record, $column, $value)
     {
-        $formField = new \Backend\Classes\FormField($column->columnName, $column->label);
+        $formField = new \Backend\Classes\FormField([
+            'fieldName' => $column->columnName,
+            'label' => $column->label
+        ]);
 
         $fieldOptions = $column->config['options'] ?? null;
 

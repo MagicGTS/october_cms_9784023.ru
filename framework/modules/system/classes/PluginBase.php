@@ -86,7 +86,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerComponents registers any front-end components implemented in this plugin.
+     * registerComponents registers any frontend components implemented in this plugin.
      *
      * @return array
      */
@@ -96,7 +96,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerNavigation registers back-end navigation items for this plugin.
+     * registerNavigation registers backend navigation items for this plugin.
      *
      * @return array
      * @throws SystemException
@@ -125,7 +125,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerPermissions registers any back-end permissions used by this plugin.
+     * registerPermissions registers any backend permissions used by this plugin.
      *
      * @return array
      * @throws SystemException
@@ -142,7 +142,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerSettings registers any back-end configuration links used by this plugin.
+     * registerSettings registers any backend configuration links used by this plugin.
      *
      * @return array
      * @throws SystemException
@@ -186,11 +186,11 @@ class PluginBase extends ServiceProviderBase
      *
      *     return [
      *         'className1'=>[
-     *             'label'    => 'My widget 1',
+     *             'label' => 'My widget 1',
      *             'context' => ['context-1', 'context-2'],
      *         ],
      *         'className2' => [
-     *             'label'    => 'My widget 2',
+     *             'label' => 'My widget 2',
      *             'context' => 'context-1'
      *         ]
      *     ];
@@ -235,7 +235,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerListColumnTypes registers custom back-end list column types introduced
+     * registerListColumnTypes registers custom backend list column types introduced
      * by this plugin.
      *
      * @return array

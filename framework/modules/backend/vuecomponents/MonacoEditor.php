@@ -51,6 +51,7 @@ class MonacoEditor extends VueComponentBase
             'renderWhitespace' => $preferences->editor_show_invisibles ? 'all' : 'none',
             'autoClosingBrackets' => $preferences->editor_auto_closing ? 'languageDefined' : 'never',
             'autoClosingQuotes' => $preferences->editor_auto_closing ? 'languageDefined' : 'never',
+            'hover' => ['delay' => 750]
         ];
 
         if (!$preferences->editor_show_gutter) {

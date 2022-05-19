@@ -146,7 +146,7 @@ abstract class FormWidgetBase extends WidgetBase
             return $this->formField->value;
         }
 
-        $defaultValue = !$this->model->exists
+        $defaultValue = $this->model && !$this->model->exists
             ? $this->formField->getDefaultFromData($this->data ?: $this->model)
             : null;
 

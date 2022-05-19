@@ -12,6 +12,7 @@ use Schema;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use SystemException;
+use Throwable;
 
 /**
  * PluginManager
@@ -131,7 +132,7 @@ class PluginManager
 
             $classObj = new $className($this->app);
         }
-        catch (\Throwable $e) {
+        catch (Throwable $e) {
             Log::error('Plugin ' . $className . ' could not be instantiated.', [
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -182,7 +183,7 @@ class PluginManager
     }
 
     /**
-     * Registers a single plugin object.
+     * registerPlugin for a single object
      * @param PluginBase $plugin
      * @param string $pluginId
      * @return void
@@ -200,11 +201,9 @@ class PluginManager
         $pluginPath = $this->getPluginPath($plugin);
         $pluginNamespace = strtolower($pluginId);
 
-        /*
-         * Register language namespaces
-         */
+        // Register language namespaces
         $langPath = $pluginPath . '/lang';
-        if (File::isDirectory($langPath)) {
+        if (is_dir($langPath)) {
             Lang::addNamespace($pluginNamespace, $langPath);
             if (App::runningInBackend()) {
                 Lang::addJsonPath($langPath);
@@ -215,51 +214,41 @@ class PluginManager
             return;
         }
 
-        /*
-         * Register plugin class autoloaders
-         */
+        // Register plugin class autoloaders
         $autoloadPath = $pluginPath . '/vendor/autoload.php';
-        if (File::isFile($autoloadPath)) {
+        if (is_file($autoloadPath)) {
             ComposerManager::instance()->autoload($pluginPath . '/vendor');
         }
 
         $plugin->register();
 
-        /*
-         * Register configuration path
-         */
+        // Register configuration path
         $configPath = $pluginPath . '/config';
-        if (File::isDirectory($configPath)) {
+        if (is_dir($configPath)) {
             Config::package($pluginNamespace, $configPath, $pluginNamespace);
         }
 
-        /*
-         * Register views path
-         */
+        // Register views path
         $viewsPath = $pluginPath . '/views';
-        if (File::isDirectory($viewsPath)) {
+        if (is_dir($viewsPath)) {
             View::addNamespace($pluginNamespace, $viewsPath);
         }
 
-        /*
-         * Add init, if available
-         */
+        // Add init, if available
         $initFile = $pluginPath . '/init.php';
-        if (File::exists($initFile)) {
+        if (file_exists($initFile)) {
             require $initFile;
         }
 
-        /*
-         * Add routes, if available
-         */
+        // Add routes, if available
         $routesFile = $pluginPath . '/routes.php';
-        if (File::exists($routesFile) && !$this->app->routesAreCached()) {
+        if (file_exists($routesFile) && !$this->app->routesAreCached()) {
             require $routesFile;
         }
     }
 
     /**
-     * Runs the boot() method on all plugins. Can only be called once.
+     * bootAll runs the boot() method on all plugins. Can only be called once.
      */
     public function bootAll($force = false)
     {
@@ -275,7 +264,7 @@ class PluginManager
     }
 
     /**
-     * Registers a single plugin object.
+     * bootPlugin registers a single plugin object.
      * @param PluginBase $plugin
      * @return void
      */
@@ -310,7 +299,7 @@ class PluginManager
         $path = $this->getPluginPath($id);
         $file = $path . '/composer.json';
 
-        if (!$path || !File::exists($file)) {
+        if (!$path || !file_exists($file)) {
             return null;
         }
 
@@ -416,7 +405,7 @@ class PluginManager
         $plugins = [];
 
         $dirPath = plugins_path();
-        if (!File::isDirectory($dirPath)) {
+        if (!is_dir($dirPath)) {
             return $plugins;
         }
 
@@ -476,7 +465,8 @@ class PluginManager
     }
 
     /**
-     * Spins over every plugin object and collects the results of a method call.
+     * getRegistrationMethodValues spins over every plugin object and collects the results
+     * of a method call.
      * @param  string $methodName
      * @return array
      */
@@ -487,14 +477,21 @@ class PluginManager
         }
 
         $results = [];
-        $plugins = $this->getPlugins();
 
-        foreach ($plugins as $id => $plugin) {
+        // Load plugin items
+        foreach ($this->getPlugins() as $id => $plugin) {
             if (!method_exists($plugin, $methodName)) {
                 continue;
             }
 
             $results[$id] = $plugin->{$methodName}();
+        }
+
+        // Load app items
+        if ($app = App::getProvider(\App\Provider::class)) {
+            if (method_exists($app, $methodName)) {
+                $results[$id] = $app->{$methodName}();
+            }
         }
 
         return $this->registrationMethodCache[$methodName] = $results;
@@ -542,7 +539,7 @@ class PluginManager
             $this->disabledPlugins[$disabled] = true;
         }
 
-        if (File::exists($path)) {
+        if (file_exists($path)) {
             $disabled = json_decode(File::get($path), true) ?: [];
             $this->disabledPlugins = array_merge($this->disabledPlugins, $disabled);
         }
@@ -726,9 +723,7 @@ class PluginManager
     {
         ksort($this->plugins);
 
-        /*
-         * Canvas the dependency tree
-         */
+        // Canvas the dependency tree
         $checklist = $this->plugins;
         $result = [];
 
@@ -739,42 +734,33 @@ class PluginManager
             }
 
             foreach ($checklist as $code => $plugin) {
-                /*
-                 * Get dependencies and remove any aliens
-                 */
+
+                // Get dependencies and remove any aliens
                 $depends = $this->getDependencies($plugin) ?: [];
                 $depends = array_filter($depends, function ($pluginCode) {
                     return isset($this->plugins[$pluginCode]);
                 });
 
-                /*
-                 * No dependencies
-                 */
+                // No dependencies
                 if (!$depends) {
                     array_push($result, $code);
                     unset($checklist[$code]);
                     continue;
                 }
 
-                /*
-                 * Find dependencies that have not been checked
-                 */
+                // Find dependencies that have not been checked
                 $depends = array_diff($depends, $result);
                 if (count($depends) > 0) {
                     continue;
                 }
 
-                /*
-                 * All dependencies are checked
-                 */
+                // All dependencies are checked
                 array_push($result, $code);
                 unset($checklist[$code]);
             }
         }
 
-        /*
-         * Reassemble plugin map
-         */
+        // Reassemble plugin map
         $sortedPlugins = [];
 
         foreach ($result as $code) {
@@ -807,27 +793,23 @@ class PluginManager
     //
 
     /**
-     * Completely roll back and delete a plugin from the system.
+     * deletePlugin completely roll back and delete a plugin from the system.
      * @param string $id Plugin code/namespace
      * @return void
      */
     public function deletePlugin($id)
     {
-        /*
-         * Rollback plugin
-         */
+        // Rollback plugin
         UpdateManager::instance()->rollbackPlugin($id);
 
-        /*
-         * Delete from file system
-         */
+        // Delete from file system
         if ($pluginPath = self::instance()->getPluginPath($id)) {
             File::deleteDirectory($pluginPath);
         }
     }
 
     /**
-     * Tears down a plugin's database tables and rebuilds them.
+     * refreshPlugin tears down a plugin's database tables and rebuilds them.
      * @param string $id Plugin code/namespace
      * @return void
      */

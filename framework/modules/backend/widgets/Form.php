@@ -5,11 +5,12 @@ use Form as FormHelper;
 use Backend\Classes\FormTabs;
 use Backend\Classes\FormField;
 use Backend\Classes\WidgetBase;
+use October\Rain\Element\ElementHolder;
 use October\Rain\Element\Form\FieldDefinition;
 use October\Rain\Element\Form\FieldsetDefinition;
+use October\Contracts\Element\FormElement;
 use October\Rain\Database\Model;
 use October\Rain\Html\Helper as HtmlHelper;
-use October\Contracts\Element\FormElement;
 use SystemException;
 
 /**
@@ -183,9 +184,7 @@ class Form extends WidgetBase implements FormElement
         $this->applyFiltersFromModel();
         $this->prepareVars();
 
-        /*
-         * Custom options
-         */
+        // Custom options
         if (isset($options['preview'])) {
             $this->previewMode = $options['preview'];
         }
@@ -201,9 +200,7 @@ class Form extends WidgetBase implements FormElement
         $extraVars = [];
         $targetPartial = 'form';
 
-        /*
-         * Determine the partial to use based on the supplied section option
-         */
+        // Determine the partial to use based on the supplied section option
         if ($section = $options['section']) {
             $section = strtolower($section);
 
@@ -215,16 +212,12 @@ class Form extends WidgetBase implements FormElement
             $extraVars['renderSection'] = $section;
         }
 
-        /*
-         * Apply a container to the element
-         */
+        // Apply a container to the element
         if ($options['useContainer']) {
             $targetPartial = $section ? 'section-container' : 'form-container';
         }
 
-        /*
-         * Force preview mode on all widgets
-         */
+        // Force preview mode on all widgets
         if ($this->previewMode) {
             foreach ($this->formWidgets as $widget) {
                 $widget->previewMode = $this->previewMode;
@@ -375,6 +368,7 @@ class Form extends WidgetBase implements FormElement
     {
         $result = [];
         $saveData = $this->getSaveDataInternal();
+        $this->context = 'refresh';
 
         /**
          * @event backend.form.beforeRefresh
@@ -495,11 +489,12 @@ class Form extends WidgetBase implements FormElement
      */
     public function addFormField(string $fieldName = null, string $label = null): FieldDefinition
     {
-        $fieldObj = new FormField($fieldName, $label);
-
-        $fieldObj->arrayName = $this->arrayName;
-
-        $fieldObj->idPrefix = $this->getId();
+        $fieldObj = new FormField([
+            'fieldName' => $fieldName,
+            'label' => $label,
+            'arrayName' => $this->arrayName,
+            'idPrefix' => $this->getId()
+        ]);
 
         $this->allFields[$fieldName] = $fieldObj;
 
@@ -570,9 +565,9 @@ class Form extends WidgetBase implements FormElement
         $this->fireSystemEvent('backend.form.extendFieldsBefore');
 
         // Init tabs
-        $this->allTabs->outside = new FormTabs(FormTabs::SECTION_OUTSIDE, (array) $this->config);
-        $this->allTabs->primary = new FormTabs(FormTabs::SECTION_PRIMARY, $this->tabs);
-        $this->allTabs->secondary = new FormTabs(FormTabs::SECTION_SECONDARY, $this->secondaryTabs);
+        $this->allTabs->outside = FormTabs::newInSection(FormTabs::SECTION_OUTSIDE, $this->config);
+        $this->allTabs->primary = FormTabs::newInSection(FormTabs::SECTION_PRIMARY, $this->tabs);
+        $this->allTabs->secondary = FormTabs::newInSection(FormTabs::SECTION_SECONDARY, $this->secondaryTabs);
 
         // Outside fields
         if (!isset($this->fields) || !is_array($this->fields)) {
@@ -681,13 +676,13 @@ class Form extends WidgetBase implements FormElement
             && $this->allTabs->outside->stretch === null
         ) {
             if ($this->allTabs->secondary->hasFields()) {
-                $this->allTabs->secondary->stretch = true;
+                $this->allTabs->secondary->stretch();
             }
             elseif ($this->allTabs->primary->hasFields()) {
-                $this->allTabs->primary->stretch = true;
+                $this->allTabs->primary->stretch();
             }
             else {
-                $this->allTabs->outside->stretch = true;
+                $this->allTabs->outside->stretch();
             }
         }
 
@@ -817,20 +812,20 @@ class Form extends WidgetBase implements FormElement
         $label = $config['label'] ?? null;
         [$fieldName, $fieldContext] = $this->evalFieldName($name);
 
-        $field = new FormField($fieldName, $label);
+        $field = new FormField([
+            'fieldName' => $fieldName,
+            'label' => $label,
+            'arrayName' => $this->arrayName,
+            'idPrefix' => $this->getId()
+        ]);
 
         if ($fieldContext) {
-            $field->context = $fieldContext;
+            $field->context($fieldContext);
         }
 
-        $field->arrayName = $this->arrayName;
-        $field->idPrefix = $this->getId();
-
-        // Simple field type
         if (is_string($config)) {
             $field->displayAs($config);
         }
-        // Defined field type
         else {
             $fieldType = $config['type'] ?? null;
             if (!is_string($fieldType) && $fieldType !== null) {
@@ -1089,9 +1084,12 @@ class Form extends WidgetBase implements FormElement
             }
         }
 
+        // For passing to events
+        $holder = new ElementHolder($this->allFields);
+
         // Standard usage
         if (method_exists($targetModel, 'filterFields')) {
-            $targetModel->filterFields((object) $this->allFields, $this->getContext());
+            $targetModel->filterFields($holder, $this->getContext());
         }
 
         // Advanced usage
@@ -1118,7 +1116,7 @@ class Form extends WidgetBase implements FormElement
              *     });
              *
              */
-            $targetModel->fireEvent('model.form.filterFields', [$this, (object) $this->allFields, $this->getContext()]);
+            $targetModel->fireEvent('model.form.filterFields', [$this, $holder, $this->getContext()]);
         }
     }
 

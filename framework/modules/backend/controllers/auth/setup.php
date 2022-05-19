@@ -3,11 +3,11 @@
 <?= Form::open() ?>
     <input type="hidden" name="postback" value="1" />
 
-    <p>Please create a new account for logging in to the Administration Area.</p>
+    <p><?= __("Please create a new account for logging in to the Administration Area.") ?></p>
 
     <div class="form-elements" role="form">
         <div class="form-group text-field span-left">
-            <label for="adminFirstName" class="control-label">First Name</label>
+            <label class="form-label" for="adminFirstName"><?= __("First Name") ?></label>
             <input
                 id="adminFirstName"
                 type="text"
@@ -19,7 +19,7 @@
         </div>
 
         <div class="form-group text-field span-right">
-            <label for="adminLastName" class="control-label">Last Name</label>
+            <label class="form-label" for="adminLastName"><?= __("Last Name") ?></label>
             <input
                 id="adminLastName"
                 type="text"
@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group text-field span-full">
-            <label for="adminEmail" class="control-label">Email Address</label>
+            <label class="form-label" for="adminEmail"><?= __("Email Address") ?></label>
             <input
                 id="adminEmail"
                 type="text"
@@ -43,7 +43,7 @@
         </div>
 
         <div class="form-group text-field span-full">
-            <label for="adminLogin" class="control-label">Pick a Username</label>
+            <label class="form-label" for="adminLogin"><?= __("Pick a Username") ?></label>
             <input
                 id="adminLogin"
                 type="text"
@@ -55,7 +55,7 @@
         </div>
 
         <div class="form-group text-field span-left">
-            <label for="adminPassword" class="control-label">Enter New Password</label>
+            <label class="form-label" for="adminPassword"><?= __("Enter New Password") ?></label>
             <input
                 id="adminPassword"
                 type="password"
@@ -66,7 +66,7 @@
         </div>
 
         <div class="form-group text-field span-right">
-            <label for="adminConfirmPassword" class="control-label">Confirm Password</label>
+            <label class="form-label" for="adminConfirmPassword"><?= __("Confirm Password") ?></label>
             <input
                 id="adminConfirmPassword"
                 type="password"
@@ -78,7 +78,7 @@
 
         <!-- Submit Form -->
         <button type="submit" class="btn btn-primary pull-right">
-            Create Account
+            <?= __("Create Account") ?>
         </button>
     </div>
 

@@ -87,7 +87,7 @@ class MediaFinder extends FormWidgetBase
             $this->previewMode = true;
         }
 
-        if ((!$user = BackendAuth::getUser()) || !$user->hasAccess('media.manage_media')) {
+        if (!BackendAuth::userHasAccess('media.manage_media')) {
             $this->previewMode = true;
         }
 
@@ -149,14 +149,6 @@ class MediaFinder extends FormWidgetBase
         $list = new Collection($list);
 
         return $list;
-    }
-
-    /**
-     * getSaveValue
-     */
-    public function getSaveValue($value)
-    {
-        return $this->maxItems === 1 ? $value : json_decode($value, true);
     }
 
     /**

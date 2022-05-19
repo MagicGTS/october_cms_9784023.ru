@@ -252,8 +252,6 @@ trait HasViewMode
      */
     public function onRelationButtonAdd()
     {
-        $this->eventTarget = 'button-add';
-
         return $this->onRelationManageForm();
     }
 
@@ -262,8 +260,6 @@ trait HasViewMode
      */
     public function onRelationButtonCreate()
     {
-        $this->eventTarget = 'button-create';
-
         return $this->onRelationManageForm();
     }
 
@@ -280,8 +276,6 @@ trait HasViewMode
      */
     public function onRelationButtonLink()
     {
-        $this->eventTarget = 'button-link';
-
         return $this->onRelationManageForm();
     }
 
@@ -306,8 +300,6 @@ trait HasViewMode
      */
     public function onRelationButtonUpdate()
     {
-        $this->eventTarget = 'button-update';
-
         return $this->onRelationManageForm();
     }
 
@@ -336,8 +328,35 @@ trait HasViewMode
      */
     public function onRelationClickViewList()
     {
-        $this->eventTarget = 'list';
         return $this->onRelationManageForm();
+    }
+
+    /**
+     * evalEventTarget determines the source of an AJAX event used for determining
+     * the manage mode state. See the `evalManageMode` method.
+     * @return string
+     */
+    protected function evalEventTarget()
+    {
+        switch ($this->controller->getAjaxHandler()) {
+            case 'onRelationButtonAdd':
+                return 'button-add';
+
+            case 'onRelationButtonCreate':
+                return 'button-create';
+
+            case 'onRelationButtonLink':
+                return 'button-link';
+
+            case 'onRelationButtonUpdate':
+                return 'button-update';
+
+            case 'onRelationClickViewList':
+                return 'list';
+
+            default:
+                return '';
+        }
     }
 
     /**
@@ -363,6 +382,9 @@ trait HasViewMode
             case 'morphOne':
             case 'belongsTo':
                 return 'single';
+
+            default:
+                return '';
         }
     }
 

@@ -16,7 +16,7 @@
                 <?= e(trans('system::lang.plugins.select_label')) ?>
             </button>
 
-            <ul class="dropdown-menu" data-dropdown-title="<?= e(trans('system::lang.plugins.bulk_actions_label')) ?>">
+            <ul class="dropdown-menu">
                 <li>
                     <a href="javascript:;"
                         data-request="onBulkAction"

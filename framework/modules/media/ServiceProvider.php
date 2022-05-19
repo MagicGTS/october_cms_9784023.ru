@@ -5,7 +5,6 @@ use Backend;
 use BackendMenu;
 use BackendAuth;
 use Media\Widgets\MediaManager;
-use System\Classes\CombineAssets;
 use System\Classes\MarkupManager;
 use Backend\Classes\WidgetManager;
 use October\Rain\Support\ModuleServiceProvider;
@@ -23,11 +22,8 @@ class ServiceProvider extends ModuleServiceProvider
         parent::register('media');
 
         $this->registerMarkupTags();
-        $this->registerAssetBundles();
 
-        /*
-         * Backend specific
-         */
+        // Backend specific
         if (App::runningInBackend()) {
             $this->registerBackendNavigation();
             $this->registerBackendWidgets();
@@ -45,17 +41,7 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * registerAssetBundles
-     */
-    protected function registerAssetBundles()
-    {
-        CombineAssets::registerCallback(function ($combiner) {
-            $combiner->registerBundle('~/modules/media/widgets/mediamanager/assets/js/mediamanager-browser.js');
-        });
-    }
-
-    /*
-     * Register navigation
+     * registerBackendNavigation
      */
     protected function registerBackendNavigation()
     {
@@ -63,7 +49,7 @@ class ServiceProvider extends ModuleServiceProvider
             $manager->registerMenuItems('October.Media', [
                 'media' => [
                     'label' => 'backend::lang.media.menu_label',
-                    'icon' => 'icon-folder',
+                    'icon' => 'icon-image',
                     'iconSvg' => 'modules/media/assets/images/media-icon.svg',
                     'url' => Backend::url('media'),
                     'permissions' => ['media.*'],
@@ -73,7 +59,7 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
+    /**
      * Register permissions
      */
     protected function registerBackendPermissions()
@@ -88,8 +74,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register widgets
+    /**
+     * registerBackendWidgets
      */
     protected function registerBackendWidgets()
     {
@@ -98,8 +84,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register markup tags
+    /**
+     * registerMarkupTags
      */
     protected function registerMarkupTags()
     {
@@ -111,7 +97,7 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Media Manager widget is available on all back-end pages
+     * registerGlobalInstance ensures media Manager widget is available on all backend pages
      */
     protected function registerGlobalInstance()
     {

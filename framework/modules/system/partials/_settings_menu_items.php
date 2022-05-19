@@ -5,26 +5,26 @@
         isset($_COOKIE['sidenav_treegroupStatus']) ? $_COOKIE['sidenav_treegroupStatus'] : null
     );
 
-    function settingsMenuItemIsActive($item, $context)  {
+    $settingsMenuItemIsActive = function($item, $context)  {
         return strtolower($item->owner) == $context->owner && strtolower($item->code) == $context->itemCode;
-    }
+    };
 
-    function settingsMenuItemsIsActive($items, $context) {
+    $settingsMenuItemsIsActive = function($items, $context) use ($settingsMenuItemIsActive) {
         foreach ($items as $item) {
-            if (settingsMenuItemIsActive($item, $context)) {
+            if ($settingsMenuItemIsActive($item, $context)) {
                 return true;
             }
         }
 
         return false;
-    }
+    };
 ?>
 <ul class="top-level">
     <?php foreach ($items as $category => $items): ?>
         <?php
             $collapsed = in_array($category, $collapsedGroups);
         ?>
-        <li class="<?= settingsMenuItemsIsActive($items, $context) ? 'is-active-group' : 'is-inactive-group' ?>" data-group-code="<?= e($category) ?>" <?= $collapsed ? 'data-status="collapsed"' : null ?>>
+        <li class="<?= $settingsMenuItemsIsActive($items, $context) ? 'is-active-group' : 'is-inactive-group' ?>" data-group-code="<?= e($category) ?>" <?= $collapsed ? 'data-status="collapsed"' : null ?>>
             <div class="group">
                 <h3><?= e(trans($category)) ?></h3>
             </div>

@@ -18,3 +18,33 @@ framework/.idea
 framework/.vscode
 framework/public
 framework/webpack.mix.js
+
+# Common
+framework/composer.phar
+framework/.DS_Store
+framework/.idea
+framework/.env
+framework/.env.*.php
+framework/.env.php
+framework/auth.json
+framework/php_errors.log
+framework/nginx-error.log
+framework/nginx-access.log
+framework/nginx-ssl.access.log
+framework/nginx-ssl.error.log
+framework/php-errors.log
+framework/sftp-config.json
+framework/.ftpconfig
+framework/selenium.php
+framework/composer.lock
+framework/package-lock.json
+framework//node_modules
+framework/_ide_helper.php
+framework/.phpunit.result.cache
+framework/nbproject
+
+# Project
+/framework/bootstrap/compiled.php
+/framework/vendor
+framework/storage/cms/autoexec.json
+framework/storage/cms/project.json

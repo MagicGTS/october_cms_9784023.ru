@@ -67,7 +67,7 @@ trait HasImportMode
             $importOptions['sessionKey'] = $this->importUploadFormWidget->getSessionKey();
             $importOptions['firstRowTitles'] = post('first_row_titles', false);
 
-            $model->file_format = $exportOptions['file_format'] ?? 'json';
+            $model->file_format = $importOptions['file_format'] ?? 'json';
             $model->import($matches, $importOptions);
 
             $this->vars['importResults'] = $model->getResultStats();

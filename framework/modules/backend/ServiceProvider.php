@@ -27,9 +27,7 @@ class ServiceProvider extends ModuleServiceProvider
         $this->registerMailer();
         $this->registerAssetBundles();
 
-        /*
-         * Backend specific
-         */
+        // Backend specific
         if (App::runningInBackend()) {
             $this->registerBackendNavigation();
             $this->registerBackendReportWidgets();
@@ -54,11 +52,11 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function bootAuth(): void
     {
-        AuthException::setDefaultErrorMessage(__('backend::lang.auth.invalid_login'));
+        AuthException::setDefaultErrorMessage('backend::lang.auth.invalid_login');
     }
 
     /**
-     * Register mail templates
+     * registerMailer templates
      */
     protected function registerMailer()
     {
@@ -71,29 +69,22 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Register asset bundles
+     * registerAssetBundles
      */
     protected function registerAssetBundles()
     {
+        // Rich Editor is protected by DRM
         CombineAssets::registerCallback(function ($combiner) {
-            $combiner->registerBundle('~/modules/backend/widgets/table/assets/js/build.js');
-            $combiner->registerBundle('~/modules/backend/formwidgets/codeeditor/assets/less/codeeditor.less');
-            $combiner->registerBundle('~/modules/backend/formwidgets/codeeditor/assets/js/build.js');
-            $combiner->registerBundle('~/modules/backend/formwidgets/richeditor/assets/js/build-plugins.js');
-            $combiner->registerBundle('~/modules/backend/formwidgets/sensitive/assets/less/sensitive.less');
-
-            /*
-             * Rich Editor is protected by DRM
-             */
             if (file_exists(base_path('modules/backend/formwidgets/richeditor/assets/vendor/froala_drm'))) {
+                $combiner->registerBundle('~/modules/backend/formwidgets/richeditor/assets/js/build-plugins.js');
                 $combiner->registerBundle('~/modules/backend/formwidgets/richeditor/assets/less/richeditor.less');
                 $combiner->registerBundle('~/modules/backend/formwidgets/richeditor/assets/js/build.js');
             }
         });
     }
 
-    /*
-     * Register navigation
+    /**
+     * registerBackendNavigation
      */
     protected function registerBackendNavigation()
     {
@@ -111,8 +102,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register report widgets
+    /**
+     * registerBackendReportWidgets
      */
     protected function registerBackendReportWidgets()
     {
@@ -124,8 +115,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register permissions
+    /**
+     * registerBackendPermissions
      */
     protected function registerBackendPermissions()
     {
@@ -159,8 +150,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register widgets
+    /**
+     * registerBackendWidgets
      */
     protected function registerBackendWidgets()
     {
@@ -189,8 +180,8 @@ class ServiceProvider extends ModuleServiceProvider
         });
     }
 
-    /*
-     * Register settings
+    /**
+     * registerBackendSettings
      */
     protected function registerBackendSettings()
     {

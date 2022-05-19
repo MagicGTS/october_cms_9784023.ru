@@ -1,5 +1,6 @@
 <?php namespace Backend\Classes\WidgetManager;
 
+use App;
 use Event;
 use BackendAuth;
 use SystemException;
@@ -31,25 +32,30 @@ trait HasReportWidgets
         if ($this->reportWidgets === null) {
             $this->reportWidgets = [];
 
-            /*
-             * Load module widgets
-             */
+            //  Load module widgets
             foreach ($this->reportWidgetCallbacks as $callback) {
                 $callback($this);
             }
 
-            /*
-             * Load plugin widgets
-             */
-            $plugins = $this->pluginManager->getPlugins();
-
-            foreach ($plugins as $plugin) {
-                if (!is_array($widgets = $plugin->registerReportWidgets())) {
+            // Load plugin widgets
+            foreach ($this->pluginManager->getPlugins() as $plugin) {
+                $widgets = $plugin->registerReportWidgets();
+                if (!is_array($widgets)) {
                     continue;
                 }
 
                 foreach ($widgets as $className => $widgetInfo) {
                     $this->registerReportWidget($className, $widgetInfo);
+                }
+            }
+
+            // Load app widgets
+            if ($app = App::getProvider(\App\Provider::class)) {
+                $widgets = $app->registerReportWidgets();
+                if (is_array($widgets)) {
+                    foreach ($widgets as $className => $widgetInfo) {
+                        $this->registerReportWidget($className, $widgetInfo);
+                    }
                 }
             }
         }

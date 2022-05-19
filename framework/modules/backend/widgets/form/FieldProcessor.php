@@ -77,9 +77,7 @@ trait FieldProcessor
 
             $field->useConfig($newConfig)->displayAs('widget');
 
-            /*
-             * Create form widget instance and bind to controller
-             */
+            // Create form widget instance and bind to controller
             $this->makeFormFieldWidget($field)->bindToController();
         }
     }
@@ -116,10 +114,8 @@ trait FieldProcessor
                 continue;
             }
 
-            // Look at config value in case it was missed
-            $fieldOptions = $field->options ?: ($field->config['options'] ?? null);
-
             // Defer the execution of option data collection
+            $fieldOptions = $field->options;
             $field->options(function () use ($field, $fieldOptions) {
                 return $field->getOptionsFromModel($this->model, $fieldOptions, $this->data);
             });

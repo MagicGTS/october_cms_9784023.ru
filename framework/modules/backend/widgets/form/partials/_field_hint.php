@@ -18,7 +18,7 @@
         if ($field->comment) {
             $callout->comment(
                 $field->commentHtml
-                    ? trans($field->comment)
+                    ? '<p>'.trans($field->comment).'</p>'
                     : Markdown::parse(e(trans($field->comment)))
             );
         }

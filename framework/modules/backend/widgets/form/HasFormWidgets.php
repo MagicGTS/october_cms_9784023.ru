@@ -65,9 +65,9 @@ trait HasFormWidgets
         $widget = $this->makeFormWidget($widgetClass, $field, $widgetConfig);
 
         // If options config is defined, request options from the model.
-        if (isset($field->config['options'])) {
-            $field->options(function () use ($field) {
-                $fieldOptions = $field->config['options'];
+        if ($field->hasOptions() && !is_array($field->options)) {
+            $fieldOptions = $field->options;
+            $field->options(function () use ($field, $fieldOptions) {
                 return $field->getOptionsFromModel($this->model, $fieldOptions, $this->data);
             });
         }

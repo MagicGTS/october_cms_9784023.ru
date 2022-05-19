@@ -1,281 +1,223 @@
-$.oc.module.register('cms.editor.extension.documentcontroller.asset', function () {
+$.oc.module.register('cms.editor.extension.documentcontroller.asset', function() {
     'use strict';
 
-    var DocumentControllerBase = $.oc.module.import('editor.extension.documentcontroller.base');
-    var treeviewUtils = $.oc.vueComponentHelpers.treeviewUtils;
-    var EditorCommand = $.oc.module.import('editor.command');
-    var FileSystemFunctions = $.oc.module.import('editor.extension.filesystemfunctions');
+    const DocumentControllerBase = $.oc.module.import('editor.extension.documentcontroller.base');
+    const treeviewUtils = $.oc.vueComponentHelpers.treeviewUtils;
+    const EditorCommand = $.oc.module.import('editor.command');
+    const FileSystemFunctions = $.oc.module.import('editor.extension.filesystemfunctions');
 
-    var DocumentControllerAsset = function (_DocumentControllerBa) {
-        babelHelpers.inherits(DocumentControllerAsset, _DocumentControllerBa);
-
-        function DocumentControllerAsset() {
-            babelHelpers.classCallCheck(this, DocumentControllerAsset);
-            return babelHelpers.possibleConstructorReturn(this, (DocumentControllerAsset.__proto__ || Object.getPrototypeOf(DocumentControllerAsset)).apply(this, arguments));
+    class DocumentControllerAsset extends DocumentControllerBase {
+        get documentType() {
+            return 'cms-asset';
         }
 
-        babelHelpers.createClass(DocumentControllerAsset, [{
-            key: 'beforeDocumentOpen',
-            value: function beforeDocumentOpen(commandObj, nodeData) {
-                if (!nodeData.userData) {
-                    return false;
-                }
+        get vueEditorComponentName() {
+            return 'cms-editor-component-asset-editor';
+        }
 
-                if (nodeData.userData.isFolder) {
-                    return false;
-                }
-
-                if (nodeData.userData.isEditable) {
-                    return true;
-                }
-
+        beforeDocumentOpen(commandObj, nodeData) {
+            if (!nodeData.userData) {
                 return false;
             }
-        }, {
-            key: 'initListeners',
-            value: function initListeners() {
-                this.on('cms:navigator-context-menu-display', this.getNavigatorContextMenuItems);
-                this.on('cms:cms-asset-create-directory', this.onCreateDirectory);
-                this.on('cms:cms-asset-delete', this.onDeleteAssetOrDirectory);
-                this.on('cms:cms-asset-rename', this.onRenameAssetOrDirectory);
-                this.on('cms:navigator-node-moved', this.onNavigatorNodeMoved);
-                this.on('cms:navigator-external-drop', this.onNavigatorExternalDrop);
-                this.on('cms:cms-asset-upload', this.onUploadDocument);
-                this.on('cms:cms-asset-open', this.onOpenAsset);
-                this.on('cms:navigator-nodes-updated', this.onNavigatorNodesUpdated);
+
+            if (nodeData.userData.isFolder) {
+                return false;
             }
-        }, {
-            key: 'getNavigatorContextMenuItems',
-            value: function getNavigatorContextMenuItems(commandObj, payload) {
-                var DocumentUri = $.oc.module.import('editor.documenturi');
-                var uri = DocumentUri.parse(payload.nodeData.uniqueKey);
-                var parentPath = payload.nodeData.userData.path;
 
-                if (uri.documentType !== this.documentType) {
-                    return;
-                }
+            if (nodeData.userData.isEditable) {
+                return true;
+            }
 
-                if (payload.nodeData.userData.isFolder) {
-                    payload.menuItems.push({
-                        type: 'text',
-                        icon: 'octo-icon-create',
-                        command: new EditorCommand('cms:create-document@' + this.documentType, {
-                            path: parentPath
-                        }),
-                        label: this.trans('cms::lang.asset.new')
-                    });
+            return false;
+        }
 
-                    payload.menuItems.push({
-                        type: 'text',
-                        icon: 'octo-icon-upload',
-                        command: new EditorCommand('cms:cms-asset-upload@' + this.documentType, {
-                            path: parentPath
-                        }),
-                        label: this.trans('cms::lang.asset.upload_files')
-                    });
+        initListeners() {
+            this.on('cms:navigator-context-menu-display', this.getNavigatorContextMenuItems);
+            this.on('cms:cms-asset-create-directory', this.onCreateDirectory);
+            this.on('cms:cms-asset-delete', this.onDeleteAssetOrDirectory);
+            this.on('cms:cms-asset-rename', this.onRenameAssetOrDirectory);
+            this.on('cms:navigator-node-moved', this.onNavigatorNodeMoved);
+            this.on('cms:navigator-external-drop', this.onNavigatorExternalDrop);
+            this.on('cms:cms-asset-upload', this.onUploadDocument);
+            this.on('cms:cms-asset-open', this.onOpenAsset);
+            this.on('cms:navigator-nodes-updated', this.onNavigatorNodesUpdated);
+        }
 
-                    payload.menuItems.push({
-                        type: 'text',
-                        icon: 'octo-icon-folder',
-                        command: 'cms:cms-asset-create-directory@' + parentPath,
-                        label: this.trans('cms::lang.asset.create_directory')
-                    });
+        getNavigatorContextMenuItems(commandObj, payload) {
+            const DocumentUri = $.oc.module.import('editor.documenturi');
+            const uri = DocumentUri.parse(payload.nodeData.uniqueKey);
+            const parentPath = payload.nodeData.userData.path;
 
-                    payload.menuItems.push({
-                        type: 'separator'
-                    });
-                } else {
-                    if (!payload.nodeData.userData.isEditable) {
-                        payload.menuItems.push({
-                            type: 'text',
-                            icon: 'octo-icon-fullscreen',
-                            command: new EditorCommand('cms:cms-asset-open@' + parentPath, {
-                                url: payload.nodeData.userData.url
-                            }),
-                            label: this.trans('cms::lang.asset.open')
-                        });
-                    }
-                }
+            if (uri.documentType !== this.documentType) {
+                return;
+            }
 
+            if (payload.nodeData.userData.isFolder) {
                 payload.menuItems.push({
                     type: 'text',
-                    icon: 'octo-icon-terminal',
-                    command: new EditorCommand('cms:cms-asset-rename@' + parentPath, {
-                        fileName: payload.nodeData.userData.filename
+                    icon: 'octo-icon-create',
+                    command: new EditorCommand('cms:create-document@' + this.documentType, {
+                        path: parentPath
                     }),
-                    label: this.trans('cms::lang.asset.rename')
+                    label: this.trans('cms::lang.asset.new')
                 });
 
                 payload.menuItems.push({
                     type: 'text',
-                    icon: 'octo-icon-delete',
-                    command: new EditorCommand('cms:cms-asset-delete@' + parentPath, {
-                        itemsDetails: payload.itemsDetails
+                    icon: 'octo-icon-upload',
+                    command: new EditorCommand('cms:cms-asset-upload@' + this.documentType, {
+                        path: parentPath
                     }),
-                    label: this.trans('cms::lang.asset.delete')
+                    label: this.trans('cms::lang.asset.upload_files')
+                });
+
+                payload.menuItems.push({
+                    type: 'text',
+                    icon: 'octo-icon-folder',
+                    command: 'cms:cms-asset-create-directory@' + parentPath,
+                    label: this.trans('cms::lang.asset.create_directory')
+                });
+
+                payload.menuItems.push({
+                    type: 'separator'
                 });
             }
-        }, {
-            key: 'getAllAssetFilenames',
-            value: function getAllAssetFilenames() {
-                if (this.cachedAssetList) {
-                    return this.cachedAssetList;
+            else {
+                if (!payload.nodeData.userData.isEditable) {
+                    payload.menuItems.push({
+                        type: 'text',
+                        icon: 'octo-icon-fullscreen',
+                        command: new EditorCommand('cms:cms-asset-open@' + parentPath, {
+                            url: payload.nodeData.userData.url
+                        }),
+                        label: this.trans('cms::lang.asset.open')
+                    });
                 }
+            }
 
-                var assetsNavigatorNode = treeviewUtils.findNodeByKeyInSections(this.parentExtension.state.navigatorSections, 'cms:cms-asset');
+            payload.menuItems.push({
+                type: 'text',
+                icon: 'octo-icon-terminal',
+                command: new EditorCommand('cms:cms-asset-rename@' + parentPath, {
+                    fileName: payload.nodeData.userData.filename
+                }),
+                label: this.trans('cms::lang.asset.rename')
+            });
 
-                var assetList = [];
+            payload.menuItems.push({
+                type: 'text',
+                icon: 'octo-icon-delete',
+                command: new EditorCommand('cms:cms-asset-delete@' + parentPath, {
+                    itemsDetails: payload.itemsDetails
+                }),
+                label: this.trans('cms::lang.asset.delete')
+            });
+        }
 
-                if (assetsNavigatorNode) {
-                    assetList = treeviewUtils.getFlattenNodes(assetsNavigatorNode.nodes).filter(function (assetNode) {
+        getAllAssetFilenames() {
+            if (this.cachedAssetList) {
+                return this.cachedAssetList;
+            }
+
+            const assetsNavigatorNode = treeviewUtils.findNodeByKeyInSections(
+                this.parentExtension.state.navigatorSections,
+                'cms:cms-asset'
+            );
+
+            let assetList = [];
+
+            if (assetsNavigatorNode) {
+                assetList = treeviewUtils
+                    .getFlattenNodes(assetsNavigatorNode.nodes)
+                    .filter((assetNode) => {
                         return !assetNode.userData.isFolder;
-                    }).map(function (assetNode) {
+                    })
+                    .map((assetNode) => {
                         return assetNode.userData.path;
                     });
-                } else {
-                    assetList = this.parentExtension.state.customData.assets;
-                }
-
-                this.cachedAssetList = assetList;
-                return assetList;
             }
-        }, {
-            key: 'onBeforeDocumentCreated',
-            value: function onBeforeDocumentCreated(commandObj, payload, documentData) {
-                var parentPath = '';
-
-                if (commandObj.userData && commandObj.userData.path) {
-                    parentPath = commandObj.userData.path;
-                }
-
-                if (parentPath.length > 0) {
-                    documentData.document.fileName = parentPath + '/' + documentData.document.fileName;
-                }
+            else {
+                assetList = this.parentExtension.state.customData.assets;
             }
-        }, {
-            key: 'onCreateDirectory',
-            value: function onCreateDirectory(cmd, payload) {
-                var fs = new FileSystemFunctions(this);
-                var theme = this.parentExtension.cmsTheme;
 
-                fs.createDirectoryFromNavigatorMenu('onAssetCreateDirectory', cmd, payload, {
-                    theme: theme
-                });
+            this.cachedAssetList = assetList;
+            return assetList;
+        }
+
+        onBeforeDocumentCreated(commandObj, payload, documentData) {
+            let parentPath = '';
+
+            if (commandObj.userData && commandObj.userData.path) {
+                parentPath = commandObj.userData.path;
             }
-        }, {
-            key: 'onDeleteAssetOrDirectory',
-            value: function () {
-                var _ref = babelHelpers.asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(cmd, payload) {
-                    var fs, theme;
-                    return regeneratorRuntime.wrap(function _callee$(_context) {
-                        while (1) {
-                            switch (_context.prev = _context.next) {
-                                case 0:
-                                    fs = new FileSystemFunctions(this);
-                                    theme = this.parentExtension.cmsTheme;
-                                    _context.next = 4;
-                                    return fs.deleteFileOrDirectoryFromNavigatorMenu('onAssetDelete', cmd, payload, {
-                                        theme: theme
-                                    });
 
-                                case 4:
-                                case 'end':
-                                    return _context.stop();
-                            }
-                        }
-                    }, _callee, this);
-                }));
-
-                function onDeleteAssetOrDirectory(_x, _x2) {
-                    return _ref.apply(this, arguments);
-                }
-
-                return onDeleteAssetOrDirectory;
-            }()
-        }, {
-            key: 'onRenameAssetOrDirectory',
-            value: function onRenameAssetOrDirectory(cmd, payload) {
-                var fs = new FileSystemFunctions(this);
-                var theme = this.parentExtension.cmsTheme;
-
-                fs.renameFileOrDirectoryFromNavigatorMenu('onAssetRename', cmd, payload, {
-                    theme: theme
-                });
+            if (parentPath.length > 0) {
+                documentData.document.fileName = parentPath + '/' + documentData.document.fileName;
             }
-        }, {
-            key: 'onNavigatorNodeMoved',
-            value: function () {
-                var _ref2 = babelHelpers.asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(cmd) {
-                    var fs, theme;
-                    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                        while (1) {
-                            switch (_context2.prev = _context2.next) {
-                                case 0:
-                                    fs = new FileSystemFunctions(this);
-                                    theme = this.parentExtension.cmsTheme;
+        }
 
+        onCreateDirectory(cmd, payload) {
+            const fs = new FileSystemFunctions(this);
+            const theme = this.parentExtension.cmsTheme;
 
-                                    fs.handleNavigatorNodeMove('onAssetMove', cmd, {
-                                        theme: theme
-                                    });
+            fs.createDirectoryFromNavigatorMenu('onAssetCreateDirectory', cmd, payload, {
+                theme: theme
+            });
+        }
 
-                                case 3:
-                                case 'end':
-                                    return _context2.stop();
-                            }
-                        }
-                    }, _callee2, this);
-                }));
+        async onDeleteAssetOrDirectory(cmd, payload) {
+            const fs = new FileSystemFunctions(this);
+            const theme = this.parentExtension.cmsTheme;
 
-                function onNavigatorNodeMoved(_x3) {
-                    return _ref2.apply(this, arguments);
-                }
+            await fs.deleteFileOrDirectoryFromNavigatorMenu('onAssetDelete', cmd, payload, {
+                theme: theme
+            });
+        }
 
-                return onNavigatorNodeMoved;
-            }()
-        }, {
-            key: 'onNavigatorExternalDrop',
-            value: function onNavigatorExternalDrop(cmd) {
-                var fs = new FileSystemFunctions(this);
-                var theme = this.parentExtension.cmsTheme;
+        onRenameAssetOrDirectory(cmd, payload) {
+            const fs = new FileSystemFunctions(this);
+            const theme = this.parentExtension.cmsTheme;
 
-                fs.handleNavigatorExternalDrop('onAssetUpload', cmd, {
-                    theme: theme
-                });
-            }
-        }, {
-            key: 'onUploadDocument',
-            value: function onUploadDocument(cmd) {
-                var fs = new FileSystemFunctions(this);
-                var theme = this.parentExtension.cmsTheme;
+            fs.renameFileOrDirectoryFromNavigatorMenu('onAssetRename', cmd, payload, {
+                theme: theme
+            });
+        }
 
-                fs.uploadDocument(this.parentExtension.customData['assetExtensionList'], 'onAssetUpload', cmd, {
-                    theme: theme
-                });
-            }
-        }, {
-            key: 'onOpenAsset',
-            value: function onOpenAsset(cmd, payload) {
-                window.open(cmd.userData.url);
-            }
-        }, {
-            key: 'onNavigatorNodesUpdated',
-            value: function onNavigatorNodesUpdated(cmd) {
-                this.cachedAssetList = null;
-            }
-        }, {
-            key: 'documentType',
-            get: function get() {
-                return 'cms-asset';
-            }
-        }, {
-            key: 'vueEditorComponentName',
-            get: function get() {
-                return 'cms-editor-component-asset-editor';
-            }
-        }]);
-        return DocumentControllerAsset;
-    }(DocumentControllerBase);
+        async onNavigatorNodeMoved(cmd) {
+            const fs = new FileSystemFunctions(this);
+            const theme = this.parentExtension.cmsTheme;
+
+            fs.handleNavigatorNodeMove('onAssetMove', cmd, {
+                theme: theme
+            });
+        }
+
+        onNavigatorExternalDrop(cmd) {
+            const fs = new FileSystemFunctions(this);
+            const theme = this.parentExtension.cmsTheme;
+
+            fs.handleNavigatorExternalDrop('onAssetUpload', cmd, {
+                theme: theme
+            });
+        }
+
+        onUploadDocument(cmd) {
+            const fs = new FileSystemFunctions(this);
+            const theme = this.parentExtension.cmsTheme;
+
+            fs.uploadDocument(this.parentExtension.customData['assetExtensionList'], 'onAssetUpload', cmd, {
+                theme: theme
+            });
+        }
+
+        onOpenAsset(cmd, payload) {
+            window.open(cmd.userData.url);
+        }
+
+        onNavigatorNodesUpdated(cmd) {
+            this.cachedAssetList = null;
+        }
+    }
 
     return DocumentControllerAsset;
 });

@@ -16,20 +16,21 @@
                 if (!in_array($value, $checkedValues)) continue;
                 if (!is_array($option)) $option = [$option];
             ?>
-            <div class="checkbox custom-checkbox">
+            <div class="form-check">
                 <input
+                    class="form-check-input"
                     type="checkbox"
                     id="<?= $checkboxId ?>"
                     name="<?= $field->getName() ?>[]"
                     value="<?= e($value) ?>"
                     disabled="disabled"
-                    checked="checked" />
-
-                <label class="storm-icon-pseudo" for="<?= $checkboxId ?>">
+                    checked="checked"
+                />
+                <label class="form-check-label" for="<?= $checkboxId ?>">
                     <?= e(trans($option[0])) ?>
                 </label>
                 <?php if (isset($option[1])): ?>
-                    <p class="help-block"><?= e(trans($option[1])) ?></p>
+                    <p class="form-text"><?= e(trans($option[1])) ?></p>
                 <?php endif ?>
             </div>
         <?php endforeach ?>
@@ -72,19 +73,20 @@
                     $checkboxId = 'checkbox_'.$field->getId().'_'.$index;
                     if (!is_array($option)) $option = [$option];
                 ?>
-                <div class="checkbox custom-checkbox">
+                <div class="form-check">
                     <input
+                        class="form-check-input"
                         type="checkbox"
                         id="<?= $checkboxId ?>"
                         name="<?= $field->getName() ?>[]"
                         value="<?= e($value) ?>"
-                        <?= in_array($value, $checkedValues) ? 'checked="checked"' : '' ?>>
-
-                    <label class="storm-icon-pseudo" for="<?= $checkboxId ?>">
+                        <?= in_array($value, $checkedValues) ? 'checked="checked"' : '' ?>
+                    />
+                    <label class="form-check-label" for="<?= $checkboxId ?>">
                         <?= e(trans($option[0])) ?>
                     </label>
                     <?php if (isset($option[1]) && strlen($option[1])): ?>
-                        <p class="help-block"><?= e(trans($option[1])) ?></p>
+                        <p class="form-text"><?= e(trans($option[1])) ?></p>
                     <?php endif ?>
                 </div>
             <?php endforeach ?>

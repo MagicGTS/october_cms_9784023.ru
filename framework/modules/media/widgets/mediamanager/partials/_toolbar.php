@@ -6,7 +6,7 @@
                     <div class="btn-group offset-right">
                         <button type="button" class="btn btn-primary oc-icon-upload" data-control="upload"
                             ><?= e(trans('backend::lang.media.upload')) ?></button>
-                        <button type="button" class="btn btn-primary oc-icon-folder" data-command="create-folder"><?= e(trans('backend::lang.media.add_folder')) ?></button>
+                        <button type="button" class="btn btn-primary oc-icon-folder-o" data-command="create-folder"><?= e(trans('backend::lang.media.add_folder')) ?></button>
                     </div>
                 <?php endif ?>
 
@@ -28,17 +28,19 @@
         </div>
         <div class="toolbar-item" data-calculate-width>
             <div class="relative loading-indicator-container size-input-text">
-                <input
-                    type="text"
-                    name="search"
-                    value="<?= e($searchTerm) ?>"
-                    class="form-control icon search growable"
-                    placeholder="<?= e(trans('backend::lang.media.search')) ?>"
-                    data-control="search"
-                    autocomplete="off"
-                    data-load-indicator
-                    data-load-indicator-opaque
-                />
+                <div class="search-input-container storm-icon-pseudo">
+                    <input
+                        type="text"
+                        name="search"
+                        value="<?= e($searchTerm) ?>"
+                        class="form-control growable"
+                        placeholder="<?= e(trans('backend::lang.media.search')) ?>"
+                        data-control="search"
+                        autocomplete="off"
+                        data-load-indicator
+                        data-load-indicator-opaque
+                    />
+                </div>
             </div>
         </div>
     </div>

@@ -42,8 +42,7 @@ trait ScopeProcessor
                 $model = new $className;
                 $this->scopeModels[$scopeName] = $model;
             }
-
-            if ($this->model && $this->model->hasRelation($scopeName)) {
+            elseif ($this->model && $this->model->hasRelation($scopeName)) {
                 $model = $this->model->makeRelation($scopeName);
                 $this->scopeModels[$scopeName] = $model;
             }

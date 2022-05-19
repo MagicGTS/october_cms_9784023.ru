@@ -15,19 +15,19 @@
     $coreBuild = Backend::assetVersion();
 
     $styles = [
-        Url::asset('modules/system/assets/ui/storm.css'),
+        Backend::skinAsset('assets/vendor/bootstrap/bootstrap.css'),
+        Backend::skinAsset('assets/vendor/bootstrap-icons/bootstrap-icons.css'),
         Backend::skinAsset('assets/css/october.css'),
     ];
 
     $scripts = [
-        Backend::skinAsset('assets/js/vendor/jquery.min.js'),
+        Url::asset('modules/system/assets/js/vendor/jquery.min.js'),
         Url::asset('modules/system/assets/js/framework.js'),
-        Url::asset('modules/system/assets/ui/storm-min.js'),
-        Url::asset('modules/system/assets/vue/bundle-min.js'),
+        Backend::skinAsset('assets/vendor/bootstrap/bootstrap.min.js'),
+        Backend::skinAsset('assets/js/vendor-min.js'),
         Backend::skinAsset('assets/js/october-min.js'),
+        Url::asset('modules/system/assets/js/vue.bundle-min.js'),
         Url::asset('modules/system/assets/js/lang/lang.'.App::getLocale().'.js'),
-        Backend::skinAsset('assets/js/october.flyout.js'),
-        Backend::skinAsset('assets/js/october.tabformexpandcontrols.js'),
     ];
 ?>
 

@@ -47,7 +47,7 @@
 
         this.previewTemplate = $(this.options.template).html();
         this.$filesContainer = $('.mediafinder-files-container:first', this.$el);
-        this.$findValue = $('[data-find-value]', this.$el);
+        this.$dataLocker = $('[data-data-locker]', this.$el);
         this.loadExistingFiles();
 
         this.$el.one('dispose-control', this.proxy(this.dispose));
@@ -86,7 +86,7 @@
         this.unmountExternalToolbarEventBusEvents();
 
         this.sortable = null;
-        this.$findValue = null;
+        this.$dataLocker = null;
         this.$filesContainer = null;
         this.$el = null;
         this.toolbarExtensionPoint = null;
@@ -191,7 +191,7 @@
                     command: 'mediafinder-toolbar-' + $button.attr('class'),
                     disabled: $button.attr('disabled') !== undefined
                 }
-            );    
+            );
         });
     }
 
@@ -267,18 +267,47 @@
         return $preview;
     }
 
-    MediaFinder.prototype.setValue = function() {
+    MediaFinder.prototype.getValue = function() {
         var result = [];
 
-        // Spin over items and set the input value
-        $('>.item-object', this.$filesContainer).each(function() {
+        $('> .item-object', this.$filesContainer).each(function() {
             result.push($(this).data('path'));
         });
 
+        return result.length ? result : '';
+    }
+
+    MediaFinder.prototype.setValue = function() {
+        var self = this,
+            currentValue = this.getValue();
+
+        this.$dataLocker.empty();
+
+        // Spin over items and set the input value
+        if (currentValue) {
+            $.each(this.getValue(), function(k, v) {
+                self.addValueToLocker(v);
+            });
+        }
+        // Empty value
+        else {
+            this.addValueToLocker('');
+        }
+
         // Set value and trigger change event, so that wrapping implementations
         // like mlmediafinder can listen for changes.
-        var value = this.options.isMulti ? JSON.stringify(result) : result[0];
-        this.$findValue.val(value).trigger('change');
+        this.$dataLocker.trigger('change');
+    }
+
+    MediaFinder.prototype.addValueToLocker = function(val) {
+        var inputName = val && this.options.isMulti
+            ? this.options.inputName + '[]'
+            : this.options.inputName;
+
+        $('<input type="hidden" />')
+            .attr('name', inputName)
+            .val(val)
+            .appendTo(this.$dataLocker);
     }
 
     MediaFinder.prototype.addItems = function(items) {

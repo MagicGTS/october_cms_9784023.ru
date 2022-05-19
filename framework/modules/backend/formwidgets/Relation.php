@@ -79,8 +79,7 @@ class Relation extends FormWidgetBase
             $this->sqlSelect = $this->config->select;
         }
 
-        // @deprecated the default value should be true
-        $this->useController = $this->evalUseController($this->config->useController ?? false);
+        $this->useController = $this->evalUseController($this->config->useController ?? true);
     }
 
     /**

@@ -43,35 +43,38 @@ trait HasListExport
         $widget = $lists[$definition] ?? reset($lists);
 
         // Parse options
-        $defaultOptions = [
-            'file_format' => $this->getConfig('defaultFormatOptions[file_format]', 'json'),
+        $options = array_merge([
+            'fileFormat' => $this->getConfig('defaultFormatOptions[fileFormat]', 'csv'),
             'delimiter' => $this->getConfig('defaultFormatOptions[delimiter]', ','),
             'enclosure' => $this->getConfig('defaultFormatOptions[enclosure]', '"'),
             'escape' => $this->getConfig('defaultFormatOptions[escape]', '\\'),
-        ];
-        $options = array_merge($defaultOptions, $options);
+        ], $options);
 
         // Prepare output
-        $fileFormat = $options['file_format'] ?? 'json';
+        $fileFormat = $options['fileFormat'];
         $filename = e($this->makeExportFileName($fileFormat));
-        $output = '';
 
-        switch ($fileFormat) {
-            case 'json':
-                $output = $this->processExportDataAsJson($widget, $options);
-                break;
-            case 'csv':
-            case 'csv_custom':
-                $output = $this->exportFromListAsCsv($widget, $options);
-                break;
+        // JSON
+        if ($fileFormat === 'json') {
+            return Response::make(
+                $this->exportFromListAsJson($widget, $options),
+                200,
+                [
+                    'Content-Type' => 'application/json',
+                    'Content-Disposition' => sprintf('%s; filename="%s"', 'attachment', $filename)
+                ]
+            );
         }
 
-        // Response
-        $response = Response::make();
-        $response->header('Content-Type', 'text/csv');
-        $response->header('Content-Transfer-Encoding', 'binary');
-        $response->header('Content-Disposition', sprintf('%s; filename="%s"', 'attachment', $filename));
-        $response->setContent($output);
-        return $response;
+        // CSV
+        return Response::make(
+            $this->exportFromListAsCsv($widget, $options),
+            200,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Transfer-Encoding' => 'binary',
+                'Content-Disposition' => sprintf('%s; filename="%s"', 'attachment', $filename)
+            ]
+        );
     }
 }

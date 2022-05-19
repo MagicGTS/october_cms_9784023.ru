@@ -6,7 +6,6 @@ use View;
 use Event;
 use Config;
 use Schema;
-use System;
 use Backend;
 use BackendMenu;
 use BackendAuth;
@@ -15,7 +14,6 @@ use System\Models\EventLog;
 use System\Models\MailSetting;
 use System\Classes\MailManager;
 use System\Classes\ErrorHandler;
-use System\Classes\CombineAssets;
 use System\Classes\UpdateManager;
 use System\Classes\MarkupManager;
 use System\Classes\PluginManager;
@@ -44,9 +42,7 @@ class ServiceProvider extends ModuleServiceProvider
         $this->forgetSingletons();
         $this->registerSingletons();
 
-        /*
-         * Register all plugins
-         */
+        // Register all plugins
         PluginManager::instance()->registerAll();
 
         $this->registerConsole();
@@ -55,22 +51,22 @@ class ServiceProvider extends ModuleServiceProvider
         $this->registerTwigParser();
         $this->registerMailer();
         $this->registerMarkupTags();
-        $this->registerAssetBundles();
         $this->registerValidator();
         $this->registerGlobalViewVars();
 
-        /*
-         * Register other module providers
-         */
+        // Register other module providers
         foreach (SystemHelper::listModules() as $module) {
-            if (strtolower(trim($module)) != 'system') {
+            if (strtolower(trim($module)) !== 'system') {
                 App::register('\\' . $module . '\ServiceProvider');
             }
         }
 
-        /*
-         * Backend specific
-         */
+        // Register app service provider
+        if (class_exists(\App\Provider::class)) {
+            App::register(\App\Provider::class);
+        }
+
+        // Backend specific
         if (App::runningInBackend()) {
             $this->registerBackendNavigation();
             $this->registerBackendReportWidgets();
@@ -209,28 +205,23 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerConsole()
     {
-        /*
-         * Allow plugins to use the scheduler
-         */
+        // Allow app and plugins to use the scheduler
         Event::listen('console.schedule', function ($schedule) {
-            $plugins = PluginManager::instance()->getPlugins();
-            foreach ($plugins as $plugin) {
-                if (method_exists($plugin, 'registerSchedule')) {
-                    $plugin->registerSchedule($schedule);
-                }
+            foreach (PluginManager::instance()->getPlugins() as $plugin) {
+                $plugin->registerSchedule($schedule);
+            }
+
+            if ($app = App::getProvider(\App\Provider::class)) {
+                $app->registerSchedule($schedule);
             }
         });
 
-        /*
-         * Add CMS based cache clearing to native command
-         */
+        // Add CMS based cache clearing to native command
         Event::listen('cache:cleared', function () {
             \System\Helpers\Cache::clearInternal();
         });
 
-        /*
-         * Register console commands
-         */
+        // Register console commands
         $this->registerConsoleCommand('october.up', \System\Console\OctoberUp::class);
         $this->registerConsoleCommand('october.down', \System\Console\OctoberDown::class);
         $this->registerConsoleCommand('october.migrate', \System\Console\OctoberMigrate::class);
@@ -283,28 +274,18 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerTwigParser()
     {
-        /*
-         * Register system Twig environment
-         */
+        // Register system Twig environment
         App::singleton('twig.environment', function ($app) {
             $twig = new TwigEnvironment(new TwigLoader, ['auto_reload' => true]);
             $twig->addExtension(new TwigExtension);
 
-            // @deprecated use code below in v3
-            if (env('CMS_SECURITY_POLICY_V2', false)) {
-                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
-            }
-            else {
+            // @deprecated always use the main policy here
+            if (env('CMS_SECURITY_POLICY_V1', false)) {
                 $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicyLegacy, true));
             }
-
-            // @deprecated always use the main policy here
-            // if (env('CMS_SECURITY_POLICY_V1', false)) {
-            //     $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicyLegacy, true));
-            // }
-            // else {
-            //     $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
-            // }
+            else {
+                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
+            }
 
             // Desired logic
             // $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
@@ -312,28 +293,18 @@ class ServiceProvider extends ModuleServiceProvider
             return $twig;
         });
 
-        /*
-         * Register Twig for mailer
-         */
+        // Register Twig for mailer
         App::singleton('twig.environment.mailer', function ($app) {
             $twig = new TwigEnvironment(new TwigLoader, ['auto_reload' => true]);
             $twig->addExtension(new TwigExtension);
 
-            // @deprecated use code below in v3
-            if (env('CMS_SECURITY_POLICY_V2', false)) {
-                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
-            }
-            else {
+            // @deprecated always use the main policy here
+            if (env('CMS_SECURITY_POLICY_V1', false)) {
                 $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicyLegacy, true));
             }
-
-            // @deprecated always use the main policy here
-            // if (env('CMS_SECURITY_POLICY_V1', false)) {
-            //     $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicyLegacy, true));
-            // }
-            // else {
-            //     $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
-            // }
+            else {
+                $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
+            }
 
             // Desired logic
             // $twig->addExtension(new SandboxExtension(new \System\Twig\SecurityPolicy, true));
@@ -342,9 +313,7 @@ class ServiceProvider extends ModuleServiceProvider
             return $twig;
         });
 
-        /*
-         * Register .htm extension for Twig views
-         */
+        // Register .htm extension for Twig views
         App::make('view')->addExtension('htm', 'twig', function () {
             return new TwigEngine(App::make('twig.environment'));
         });
@@ -355,9 +324,7 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerMailer()
     {
-        /*
-         * Register system layouts
-         */
+        // Register system layouts
         MailManager::instance()->registerCallback(function ($manager) {
             $manager->registerMailLayouts([
                 'default' => 'system::mail.layout-default',
@@ -375,18 +342,14 @@ class ServiceProvider extends ModuleServiceProvider
             ]);
         });
 
-        /*
-         * Override system mailer with mail settings
-         */
+        // Override system mailer with mail settings
         Event::listen('mailer.beforeRegister', function () {
             if (MailSetting::isConfigured()) {
                 MailSetting::applyConfigValues();
             }
         });
 
-        /*
-         * Override standard Mailer content with template
-         */
+        // Override standard Mailer content with template
         Event::listen('mailer.beforeAddContent', function ($mailer, $message, $view, $data, $raw, $plain) {
             return !MailManager::instance()->addContentFromEvent($message, $view, $plain, $raw, $data);
         });
@@ -410,18 +373,14 @@ class ServiceProvider extends ModuleServiceProvider
             ]);
         });
 
-        /*
-         * Register the sidebar for the System main menu
-         */
+        // Register the sidebar for the System main menu
         BackendMenu::registerContextSidenavPartial(
             'October.System',
             'system',
             '~/modules/system/partials/_system_sidebar.php'
         );
 
-        /*
-         * Remove the October.System.system main menu item if there is no subpages to display
-         */
+        // Remove the October.System.system main menu item if there is no subpages to display
         Event::listen('backend.menu.extendItems', function ($manager) {
             $systemSettingItems = SettingsManager::instance()->listItems('system');
             $systemMenuItems = $manager->listSideMenuItems('October.System', 'system');
@@ -559,21 +518,6 @@ class ServiceProvider extends ModuleServiceProvider
                     'order' => 990
                 ],
             ]);
-        });
-    }
-
-    /**
-     * registerAssetBundles
-     */
-    protected function registerAssetBundles()
-    {
-        /*
-         * Register asset bundles
-         */
-        CombineAssets::registerCallback(function ($combiner) {
-            $combiner->registerBundle('~/modules/system/assets/js/framework.js');
-            $combiner->registerBundle('~/modules/system/assets/js/framework.combined.js');
-            $combiner->registerBundle('~/modules/system/assets/less/framework.extras.less');
         });
     }
 

@@ -11,7 +11,9 @@
                             <?= e(trans('backend::lang.dashboard.status.updates_pending')) ?>
                         </span>
                         <?php if ($canUpdate): ?>
-                            <a href="<?= Backend::url('system/updates') ?>" class="status-label link"><?= e(trans('backend::lang.dashboard.status.updates_link')) ?></a>
+                            <a
+                                href="<?= Backend::url('system/updates') ?>"
+                                class="status-label btn btn-sm btn-outline-primary"><?= e(trans('backend::lang.dashboard.status.updates_link')) ?></a>
                         <?php endif ?>
                     <?php else: ?>
                         <span class="status-icon success"><i class="icon-check"></i></span>
@@ -31,7 +33,7 @@
                             data-control="popup"
                             data-size="large"
                             data-handler="<?= $this->getEventHandler('onLoadWarningsForm') ?>"
-                            class="status-label link"><?= e(trans('backend::lang.dashboard.status.warnings_link')) ?></a>
+                            class="status-label btn btn-sm btn-outline-warning"><?= e(trans('backend::lang.dashboard.status.warnings_link')) ?></a>
                     <?php else: ?>
                         <span class="status-icon success"><i class="icon-check"></i></span>
                         <span class="status-text success">
@@ -45,7 +47,9 @@
                         <span class="status-text">
                             <?= e(trans('backend::lang.dashboard.status.core_build')) ?>
                         </span>
-                        <a href="<?= Backend::url('system/updates') ?>" class="status-label primary">v<?= $coreBuild ?></a>
+                        <a
+                            class="status-label btn btn-sm btn-outline-secondary"
+                            href="<?= Backend::url('system/updates') ?>">v<?= $coreBuild ?></a>
                     </li>
                 <?php endif ?>
                 <li>
@@ -54,7 +58,9 @@
                         <?= e(trans('backend::lang.dashboard.status.event_log')) ?>
                         <?php if ($eventLogMsg): ?>&nbsp;<a href="<?= Backend::url('system/settings/update/october/system/log_settings') ?>"><i class="icon-exclamation-triangle text-warning" title="<?= e(__('Disabled')) ?>" data-toggle="tooltip" data-placement="right"></i></a><?php endif ?>
                     </span>
-                    <a href="<?= Backend::url('system/eventlogs') ?>" class="status-label primary"><?= $eventLog ?></a>
+                    <a
+                        class="status-label btn btn-sm btn-outline-secondary"
+                        href="<?= Backend::url('system/eventlogs') ?>"><?= $eventLog ?></a>
                 </li>
                 <li>
                     <span class="status-icon"><i class="icon-file-o"></i></span>
@@ -62,7 +68,9 @@
                         <?= e(trans('backend::lang.dashboard.status.request_log')) ?>
                         <?php if ($requestLogMsg): ?>&nbsp;<a href="<?= Backend::url('system/settings/update/october/system/log_settings') ?>"><i class="icon-exclamation-triangle text-warning" title="<?= e(__('Disabled')) ?>" data-toggle="tooltip" data-placement="right"></i></a><?php endif ?>
                     </span>
-                    <a href="<?= Backend::url('system/requestlogs') ?>" class="status-label primary"><?= $requestLog ?></a>
+                    <a
+                        class="status-label btn btn-sm btn-outline-secondary"
+                        href="<?= Backend::url('system/requestlogs') ?>"><?= $requestLog ?></a>
                 </li>
                 <?php if ($appBirthday): ?>
                     <li>

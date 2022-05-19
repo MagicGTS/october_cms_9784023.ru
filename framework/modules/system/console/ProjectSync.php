@@ -29,7 +29,7 @@ class ProjectSync extends Command
      */
     public function handle()
     {
-        $this->output->writeln('<info>Synchronizing Project...</info>');
+        $this->line('Synchronizing Project...');
 
         try {
             // Install project packages
@@ -51,7 +51,7 @@ class ProjectSync extends Command
 
             // Migrate database
             $this->comment("Executing: php artisan october:migrate");
-            $this->output->newLine();
+            $this->line('');
 
             $errCode = null;
             passthru('php artisan october:migrate', $errCode);
@@ -84,7 +84,7 @@ class ProjectSync extends Command
         // Composer install differences
         foreach ($installPackages as $installPackage) {
             $this->comment("Executing: composer require {$installPackage} --no-update");
-            $this->output->newLine();
+            $this->line('');
 
             $composer = new ComposerProcess;
             $composer->setCallback(function($message) { echo $message; });
