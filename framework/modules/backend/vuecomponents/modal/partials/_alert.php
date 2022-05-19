@@ -11,15 +11,14 @@
     >
         <template v-slot:content>
             <div class="modal-header">
+                <h4 class="modal-title" v-bind:id="modalTitleId" v-text="title"></h4>
                 <button
                     @click.prevent="$refs.modal.hide()"
                     type="button"
-                    class="close backend-icon-background-pseudo"
+                    class="btn-close"
                     aria-label="<?= e(trans('backend::lang.form.close')) ?>"
                     tabindex="0"
-                    ><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" v-bind:id="modalTitleId" v-text="title"></h4>
+                    ></button>
             </div>
             <div class="modal-body">
                 <p v-text="text"></p>

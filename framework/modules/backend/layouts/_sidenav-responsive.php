@@ -6,7 +6,7 @@
     <div class="control-toolbar responsive-sidebar-toolbar" role="navigation">
         <div data-control="toolbar">
             <nav class="layout-sidenav sidenav-responsive">
-                <ul class="nav mainmenu-items">
+                <ul class="mainmenu-items">
                     <?= $this->makeLayoutPartial('submenu_items', [
                         'sideMenuItems' => $sideMenuItems,
                         'mainMenuItemActive' => true,

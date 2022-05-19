@@ -1,0 +1,89 @@
+/*-----section infocontingent-students ----*/
+
+.bady_infocontingen{
+    max-width: 1108px;
+    margin-left: auto;
+    margin-right: auto;    
+    max-height: 100%;      
+    border: 0.0001rem solid @color_02;
+    border-radius: 0.19rem;
+    overflow: hidden;
+    margin-bottom: 2.38em;   
+
+    .bady_infocontingen_title{
+       padding: 0.5rem;        
+       border-bottom: 0.0001rem solid @color_07;
+       .fonts(1.5em; 1.5em; 700;);
+       min-height: 46px;     
+       cursor: pointer;  
+       i{
+          float: right;    
+        }
+    }
+    /*выпадающяя информация*/ 
+   .bady_infocontingen_content {
+      padding-left: 0.88rem;
+      padding-right: 0.88rem;  
+      padding-top: 0.88em; 
+      .fonts(1.13em; 1.5em; 400; normal); 
+  
+     .bady_infocontingen_content_counts {
+        margin-top: 1.11em;
+        margin-bottom: 1.11em;
+     }
+   }
+
+   /*скрытая информация*/
+   .hidden{
+       display: none;
+   }
+  } 
+
+/*добавляем цвет фона при наведении, отражаем блок*/
+.bady_infocontingen:hover{
+    background-color: @color_50;   
+    .hidden{
+        display: block;
+    } 
+}  
+
+
+  /*------section info for students------*/     
+    
+    .bady_infoforstudents_item{
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1110px;
+        margin-bottom: 6.5em;    
+
+        a{         
+          height: 2.5em;
+          border: 0.0001rem solid @color_02;
+          box-sizing: border-box;
+          border-radius: 0.19rem;
+          padding-right: 1rem;
+          padding-left: 1rem;
+          padding-top: 0.69em;        
+          color: @color_07;
+          .fonts(1em; 1.19em; 700;);        
+          display: block;
+          text-decoration: none;
+          i {         
+            float: right;
+            color: @color_02;        
+            }
+        }   
+
+        a + a {
+        margin-top: 1.25em;
+        }
+    }
+
+
+/*добавляем цвет фона при наведении*/
+.bady_infoforstudents_item a:hover, .bady_infoforstudents_item i:hover {
+    background-color: @color_50;
+    color: @color_07;
+}  
+
+

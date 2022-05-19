@@ -4,12 +4,12 @@
     'id' => 'media-rename-popup-form'
 ]) ?>
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="popup">&times;</button>
         <h4 class="modal-title"><?= e(trans('cms::lang.asset.rename_popup_title')) ?></h4>
+        <button type="button" class="btn-close" data-dismiss="popup"></button>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label><?= e(trans('cms::lang.asset.rename_new_name')) ?></label>
+            <label class="form-label"><?= e(trans('cms::lang.asset.rename_new_name')) ?></label>
             <input
                 type="text"
                 name="name"
@@ -19,8 +19,8 @@
                 default-focus />
         </div>
 
-        <input type="hidden" name="originalName" value="<?= e($name) ?>">
-        <input type="hidden" name="type" value="<?= e($type) ?>">
+        <input type="hidden" name="originalName" value="<?= e($name) ?>" />
+        <input type="hidden" name="type" value="<?= e($type) ?>" />
         <input type="hidden" name="originalPath" value="<?= e($originalPath) ?>" />
     </div>
     <div class="modal-footer">

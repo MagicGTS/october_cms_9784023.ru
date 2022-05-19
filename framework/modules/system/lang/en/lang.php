@@ -155,7 +155,7 @@
     'check_yes' => 'Yes',
     'check_no' => 'No',
     'unfrozen' => 'Updates Enabled',
-    'enabled' => 'Plugin Enabled',
+    'enabled' => 'Enabled',
     'freeze' => 'disable updates for',
     'unfreeze' => 'enable updates for',
     'enable' => 'enable',

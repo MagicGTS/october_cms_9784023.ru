@@ -14,7 +14,7 @@
                     type="button"
                     data-command="popup-command"
                     data-popup-command="crop-and-insert"
-                    class="btn btn-primary hide">
+                    class="btn btn-primary oc-hide">
                     <?= e(trans('backend::lang.media.crop_and_insert')) ?>
                 </button>
             <?php endif ?>

@@ -66,11 +66,11 @@
         // Items
         var headSelect = this.selectorHeader;
         this.$el.on('change', headSelect + ' input[type=checkbox]', this.proxy(this.clickItemCheckbox));
-        this.$el.on('click', headSelect + ' .repeater-item-menu', this.proxy(this.clickItemMenu));
         this.$el.on('click', headSelect + ' [data-repeater-move-up]', this.proxy(this.clickMoveItemUp));
         this.$el.on('click', headSelect + ' [data-repeater-move-down]', this.proxy(this.clickMoveItemDown));
         this.$el.on('click', headSelect + ' [data-repeater-remove]', this.proxy(this.clickRemoveItem));
         this.$el.on('click', headSelect + ' [data-repeater-duplicate]', this.proxy(this.clickDuplicateItem));
+        this.$el.on('show.bs.dropdown', headSelect + ' .repeater-item-dropdown', this.proxy(this.showItemMenu));
 
         // Toolbar
         this.$toolbar = $(this.selectorToolbar, this.$el);
@@ -105,11 +105,11 @@
         // Items
         var headSelect = this.selectorHeader;
         this.$el.off('change', headSelect + ' input[type=checkbox]', this.proxy(this.clickItemCheckbox));
-        this.$el.off('click', headSelect + ' .repeater-item-menu', this.proxy(this.clickItemMenu));
         this.$el.off('click', headSelect + ' [data-repeater-move-up]', this.proxy(this.clickMoveItemUp));
         this.$el.off('click', headSelect + ' [data-repeater-move-down]', this.proxy(this.clickMoveItemDown));
         this.$el.off('click', headSelect + ' [data-repeater-remove]', this.proxy(this.clickRemoveItem));
         this.$el.off('click', headSelect + ' [data-repeater-duplicate]', this.proxy(this.clickDuplicateItem));
+        this.$el.off('show.bs.dropdown', headSelect + ' .repeater-item-dropdown', this.proxy(this.showItemMenu));
 
         // Toolbar
         this.$toolbar.off('click', '> [data-repeater-cmd=add-group]', this.proxy(this.clickAddGroupButton));
@@ -160,7 +160,7 @@
         }
     }
 
-    Repeater.prototype.clickItemMenu = function(ev) {
+    Repeater.prototype.showItemMenu = function(ev) {
         var templateHtml = $('> [data-item-menu-template]', this.$el).html(),
             $target = $(ev.target),
             $item = $target.closest('li'),
@@ -355,11 +355,11 @@
             $textInput = $('input[type=text]:first, select:first', $target).first();
 
         if ($textInput.length) {
-            switch ($textInput.prop("tagName")) {
-                case 'SELECT':
-                    result = $textInput.find('option:selected').text();
-                default:
-                    result = $textInput.val();
+            if ($textInput.is('select')) {
+                result = $textInput.find('option:selected').text();
+            }
+            else {
+                result = $textInput.val();
             }
         }
         else {

@@ -8,12 +8,13 @@
     <p><?= e(trans('backend::lang.account.enter_new_password')) ?></p>
 
     <div class="form-elements" role="form">
-        <div class="form-group text-field">
-            <label for="password-input">
+
+        <!-- Password -->
+        <div class="form-group">
+            <label class="form-label" for="password-input">
                 <?= e(trans('backend::lang.account.input_password')) ?>
             </label>
 
-            <!-- Password -->
             <input
                 type="password"
                 name="password"

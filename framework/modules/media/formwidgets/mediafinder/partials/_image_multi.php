@@ -5,7 +5,7 @@
     data-thumbnail-width="<?= $imageWidth ?: '0' ?>"
     data-thumbnail-height="<?= $imageHeight ?: '0' ?>"
     data-template="#<?= $this->getId('template') ?>"
-    data-input-name="<?= $field->getName() ?>[]"
+    data-input-name="<?= $field->getName() ?>"
     <?php if ($externalToolbarAppState): ?>data-external-toolbar-app-state="<?= e($externalToolbarAppState)?>"<?php endif ?>
     <?php if ($externalToolbarEventBus): ?>data-external-toolbar-event-bus="<?= e($externalToolbarEventBus)?>"<?php endif ?>
     <?php if ($maxItems): ?>data-max-items="<?= $maxItems ?>"<?php endif ?>
@@ -35,22 +35,24 @@
         <div class="mediafinder-files-container">
             <?php foreach ($fileList as $file): ?>
                 <div class="server-file"
-                    data-public-url="<?= $file->publicUrl ?? '' ?>"
-                    data-path="<?= $file->spawnPath ?? '' ?>"
-                    data-title="<?= $file->title ?? '' ?>"
+                    data-public-url="<?= e($file->publicUrl ?? '') ?>"
+                    data-path="<?= e($file->spawnPath ?? '') ?>"
+                    data-title="<?= e($file->title ?? '') ?>"
                 ></div>
             <?php endforeach ?>
         </div>
     </div>
 
     <!-- Data locker -->
-    <input
-        type="hidden"
-        name="<?= $field->getName() ?>"
-        id="<?= $field->getId() ?>"
-        value="<?= $fileList ? e(json_encode($fileList->pluck('spawnPath'))) : '' ?>"
-        data-find-value
-        />
+    <div id="<?= $field->getId() ?>" data-data-locker>
+        <?php foreach ($fileList as $file): ?>
+            <input
+                type="hidden"
+                name="<?= $field->getName() ?>[]"
+                value="<?= e($file->spawnPath) ?>"
+                />
+        <?php endforeach ?>
+    </div>
 </div>
 
 <?= $this->makePartial('image_item_template', ['modeMulti' => true]) ?>

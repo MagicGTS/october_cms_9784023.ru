@@ -111,8 +111,16 @@ class GetAttrNode extends GetAttrExpression
                 }
             }
 
-            // Related attributes are lazy loaded and are therefore always defined
+            // Checks if the item is an attribute or a relation, related attributes
+            // are lazy loaded and are therefore always defined
             if ($object instanceof \October\Rain\Database\Model) {
+                if (
+                    array_key_exists($item, $object->attributes) ||
+                    $object->hasGetMutator($item)
+                ) {
+                    return $object->$item;
+                }
+
                 if ($object->hasRelation($item)) {
                     $value = $object->$item;
 

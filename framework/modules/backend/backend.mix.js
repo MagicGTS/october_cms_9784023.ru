@@ -20,7 +20,7 @@ module.exports = (mix) => {
     mix.lessList('modules/backend/behaviors');
     mix.lessList('modules/backend/widgets');
 
-    // Backend Source
+    // Vendor Source
     mix.combine([
         'modules/backend/assets/js/vendor/jquery.touchwipe.js',
         'modules/backend/assets/js/vendor/jquery.autoellipsis.js',
@@ -30,30 +30,32 @@ module.exports = (mix) => {
         'modules/backend/assets/vendor/jcrop/js/jquery.Jcrop.js',
         'modules/backend/assets/vendor/sortablejs/sortable.js',
         'modules/system/assets/vendor/prettify/prettify.js',
-        'modules/backend/assets/js/october.lang.js',
-        'modules/backend/assets/js/october.alert.js',
-        'modules/backend/assets/js/october.button.js',
-        'modules/backend/assets/js/october.snackbar.js',
-        'modules/backend/assets/js/october.scrollpad.js',
-        'modules/backend/assets/js/october.sidenav.js',
-        'modules/backend/assets/js/october.scrollbar.js',
-        'modules/backend/assets/js/october.filelist.js',
-        'modules/backend/assets/js/october.layout.js',
-        'modules/backend/assets/js/october.sidepaneltab.js',
-        'modules/backend/assets/js/october.simplelist.js',
-        'modules/backend/assets/js/october.treelist.js',
-        'modules/backend/assets/js/october.sidenav-tree.js',
-        'modules/backend/assets/js/october.datetime.js',
-        'modules/backend/assets/js/october.responsivemenu.js',
-        'modules/backend/assets/js/october.mainmenu.js',
-        'modules/backend/assets/js/october.modalfocusmanager.js',
-        'modules/backend/assets/js/october.domidmanager.js',
-        'modules/backend/assets/js/october.vueutils.js',
-        'modules/backend/assets/js/october.tooltip.js',
-        'modules/backend/assets/js/october.jsmodule.js',
-        'modules/backend/assets/js/october.vueapp.js',
-        'modules/backend/assets/js/backend.js',
-        'modules/backend/assets/js/backend.fixes.js'
+
+        'modules/backend/assets/vendor/modernizr/modernizr.js',
+        'modules/backend/assets/vendor/select2/js/select2.full.js',
+        'modules/backend/assets/vendor/mousewheel/mousewheel.js',
+        'modules/backend/assets/vendor/moment/moment.js',
+        'modules/backend/assets/vendor/moment/moment-timezone-with-data.js',
+        'modules/backend/assets/vendor/pikaday/js/pikaday.js',
+        'modules/backend/assets/vendor/pikaday/js/pikaday.jquery.js',
+        'modules/backend/assets/vendor/clockpicker/js/jquery-clockpicker.js',
+
+        'modules/backend/assets/deprecated/vendor/raphael/raphael.js',
+        'modules/backend/assets/deprecated/vendor/flot/jquery.flot.js',
+        'modules/backend/assets/deprecated/vendor/flot/jquery.flot.tooltip.js',
+        'modules/backend/assets/deprecated/vendor/flot/jquery.flot.resize.js',
+        'modules/backend/assets/deprecated/vendor/flot/jquery.flot.time.js',
+        'modules/backend/assets/deprecated/vendor/mustache/mustache.js',
+        'modules/backend/assets/deprecated/vendor/sortable/jquery-sortable.js',
+
+    ], 'modules/backend/assets/js/vendor-min.js');
+
+    // Backend Source
+    mix.combine([
+        ...require('./assets/plugins/build.js').map(name => `modules/backend/assets/plugins/${name}`),
+        ...require('./assets/controls/build.js').map(name => `modules/backend/assets/controls/${name}`),
+        ...require('./assets/deprecated/build.js').map(name => `modules/backend/assets/deprecated/${name}`),
+        ...require('./assets/js/build.js').map(name => `modules/backend/assets/js/${name}`),
     ], 'modules/backend/assets/js/october-min.js');
 
     // Repeater Widget

@@ -3,19 +3,23 @@
         <ul>
             <?php foreach ($exportColumns as $key => $column): ?>
                 <li>
-                    <div class="checkbox custom-checkbox">
+                    <span class="drag-handle" title="<?= __("Reorder") ?>">
+                        <i class="octo-icon-list-reorder"></i>
+                    </span>
+                    <div class="form-check">
                         <input
                             type="hidden"
                             name="export_columns[]"
                             value="<?= $key ?>" />
                         <input
+                            class="form-check-input"
                             id="<?= $this->getId('exportCheckbox-'.$key) ?>"
                             name="visible_columns[<?= $key ?>]"
                             value="1"
                             checked="checked"
                             type="checkbox" />
                         <label
-                            class="choice storm-icon-pseudo"
+                            class="form-check-label"
                             for="<?= $this->getId('exportCheckbox-'.$key) ?>">
                                 <?= e(trans($column)) ?>
                         </label>

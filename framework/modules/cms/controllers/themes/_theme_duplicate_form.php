@@ -6,8 +6,8 @@
     <input type="hidden" name="theme" value="<?= $themeDir ?>" />
 
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="popup">&times;</button>
         <h4 class="modal-title"><?= e(trans('cms::lang.theme.duplicate_title')) ?>: <?= $themeDir ?></h4>
+        <button type="button" class="btn-close" data-dismiss="popup"></button>
     </div>
 
     <?php if (!$this->fatalError): ?>
@@ -28,7 +28,7 @@
                     autocomplete="off"
                     maxlength="255" />
 
-                <p class="help-block">
+                <p class="form-text">
                     <?= e(trans('cms::lang.theme.new_directory_name_comment')) ?>
                 </p>
             </div>

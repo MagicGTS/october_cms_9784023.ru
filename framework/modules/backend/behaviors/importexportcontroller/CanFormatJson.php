@@ -60,7 +60,7 @@ trait CanFormatJson
      */
     protected function exportFromListAsJson($widget, $options): string
     {
-        $result = [];
+        $jsonResult = [];
 
         // Locate columns from widget
         $columns = $widget->getVisibleColumns();
@@ -86,9 +86,9 @@ trait CanFormatJson
                 }
                 $record[] = $value;
             }
-            $result[] = $record;
+            $jsonResult[] = $record;
         }
 
-        return json_encode($result, JSON_PRETTY_PRINT);
+        return json_encode($jsonResult, JSON_PRETTY_PRINT);
     }
 }

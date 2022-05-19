@@ -9,6 +9,7 @@ use Backend;
 use Backend\Classes\ControllerBehavior;
 use October\Rain\Router\Helper as RouterHelper;
 use ApplicationException;
+use SystemException;
 use Exception;
 
 /**
@@ -576,6 +577,25 @@ class FormController extends ControllerBehavior
     public function formRenderField($name, $options = [])
     {
         return $this->formWidget->renderField($name, $options);
+    }
+
+    /**
+     * formRefreshField is a view helper to render a field from AJAX based on their field names.
+     * @param array|string $names
+     */
+    public function formRefreshFields($names): array
+    {
+        $result = [];
+
+        foreach ((array) $names as $name) {
+            if (!$fieldObject = $this->formWidget->getField($name)) {
+                throw new SystemException("Field {$name} was not found in the form definitions.");
+            }
+
+            $result['#' . $fieldObject->getId('group')] = $this->formRenderField($name, ['useContainer' => false]);
+        }
+
+        return $result;
     }
 
     /**

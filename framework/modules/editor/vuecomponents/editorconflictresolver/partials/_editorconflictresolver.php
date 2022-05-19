@@ -7,8 +7,8 @@
 >
     <template v-slot:content>
         <div class="modal-header">
-            <button @click.prevent="$refs.modal.hide()" type="button" class="close backend-icon-background-pseudo" aria-label="Close" tabindex="0"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" v-bind:id="modalTitleId"><?= e(trans('backend::lang.form.concurrency_file_changed_title')) ?></h4>
+            <button @click.prevent="$refs.modal.hide()" type="button" class="btn-close" aria-label="<?= __("Close") ?>" tabindex="0"></button>
         </div>
         <div class="modal-body">
             <p><?= e(trans('backend::lang.form.concurrency_file_changed_description')) ?></p>

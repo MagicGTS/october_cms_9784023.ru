@@ -82,9 +82,6 @@ class Themes extends Controller
         // For the backend
         CmsTheme::setEditTheme($themeCode);
 
-        // Load page action vars
-        $this->pageAction();
-
         return [
             '#theme-list' => $this->makePartial('theme_list')
         ];

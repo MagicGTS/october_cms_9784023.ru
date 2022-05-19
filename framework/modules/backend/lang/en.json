@@ -59,5 +59,16 @@
     "Delete": "Delete",
     "Export": "Export",
     "Import": "Import",
-    "Select Action": "Select Action"
+    "Select Action": "Select Action",
+    "Please create a new account for logging in to the Administration Area.": "Please create a new account for logging in to the Administration Area.",
+    "First Name": "First Name",
+    "Last Name": "Last Name",
+    "Email Address": "Email Address",
+    "Pick a Username": "Pick a Username",
+    "Enter New Password": "Enter New Password",
+    "Confirm Password": "Confirm Password",
+    "Create Account": "Create Account",
+    "Getting Ready": "Getting Ready",
+    "Just a few more minutes": "Just a few more minutes",
+    "Migrating Database": "Migrating Database"
 }

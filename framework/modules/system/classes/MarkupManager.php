@@ -224,7 +224,7 @@ class MarkupManager
     }
 
     /**
-     * Makes a set of Twig functions for use in a twig extension.
+     * makeTwigFunctions makes a set of Twig functions for use in a twig extension.
      * @param  array $functions Current collection
      * @return array
      */
@@ -235,27 +235,9 @@ class MarkupManager
         }
 
         foreach ($this->listFunctions() as $item) {
-            $callable = $item->callback;
-
-            // Handle a wildcard function
-            if (strpos($item->name, '*') !== false && $item->isWildCallable()) {
-                $callable = function ($name) use ($item) {
-                    $arguments = array_slice(func_get_args(), 1);
-                    $method = $item->getWildCallback(Str::camel($name));
-                    return call_user_func_array($method, $arguments);
-                };
-            }
-
-            if (!is_callable($callable)) {
-                throw new ApplicationException(sprintf(
-                    'The markup function for %s is not callable.',
-                    $item->name
-                ));
-            }
-
             $functions[] = new TwigSimpleFunction(
                 $item->name,
-                $callable,
+                $this->makeItemCallback($item),
                 $item->getTwigOptions()
             );
         }
@@ -264,7 +246,7 @@ class MarkupManager
     }
 
     /**
-     * Makes a set of Twig filters for use in a twig extension.
+     * makeTwigFilters makes a set of Twig filters for use in a twig extension.
      * @param  array $filters Current collection
      * @return array
      */
@@ -275,32 +257,41 @@ class MarkupManager
         }
 
         foreach ($this->listFilters() as $item) {
-            $callable = $item->callback;
-
-            // Handle a wildcard function
-            if (strpos($item->name, '*') !== false && $item->isWildCallable()) {
-                $callable = function ($name) use ($item) {
-                    $arguments = array_slice(func_get_args(), 1);
-                    $method = $item->getWildCallback(Str::camel($name));
-                    return call_user_func_array($method, $arguments);
-                };
-            }
-
-            if (!is_callable($callable)) {
-                throw new ApplicationException(sprintf(
-                    'The markup filter for %s is not callable.',
-                    $item->name
-                ));
-            }
-
             $filters[] = new TwigSimpleFilter(
                 $item->name,
-                $callable,
+                $this->makeItemCallback($item),
                 $item->getTwigOptions()
             );
         }
 
         return $filters;
+    }
+
+    /**
+     * makeItemCallback handles wildcard call
+     */
+    protected function makeItemCallback($item)
+    {
+        // Handle a wildcard function
+        if (strpos($item->name, '*') !== false && $item->isWildCallable()) {
+            return function ($name) use ($item) {
+                $arguments = array_slice(func_get_args(), 1);
+                $method = $item->getWildCallback(Str::camel($name));
+                return call_user_func_array($method, $arguments);
+            };
+        }
+
+        // Cannot call item method
+        $callable = $item->callback;
+        if (!is_callable($callable)) {
+            throw new ApplicationException("The markup filter/function for '{$item->name}' is not callable.");
+        }
+
+        // Wrap in a closure to prevent Twig from reflecting facades
+        // when applying its named closure support
+        return function(...$args) use ($callable) {
+            return $callable(...$args);
+        };
     }
 
     /**

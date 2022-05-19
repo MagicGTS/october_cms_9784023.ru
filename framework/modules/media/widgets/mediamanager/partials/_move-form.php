@@ -1,11 +1,11 @@
 <?= Form::open() ?>
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="popup">&times;</button>
         <h4 class="modal-title"><?= e(trans('backend::lang.media.move_popup_title')) ?></h4>
+        <button type="button" class="btn-close" data-dismiss="popup"></button>
     </div>
     <div class="modal-body">
         <div class="form-group">
-            <label><?= e(trans('backend::lang.media.move_destination')) ?></label>
+            <label class="form-label"><?= e(trans('backend::lang.media.move_destination')) ?></label>
             <select
                 class="form-control custom-select"
                 name="dest"
@@ -16,7 +16,7 @@
                 <?php endforeach ?>
             </select>
 
-            <input type="hidden" name="originalPath" value="<?= e($originalPath) ?>">
+            <input type="hidden" name="originalPath" value="<?= e($originalPath) ?>" />
         </div>
     </div>
     <div class="modal-footer">

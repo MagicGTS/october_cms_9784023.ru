@@ -1,11 +1,11 @@
 <div class="facet-item">
-    <div class="input-with-icon right-align">
+    <div class="input-with-icon size-sm right-align">
         <i class="icon icon-calendar-o"></i>
         <input
             type="text"
             name="Filter[afterRaw]"
             value="<?= e($scope->afterRaw) ?>"
-            class="form-control input-sm popup-allow-focus w-120"
+            class="form-control form-control-sm popup-allow-focus w-120"
             autocomplete="off"
             data-datepicker
             data-datepicker-target="<?= $scope->getId('after') ?>" />
@@ -21,13 +21,13 @@
     <span>and</span>
 </div>
 <div class="facet-item">
-    <div class="input-with-icon right-align">
+    <div class="input-with-icon size-sm right-align">
         <i class="icon icon-calendar-o"></i>
         <input
             type="text"
             name="Filter[beforeRaw]"
             value="<?= e($scope->beforeRaw) ?>"
-            class="form-control input-sm popup-allow-focus w-120"
+            class="form-control form-control-sm popup-allow-focus w-120"
             autocomplete="off"
             data-datepicker
             data-datepicker-target="<?= $scope->getId('before') ?>" />

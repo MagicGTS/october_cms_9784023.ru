@@ -1,0 +1,28 @@
+<section class="wrap" name="info-for-students ">  
+   <div class="bady_infocontingen">    
+    <div class="bady_infocontingen_title">Информация о контингенте обучающихся
+    <i class="fa fa-angle-down"></i>   
+    </div>  
+   
+    <div class="bady_infocontingen_content hidden" 
+       <p>На сегодняшний день зачислены и проходят обучение по очно-заочной форме обучения с применением дистанционных технологий:</p>
+        <div class="bady_infocontingen_content_counts">
+          {% for contingent in contingents %}
+          <p>{% partial "contingent" contingent=contingent %}</p>    
+          {% endfor %}
+       </div> 
+     </div>
+    </div>
+
+
+   <div class="bady_infoforstudents_item">
+     <div>
+         <div></div>
+     </div>
+     <a href="#">Условия проведения занятий, материально-техническое оснащение ОЧУ ДПО «Учебный центр «Амулет»<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Руководство<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Обеспечение помещений средствами и оборудованием, для обеспечения образовательной дейтельности<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Информация о наименовании структурных подразделений и местах нахождения<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+     <a href="#">Руководство и преподаватели учебного центра<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+   </div>
+</section>

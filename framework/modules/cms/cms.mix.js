@@ -12,4 +12,7 @@
 module.exports = (mix) => {
     // Component LESS
     mix.lessList('modules/cms/vuecomponents');
+
+    // Theme Selector
+    mix.less('modules/cms/assets/less/october.theme-selector.less', 'modules/cms/assets/css/');
 };

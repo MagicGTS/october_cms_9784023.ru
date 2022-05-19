@@ -1,6 +1,6 @@
 <div class="modal-header">
-    <button type="button" class="close" data-dismiss="popup" aria-hidden="true">&times;</button>
     <h4 class="modal-title"><?= e(trans('backend::lang.warnings.tips')) ?></h4>
+    <button type="button" class="btn-close" data-dismiss="popup"></button>
 </div>
 <div class="modal-body">
     <?php if (count($warnings)): ?>

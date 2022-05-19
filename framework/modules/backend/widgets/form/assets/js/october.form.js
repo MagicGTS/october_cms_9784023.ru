@@ -30,6 +30,7 @@
     FormWidget.prototype.init = function() {
         this.$form = this.$el.closest('form');
 
+        $('[data-change-handler]', this.$el).on('change.oc.formwidget', this.proxy(this.onRefreshChangeField));
         $('.nav-tabs', this.$el).on('shown.bs.tab shownLinkable.oc.tab', 'li.tab-lazy > a', this.proxy(this.showLazyTab));
         $('.field-checkboxlist', this.$el).on('oc.triggerOn.afterUpdate', this.proxy(this.toggleCheckboxlist));
         this.$el.on('oc.triggerOn.afterUpdate', this.proxy(this.toggleEmptyTabs));
@@ -42,6 +43,7 @@
     }
 
     FormWidget.prototype.dispose = function() {
+        $('[data-change-handler]', this.$el).off('change.oc.formwidget', this.proxy(this.onRefreshChangeField));
         $('.nav-tabs', this.$el).off('shown.bs.tab shownLinkable.oc.tab', 'li.tab-lazy > a', this.proxy(this.showLazyTab));
         $('.field-checkboxlist', this.$el).off('oc.triggerOn.afterUpdate', this.proxy(this.toggleCheckboxlist));
         this.$el.off('oc.triggerOn.afterUpdate', this.proxy(this.toggleEmptyTabs));
@@ -181,6 +183,19 @@
             fieldElements.filter('[data-field-name="'+field+'"]:visible')
                 .addClass('loading-indicator-container size-form-field')
                 .loadIndicator();
+        });
+    }
+
+    /*
+     * Calls an AJAX handler when the field updates.
+     */
+    FormWidget.prototype.onRefreshChangeField = function(ev) {
+        var $group = $(ev.target).closest('[data-change-handler]'),
+            handler = $group.data('change-handler'),
+            self = this;
+
+        $group.request(handler).done(function() {
+            self.toggleEmptyTabs();
         });
     }
 

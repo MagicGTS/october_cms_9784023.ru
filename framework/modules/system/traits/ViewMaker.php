@@ -89,7 +89,7 @@ trait ViewMaker
 
         if (!$partialPath || !File::exists($partialPath)) {
             if ($throwException) {
-                throw new SystemException(Lang::get('backend::lang.partial.not_found_name', ['name' => $partialPath]));
+                throw new SystemException(Lang::get('backend::lang.partial.not_found_name', ['name' => $partial]));
             }
 
             return false;

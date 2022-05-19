@@ -15,7 +15,7 @@ class SeedSetBuildNumber extends Seeder
      */
     public function run($buildNumber = null)
     {
-        $this->command->line('');
+        $this->line('');
 
         try {
             if ($buildNumber) {
@@ -25,10 +25,10 @@ class SeedSetBuildNumber extends Seeder
                 $build = UpdateManager::instance()->setBuildNumberManually();
             }
 
-            $this->command->comment('* You are using October CMS version: v' . System::VERSION . '.' . $build);
+            $this->line('* You are using October CMS version: v' . System::VERSION . '.' . $build, 'comment');
         }
         catch (Exception $ex) {
-            $this->command->comment('*** Unable to set build: [' . $ex->getMessage() . ']');
+            $this->line('*** Unable to set build: [' . $ex->getMessage() . ']', 'comment');
         }
     }
 }
