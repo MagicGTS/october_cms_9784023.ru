@@ -1,11 +1,11 @@
-<h2>Getting Ready</h2>
+<h2><?= __("Getting Ready") ?></h2>
 
 <div class="progress bar-loading-indicator" id="executeLoadingBar">
     <div class="progress-bar"></div>
 </div>
 
 <div class="loading-indicator-container">
-    <div data-wait-longer="Just a few more minutes..." class="text-center">Migrating Database...</div>
+    <div data-wait-longer="<?= __("Just a few more minutes") ?>..." class="text-center"><?= __("Migrating Database") ?>...</div>
 </div>
 
 <script>

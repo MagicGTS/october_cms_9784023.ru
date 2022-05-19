@@ -16,6 +16,7 @@ use Backend\Classes\WidgetBase;
 use October\Rain\Database\Model;
 use October\Rain\Element\Lists\ColumnDefinition;
 use October\Contracts\Element\ListElement;
+use Illuminate\Pagination\UrlWindow;
 use ApplicationException;
 use BackendAuth;
 use Exception;
@@ -266,6 +267,7 @@ class Lists extends WidgetBase implements ListElement
             $this->putSession('lastVisitedPage', $this->vars['pageCurrent']);
 
             if ($this->showPageNumbers) {
+                $this->vars['recordElements'] = $this->getPaginationElements($this->records);
                 $this->vars['recordTotal'] = $this->records->total();
                 $this->vars['pageLast'] = $this->records->lastPage();
                 $this->vars['pageFrom'] = $this->records->firstItem();
@@ -282,7 +284,26 @@ class Lists extends WidgetBase implements ListElement
     }
 
     /**
-     * Event handler for refreshing the list.
+     * getPaginationElements get the array of elements to pass to the view.
+     * @return array
+     */
+    protected function getPaginationElements($records)
+    {
+        $records->onEachSide(1);
+
+        $window = UrlWindow::make($records);
+
+        return array_filter([
+            $window['first'],
+            is_array($window['slider']) ? '...' : null,
+            $window['slider'],
+            is_array($window['last']) ? '...' : null,
+            $window['last'],
+        ]);
+    }
+
+    /**
+     * onRefresh event handler for refreshing the list.
      */
     public function onRefresh()
     {
@@ -982,6 +1003,7 @@ class Lists extends WidgetBase implements ListElement
     {
         if (is_string($config)) {
             $label = $config;
+            $config = [];
         }
         elseif (isset($config['label'])) {
             $label = $config['label'];

@@ -1,0 +1,6 @@
+1.0.1: First version of Images
+1.0.2:
+  - Init tables
+  - create_images_table.php
+  - create_images_lists_table.php
+  - create_images_lists_links_table.php

@@ -46,7 +46,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="layout-cell w-300 panel border-left no-padding <?= !$sidebarVisible ? 'hide' : null ?>" data-control="preview-sidebar">
+                                        <div class="layout-cell w-300 panel border-left no-padding <?= !$sidebarVisible ? 'oc-hide' : null ?>" data-control="preview-sidebar">
                                             <!-- Right sidebar -->
                                             <?= $this->makePartial('right-sidebar') ?>
                                         </div>
@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
 
-                                <div class="layout-row min-size hide" data-control="bottom-toolbar">
+                                <div class="layout-row min-size oc-hide" data-control="bottom-toolbar">
                                     <?= $this->makePartial('bottom-toolbar') ?>
                                 </div>
                             </div>

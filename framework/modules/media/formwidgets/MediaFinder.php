@@ -152,14 +152,6 @@ class MediaFinder extends FormWidgetBase
     }
 
     /**
-     * getSaveValue
-     */
-    public function getSaveValue($value)
-    {
-        return $this->maxItems === 1 ? $value : json_decode($value, true);
-    }
-
-    /**
      * processMaxItems
      */
     protected function processMaxItems()

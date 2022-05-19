@@ -6,7 +6,7 @@
 ?>
 <div class="main-menu-container">
     <nav class="navbar control-toolbar navbar-mode-<?= $navbarMode ?> flex" role="navigation">
-        <div class="toolbar-item">
+        <div class="toolbar-item toolbar-primary">
             <div data-control="toolbar" <?php if (isset($isVerticalMenu)): ?>data-vertical="true"<?php endif ?>>
                 <ul class="mainmenu-items mainmenu-general" data-main-menu>
                     <?= $this->makeLayoutPartial('mainmenu_items', [

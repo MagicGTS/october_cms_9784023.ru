@@ -34,8 +34,8 @@
                 <i class="icon-eye" data-sensitive-icon></i>
             </a>
         </div>
-        <div class="loading-indicator hide" data-sensitive-loader>
-            <span class="p-a"></span>
+        <div class="loading-indicator oc-hide" data-sensitive-loader>
+            <span class="p-4"></span>
         </div>
     </div>
 </div>

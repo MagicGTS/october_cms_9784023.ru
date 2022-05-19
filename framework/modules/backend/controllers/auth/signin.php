@@ -6,12 +6,12 @@
     <input type="hidden" name="postback" value="1" />
 
     <div class="form-elements" role="form">
-        <div class="form-group text-field">
-            <label for="login-input">
+        <!-- Login -->
+        <div class="form-group">
+            <label class="form-label" for="login-input">
                 <?= e(trans('backend::lang.account.input_username')) ?>
             </label>
 
-            <!-- Login -->
             <input
                 type="text"
                 name="login"
@@ -22,12 +22,12 @@
                 maxlength="255" />
         </div>
 
-        <div class="form-group text-field">
-            <label for="Form-ThemeDuplicate-newDirName">
+        <!-- Password -->
+        <div class="form-group">
+            <label class="form-label" for="password-input">
                 <?= e(trans('backend::lang.account.input_password')) ?>
             </label>
 
-            <!-- Password -->
             <input
                 type="password"
                 name="password"
@@ -39,14 +39,15 @@
         </div>
 
         <?php if (Config::get('backend.force_remember', true) === null): ?>
-            <!-- Remember checkbox -->
-            <div class="form-group checkbox-field horizontal-form remember">
-                <div class="checkbox custom-checkbox">
+            <!-- Remember Checkbox -->
+            <div class="form-group">
+                <div class="form-check">
                     <input
+                        class="form-check-input"
                         type="checkbox"
                         id="remember"
                         name="remember" />
-                    <label class="storm-icon-pseudo" for="remember">
+                    <label class="form-check-label" for="remember">
                         <?= e(trans('backend::lang.account.remember_me')) ?>
                     </label>
                 </div>

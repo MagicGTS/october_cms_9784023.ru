@@ -4,12 +4,14 @@
 
 <li class="item <?= 'width-'.$widget->property('ocWidgetWidth') ?> <?= $widget->property('ocWidgetNewRow') ? 'new-line' : null ?>">
     <div class="content">
-        <div class="drag-handle"></div>
+        <div class="drag-handle">
+            <i class="octo-icon-list-reorder"></i>
+        </div>
 
         <div id="<?= $widgetAlias ?>"><?= $widget->render() ?></div>
 
         <a href="javascript:;"
-            class="oc-icon-cog widget-control edit-widget"
+            class="octo-icon-cog widget-control edit-widget"
             data-inspectable
             data-inspector-title="<?= e(trans('backend::lang.dashboard.widget_inspector_title')) ?>"
             data-inspector-description="<?= e(trans('backend::lang.dashboard.widget_inspector_description')) ?>"
@@ -24,7 +26,11 @@
         </a>
 
         <?php if ($this->canAddAndDelete): ?>
-            <button type="button" class="close widget-control close-widget" data-dismiss="popover" aria-hidden="true">&times;</button>
+            <button
+                type="button"
+                class="btn-close widget-control close-widget"
+                data-remove-widget
+                aria-label="<?= __("Close") ?>"></button>
         <?php endif ?>
 
         <input type="hidden" data-widget-alias name="widgetAliases[]" value="<?= $widgetAlias ?>"/>

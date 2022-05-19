@@ -1,0 +1,44 @@
+/*---------- section info documents organization ---------*/
+
+   .documentorgo_info{
+       margin-left: auto;
+       margin-right: auto;
+       max-width: 1111px;
+       max-height: auto;
+       margin-bottom: 9.5em;
+   
+
+      .documentorgo_info_title{
+         .fonts(1em; 1.19rem; 700);  
+         color: @color_07;
+         margin-bottom: 1.9em;
+      }
+
+      .documentorgo_list{       
+         padding-left: 1.5rem;
+         padding-right: 1.5rem;
+
+          a{    
+            display: flex;  
+            align-items: center;     
+            justify-content: space-between;
+            text-decoration: none;
+            .fonts(1.13em; 1.5rem; 400);         
+            color: @color_07;
+            min-height: 44px;
+           }
+      }
+
+      .documentorgo_list:nth-of-type(2n+1) img {
+         display: none;
+      }    
+
+      .documentorgo_list:nth-child(odd){
+        background-color:  @color_11;      
+     } 
+
+      .documentorgo_list:hover{
+        background-color: @color_50;
+      }
+
+   } 

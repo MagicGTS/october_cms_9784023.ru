@@ -6,11 +6,12 @@
         <i class="icon-cogs"></i> <?= e(trans('backend::lang.dashboard.manage_widgets')) ?>
     </a>
 
-    <ul class="dropdown-menu" role="menu" data-dropdown-title="Manage dashboard">
+    <ul class="dropdown-menu" role="menu">
         <li role="presentation">
             <a
                 role="menuitem"
                 href="javascript:;"
+                class="dropdown-item"
                 data-control="popup"
                 data-handler="<?= $this->getEventHandler('onLoadAddPopup') ?>"
                 tabindex="-1">
@@ -18,12 +19,13 @@
                 <?= e(trans('backend::lang.dashboard.add_widget')) ?>
             </a>
         </li>
-        <li role="separator" class="divider"></li>
+        <li role="separator" class="dropdown-divider"></li>
         <?php if (BackendAuth::getUser()->hasAccess('backend.manage_default_dashboard')): ?>
             <li role="presentation">
                 <a
                     role="menuitem"
                     href="javascript:;"
+                    class="dropdown-item"
                     data-request="<?= $this->getEventHandler('onMakeLayoutDefault') ?>"
                     data-request-confirm="<?= e(trans('backend::lang.dashboard.make_default_confirm')) ?>"
                     tabindex="-1">
@@ -36,6 +38,7 @@
             <a
                 role="menuitem"
                 href="javascript:;"
+                class="dropdown-item"
                 data-request-success="$(window).trigger('oc.reportWidgetRefresh')"
                 data-request="<?= $this->getEventHandler('onResetWidgets') ?>"
                 data-request-confirm="<?= e(trans('backend::lang.dashboard.reset_layout_confirm')) ?>"

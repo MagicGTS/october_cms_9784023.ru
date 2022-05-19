@@ -60,12 +60,18 @@ abstract class ExportModel extends Model
             throw new ApplicationException(Lang::get('backend::lang.import_export.file_not_found_error'));
         }
 
-        $csvPath = temp_path() . '/' . $name;
+        $csvPath = temp_path($name);
         if (!file_exists($csvPath)) {
             throw new ApplicationException(Lang::get('backend::lang.import_export.file_not_found_error'));
         }
 
-        return Response::download($csvPath, $outputName)->deleteFileAfterSend(true);
+        $contentType = ends_with($name, 'xjson')
+            ? 'application/json'
+            : 'text/csv';
+
+        return Response::download($csvPath, $outputName, [
+            'Content-Type' => $contentType,
+        ])->deleteFileAfterSend(true);
     }
 
     /**
@@ -81,21 +87,22 @@ abstract class ExportModel extends Model
         // Extend columns
         $columns = $this->exportExtendColumns($columns);
 
+        // Save for download
+        $fileName = uniqid('oc');
+
         // Prepare output
         if ($this->file_format === 'json') {
+            $fileName .= 'xjson';
             $output = $this->processExportDataAsJson($columns, $results, $options);
         }
         else {
+            $fileName .= 'xcsv';
             $output = $this->processExportDataAsCsv($columns, $results, $options);
         }
 
-        // Save for download
-        $csvName = uniqid('oc');
-        $csvPath = temp_path().'/'.$csvName;
+        File::put(temp_path($fileName), $output);
 
-        File::put($csvPath, $output);
-
-        return $csvName;
+        return $fileName;
     }
 
     /**

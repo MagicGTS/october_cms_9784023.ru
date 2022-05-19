@@ -1,4 +1,4 @@
-<backend-component-modal 
+<backend-component-modal
     ref="modal"
     resizable="horizontal"
     size="small"
@@ -7,13 +7,13 @@
 >
     <template v-slot:content>
         <div class="modal-header">
+            <h4 class="modal-title" id="cms-info-modal-title" v-text="title"></h4>
             <button
                 @click.prevent="$refs.modal.hide()"
                 type="button"
-                class="close backend-icon-background-pseudo"
+                class="btn-close"
                 aria-label="Close"
-                tabindex="0"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="cms-info-modal-title" v-text="title"></h4>
+                tabindex="0"></button>
         </div>
         <div class="modal-body">
             <backend-component-infotable

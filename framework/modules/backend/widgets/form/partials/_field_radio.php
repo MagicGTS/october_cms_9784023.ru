@@ -12,22 +12,23 @@
 
             $fieldId = md5(uniqid($field->getId($index), true));
         ?>
-        <div class="radio custom-radio">
-
+        <div class="form-check">
             <input
+                class="form-check-input"
                 id="<?= $fieldId ?>"
                 name="<?= $field->getName() ?>"
                 value="<?= e($value) ?>"
                 type="radio"
                 <?= $field->isSelected($value) ? 'checked="checked"' : '' ?>
                 <?= $this->previewMode ? 'disabled="disabled"' : '' ?>
-                <?= $field->getAttributes() ?>>
+                <?= $field->getAttributes() ?>
+            />
 
-            <label for="<?= $fieldId ?>" class="storm-icon-pseudo">
+            <label class="form-check-label" for="<?= $fieldId ?>">
                 <?= e(trans($option[0])) ?>
             </label>
             <?php if (isset($option[1])): ?>
-                <p class="help-block"><?= e(trans($option[1])) ?></p>
+                <p class="form-text"><?= e(trans($option[1])) ?></p>
             <?php endif ?>
         </div>
     <?php endforeach ?>

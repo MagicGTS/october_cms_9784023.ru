@@ -20,22 +20,22 @@
 >
     <script type="text/template" data-table-toolbar>
         <div class="toolbar">
-            <button class="backend-toolbar-button control-button add-table-row-below" data-cmd="record-add">
+            <button type="button" class="backend-toolbar-button control-button add-table-row-below" data-cmd="record-add">
                 <i class="octo-icon-list-add"></i>
                 <span class="button-label"><?= e($btnAddRowLabel) ?></span>
             </button>
 
-            <button class="backend-toolbar-button control-button add-table-row-below" data-cmd="record-add-below">
+            <button type="button" class="backend-toolbar-button control-button add-table-row-below" data-cmd="record-add-below">
                 <i class="octo-icon-add-below"></i>
                 <?= e($btnAddRowBelowLabel) ?>
             </button>
 
-            <button class="backend-toolbar-button control-button add-table-row-above" data-cmd="record-add-above">
+            <button type="button" class="backend-toolbar-button control-button add-table-row-above" data-cmd="record-add-above">
                 <i class="octo-icon-add-above"></i>
-                Add row above
+                Add Row Above
             </button>
 
-            <button class="backend-toolbar-button control-button delete-table-row" data-cmd="record-delete">
+            <button type="button" class="backend-toolbar-button control-button delete-table-row" data-cmd="record-delete">
                 <i class="octo-icon-list-remove"></i>
                 <?= e($btnDeleteRowLabel) ?>
             </button>
@@ -50,7 +50,7 @@
                 value="<?= get('search') ?>"
                 type="text"
                 autocomplete="off"
-                class="table-search-input form-control icon search" />
+                class="table-search-input form-control" />
         </div>
     </script>
 </div>

@@ -493,10 +493,8 @@ class MediaLibrary
             return $path;
         }
 
-        /*
-         * Validate folder names
-         */
-        $regexWhitelist = [
+        // Validate folder names
+        $regexAllowlist = [
             '\w', // any word character
             preg_quote('@', '/'),
             preg_quote('.', '/'),
@@ -514,7 +512,7 @@ class MediaLibrary
             preg_quote('&', '/'),
         ];
 
-        if (!preg_match('/^[' . implode('', $regexWhitelist) . ']+$/iu', $path)) {
+        if (!preg_match('/^[' . implode('', $regexAllowlist) . ']+$/iu', $path)) {
             throw new ApplicationException(Lang::get('system::lang.media.invalid_path', compact('path')));
         }
 
@@ -531,9 +529,7 @@ class MediaLibrary
             '('.$regexDirectorySeparator.$regexDot.'+?$)',
         ];
 
-        /*
-         * Validate invalid paths
-         */
+        // Validate invalid paths
         $regex = '#'.implode('|', $regex).'#';
         if (preg_match($regex, $path) !== 0 || strpos($path, '//') !== false) {
             throw new ApplicationException(Lang::get('system::lang.media.invalid_path', compact('path')));

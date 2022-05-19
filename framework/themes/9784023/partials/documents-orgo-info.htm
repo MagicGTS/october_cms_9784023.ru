@@ -1,0 +1,21 @@
+<section name="info documents organization">
+   
+   <div class="wrap">
+
+     <div class="documentorgo_info">
+         <div class="documentorgo_info_title"><h3>Документы учебного центра</h3></div>
+          {% for document in documents %}
+         <div class="documentorgo_list">
+          
+           <a href="{% partial "documents-orgo" link=link %}">
+             <div class="">         
+                {% partial "documents-orgo" document=document %}            
+             </div>      
+                <div class=""> <img  src="{{ 'assets/img/svg/document.svg'|theme }}" alt="" width="" height=""></div>
+           </a>          
+         </div>
+           {% endfor %}
+      </div>    
+
+    </div>   
+</section>

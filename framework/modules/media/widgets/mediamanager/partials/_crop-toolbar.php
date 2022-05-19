@@ -34,7 +34,7 @@
             <label for="mmcropimageheight"><?= e(trans('backend::lang.media.height')) ?></label>
             <input id="mmcropimageheight" type="text" class="form-control w-60" data-control="crop-height-input" name="selectionHeight" value="<?= e($currentSelectionHeight) ?>" <?= $sizeDisabledAttr ?>/>
 
-            <label class="standalone hide" data-label="selection-size"><?= e(trans('backend::lang.media.selected_size')) ?> <span data-label="selection-width"></span> x <span data-label="selection-height"></span></label>
+            <label class="standalone oc-hide" data-label="selection-size"><?= e(trans('backend::lang.media.selected_size')) ?> <span data-label="selection-width"></span> x <span data-label="selection-height"></span></label>
 
         </div>
     </div>

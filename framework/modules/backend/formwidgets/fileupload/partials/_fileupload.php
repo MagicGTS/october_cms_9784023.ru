@@ -29,7 +29,7 @@
         <div class="popover-head">
             <h3><?= e(trans('backend::lang.fileupload.upload_error')) ?></h3>
             <p>{{errorMsg}}</p>
-            <button type="button" class="close" data-dismiss="popover" aria-hidden="true">&times;</button>
+            <button type="button" class="btn-close" data-dismiss="popover" aria-label="<?= __("Close") ?>"></button>
         </div>
         <div class="popover-body">
             <button class="btn btn-secondary" data-remove-file><?= e(trans('backend::lang.fileupload.remove_file')) ?></button>

@@ -1,7 +1,7 @@
 <?php if (empty($hintName) || !$this->isBackendHintHidden($hintName)): ?>
     <?php
         $type = !empty($type) ? $type : 'info';
-        $cssClasses = ['callout fade in'];
+        $cssClasses = ['callout fade show'];
         $cssClasses[] = 'callout-'.$type;
         if (empty($icon)) $cssClasses[] = 'no-icon';
         if (empty($subtitle)) $cssClasses[] = 'no-subheader';

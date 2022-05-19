@@ -16,7 +16,6 @@
 
 <script type="text/template" id="<?= $this->getId('groupTemplate') ?>">
     <div class="filter-search search-input-container storm-icon-pseudo loading-indicator-container size-input-text">
-        <button class="close" data-dismiss="popover" type="button">&times;</button>
         <input
             type="text"
             name="search"
@@ -44,11 +43,11 @@
             </ul>
         </div>
         <div class="filter-buttons">
-            <button class="btn btn-xs btn-primary" data-filter-action="apply">
+            <button class="btn btn-sm btn-primary" data-filter-action="apply">
                 <?= __("Apply") ?>
             </button>
             <div class="flex-grow-1"></div>
-            <button class="btn btn-xs btn-secondary" data-filter-action="clear">
+            <button class="btn btn-sm btn-secondary" data-filter-action="clear">
                 <?= __("Clear") ?>
             </button>
         </div>

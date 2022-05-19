@@ -18,19 +18,18 @@
     >
         <template v-slot:content>
             <div class="modal-header">
+                <h4 class="modal-title" v-bind:id="modalTitleId" v-text="title"></h4>
                 <button
                     @click.prevent="onCloseClick"
                     type="button"
-                    class="close backend-icon-background-pseudo"
+                    class="btn-close"
                     v-bind:disabled="readOnly"
                     aria-label="<?= e(trans('backend::lang.form.close')) ?>"
                     tabindex="0"
-                    ><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" v-bind:id="modalTitleId" v-text="title"></h4>
+                    ></button>
             </div>
             <div class="modal-body inspector-modal-host">
-                <backend-component-inspector 
+                <backend-component-inspector
                     :data-schema="dataSchema"
                     :data="data"
                     :live-mode="false"

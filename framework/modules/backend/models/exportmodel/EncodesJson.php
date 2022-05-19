@@ -16,8 +16,13 @@ trait EncodesJson
     /**
      * processExportDataAsJson returns the export data as a JSON string
      */
-    protected function processExportDataAsJson($columns, $results, $options): string
+    protected function processExportDataAsJson($columns, $results, $options)
     {
+        // Parse options
+        $options = array_merge([
+            'useOutput' => false,
+        ], $options);
+
         $result = [];
 
         // Add records
@@ -28,6 +33,12 @@ trait EncodesJson
             }
 
             $result[] = $row;
+        }
+
+        // Output
+        if ($options['useOutput']) {
+            echo json_encode($result, JSON_PRETTY_PRINT);
+            return;
         }
 
         return json_encode($result, JSON_PRETTY_PRINT);

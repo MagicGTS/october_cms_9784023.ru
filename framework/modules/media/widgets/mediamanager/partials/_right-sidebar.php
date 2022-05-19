@@ -1,6 +1,6 @@
 <?= $this->makePartial('item-sidebar-preview') ?>
 
-<div class="panel hide" data-control="sidebar-labels">
+<div class="panel oc-hide" data-control="sidebar-labels">
     <label><?= e(trans('backend::lang.media.title')) ?></label>
     <p data-label="title"></p>
 
@@ -18,7 +18,7 @@
             <td data-label="last-modified"></td>
         </tr>
 
-        <tr data-control="item-folder" class="hide">
+        <tr data-control="item-folder" class="oc-hide">
             <th><?= e(trans('backend::lang.media.folder')) ?></th>
             <td><a href="#" data-type="media-item" data-item-type="folder" data-label="folder" data-clear-search="true"></a></td>
         </tr>

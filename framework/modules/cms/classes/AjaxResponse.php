@@ -3,6 +3,7 @@
 use Illuminate\Http\Response;
 use October\Rain\Exception\ApplicationException;
 use October\Rain\Exception\ValidationException;
+use Illuminate\Http\RedirectResponse;
 use ArrayAccess;
 
 /**
@@ -19,11 +20,31 @@ class AjaxResponse extends Response implements ArrayAccess
     public $vars = [];
 
     /**
-     * setHandlerVars
+     * @var string ajaxRedirectUrl
      */
-    public function setHandlerVars($vars): static
+    protected $ajaxRedirectUrl;
+
+    /**
+     * @var array ajaxFlashMessages
+     */
+    protected $ajaxFlashMessages;
+
+    /**
+     * addHandlerVars
+     */
+    public function addHandlerVars($vars): static
     {
         $this->vars = (array) $vars;
+
+        return $this;
+    }
+
+    /**
+     * addFlashMessages
+     */
+    public function addFlashMessages($messages): static
+    {
+        $this->ajaxFlashMessages = $messages;
 
         return $this;
     }
@@ -33,6 +54,10 @@ class AjaxResponse extends Response implements ArrayAccess
      */
     public function setHandlerResponse($content): static
     {
+        if ($content instanceof RedirectResponse) {
+            $this->setAjaxRedirect($content);
+        }
+
         if (is_string($content)) {
             $content = ['result' => $content];
         }
@@ -41,9 +66,19 @@ class AjaxResponse extends Response implements ArrayAccess
             $this->vars = $content  + $this->vars;
         }
 
-        $this->setContent([
+        $response = [
             'data' => $this->vars
-        ]);
+        ];
+
+        if ($this->ajaxRedirectUrl) {
+            $response['redirect'] = $this->ajaxRedirectUrl;
+        }
+
+        if ($this->ajaxFlashMessages) {
+            $response['flash'] = $this->ajaxFlashMessages;
+        }
+
+        $this->setContent($response);
 
         return $this;
     }
@@ -74,6 +109,30 @@ class AjaxResponse extends Response implements ArrayAccess
         ]);
 
         return $this;
+    }
+
+    /**
+     * isAjaxRedirect
+     */
+    public function isAjaxRedirect(): bool
+    {
+        return $this->ajaxRedirectUrl !== null;
+    }
+
+    /**
+     * getRedirectUrl
+     */
+    public function getAjaxRedirectUrl(): string
+    {
+        return $this->ajaxRedirectUrl;
+    }
+
+    /**
+     * setRedirectUrl
+     */
+    public function setAjaxRedirect($response)
+    {
+        $this->ajaxRedirectUrl = $response->getTargetUrl();
     }
 
     /**

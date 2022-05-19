@@ -207,7 +207,7 @@
     'missing_parent_definition' => 'List behavior does not contain a definition for \':definition\'.',
     'behavior_not_ready' => 'List behavior has not been initialized, check that you have called makeLists() in your controller.',
     'invalid_column_datetime' => 'Column value \':column\' is not a DateTime object, are you missing a $dates reference in the Model?',
-    'pagination' => 'Displayed records: :from-:to of :total',
+    'pagination' => 'Displayed Records: :from-:to of :total',
     'first_page' => 'First page',
     'last_page' => 'Last page',
     'prev_page' => 'Previous page',

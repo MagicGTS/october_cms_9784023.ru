@@ -81,9 +81,7 @@ class ListController extends ControllerBehavior
     {
         parent::__construct($controller);
 
-        /*
-         * Extract list definitions
-         */
+        // Extract list definitions
         if (is_array($controller->listConfig)) {
             $this->listDefinitions = $controller->listConfig;
             $this->primaryDefinition = key($this->listDefinitions);
@@ -93,9 +91,7 @@ class ListController extends ControllerBehavior
             $this->primaryDefinition = 'list';
         }
 
-        /*
-         * Build configuration
-         */
+        // Build configuration
         $this->setConfig($this->listDefinitions[$this->primaryDefinition], $this->requiredConfig);
     }
 

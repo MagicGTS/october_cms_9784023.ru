@@ -1,12 +1,12 @@
 <script type="text/template" data-control="new-folder-template">
     <?= Form::open() ?>
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="popup">&times;</button>
             <h4 class="modal-title"><?= e(trans('backend::lang.media.new_folder_title')) ?></h4>
+            <button type="button" class="btn-close" data-dismiss="popup"></button>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label><?= e(trans('backend::lang.media.folder_name')) ?></label>
+                <label class="form-label"><?= e(trans('backend::lang.media.folder_name')) ?></label>
                 <input
                     type="text"
                     class="form-control"

@@ -37,21 +37,21 @@
         <!-- Existing file -->
         <div class="mediafinder-files-container">
             <div class="server-file"
-                data-public-url="<?= $singleFile->publicUrl ?? '' ?>"
-                data-path="<?= $singleFile->spawnPath ?? '' ?>"
-                data-title="<?= $singleFile->title ?? '' ?>"
+                data-public-url="<?= e($singleFile->publicUrl ?? '') ?>"
+                data-path="<?= e($singleFile->spawnPath ?? '') ?>"
+                data-title="<?= e($singleFile->title ?? '') ?>"
             ></div>
         </div>
     </div>
 
     <!-- Data locker -->
-    <input
-        type="hidden"
-        name="<?= $field->getName() ?>"
-        id="<?= $field->getId() ?>"
-        value="<?= $singleFile ? e($singleFile->spawnPath) : '' ?>"
-        data-find-value
-        />
+    <div id="<?= $field->getId() ?>" data-data-locker>
+        <input
+            type="hidden"
+            name="<?= $field->getName() ?>"
+            value="<?= $singleFile ? e($singleFile->spawnPath) : '' ?>"
+            />
+    </div>
 </div>
 
 <?= $this->makePartial('file_item_template') ?>
