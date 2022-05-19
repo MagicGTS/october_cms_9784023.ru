@@ -142,5 +142,6 @@ class SeedHighAltitudeWorksTables extends Seeder
             $HighAltitudeWorks->schedule()->add($schedule);
         }
         */
+        $HighAltitudeWorks->save();
     }
 }

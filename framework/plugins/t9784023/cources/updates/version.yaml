@@ -5,3 +5,11 @@
 1.0.3:
   - Seed tables
   - seed_high_altitude_works_tables.php
+1.0.4:
+  - Init tables
+  - create_electrical_safeties_table.php
+  - create_fire_safeties_table.php
+1.0.5:
+  - Seed tables
+  - seed_electrical_safeties_table.php
+  - seed_fire_safeties_table.php
