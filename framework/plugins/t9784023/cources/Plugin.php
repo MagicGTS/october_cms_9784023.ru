@@ -93,4 +93,9 @@ class Plugin extends PluginBase
             ],
         ];
     }
+    public $require = [
+        'T9784023.Images',
+        'T9784023.LearningPrograms',
+        'T9784023.Schedules',
+    ];
 }

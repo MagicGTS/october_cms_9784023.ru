@@ -24,7 +24,8 @@ class Program extends Model
      */
     protected $fillable = [
         'hours',
-        'name'
+        'name',
+        'order'
     ];
 
     /**
@@ -67,7 +68,9 @@ class Program extends Model
     public $hasMany = [];
     public $belongsTo = [];
     public $belongsToMany = [];
-    public $morphTo = [];
+    public $morphTo = [
+        'program' => []
+    ];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];

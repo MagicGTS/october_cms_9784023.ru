@@ -16,10 +16,11 @@ class CreateProgramsTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('begin_at')->useCurrent();
-            $table->foreignId('hasLearningProgram_id')->nullable();
-            $table->string('hasLearningProgram_type', 128)->nullable();
+            $table->foreignId('program_id')->nullable();
+            $table->string('program_type', 128)->nullable();
             $table->tinyInteger('hours');
             $table->string('name', 256);
+            $table->tinyInteger('order');
 
         });
     }

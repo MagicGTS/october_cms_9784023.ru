@@ -16,8 +16,8 @@ class CreateSchedulesTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('begin_at')->useCurrent();
-            $table->foreignId('hasSchedule_id')->nullable();
-            $table->string('hasSchedule_type', 128)->nullable();
+            $table->foreignId('schedule_id')->nullable();
+            $table->string('schedule_type', 128)->nullable();
             $table->string('location', 60);
             $table->string('url', 256);
 

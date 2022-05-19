@@ -12,7 +12,7 @@ class HighAltitudeWorks extends Model
     /**
      * @var string table associated with the model
      */
-    public $table = 't9784023_cources_high-altitude_works';
+    public $table = 't9784023_cources__h_alt_w';
 
     /**
      * @var array guarded attributes aren't mass assignable
@@ -23,6 +23,7 @@ class HighAltitudeWorks extends Model
      * @var array fillable attributes are mass assignable
      */
     protected $fillable = [
+        'name',
         'cost',
         'description',
         'hours',
@@ -35,7 +36,10 @@ class HighAltitudeWorks extends Model
         'howto_sign_up',
         'result_img_folder',
         'schould_to_know',
-        'youtube_url'
+        'youtube_url',
+        'img_background',
+        'img_rounded',
+        'files_folder'
     ];
 
     /**
@@ -75,17 +79,14 @@ class HighAltitudeWorks extends Model
      * @var array hasOne and other relations
      */
     public $hasOne = [];
-    public $hasMany = [
-        'img_background' => [\T9784023\Images\Models\Image::class, 'key' => 'img_background_id'],
-        'img_rounded' => [\T9784023\Images\Models\Image::class, 'key' => 'img_rounded_id'],
-        'schedule' => [\T9784023\Schedules\Models\Schedule::class, 'key' => 'schedule_id'],
-        'program' => [\T9784023\LearningPrograms\Models\Program::class, 'key' => 'program_id'],
-    ];
+    public $hasMany = [];
     public $belongsTo = [];
     public $belongsToMany = [];
     public $morphTo = [];
     public $morphOne = [];
-    public $morphMany = [];
+    public $morphMany = [
+        'schedule' => [\T9784023\Schedules\Models\Schedule::class, 'name' => 'schedule'],
+        'program' => [\T9784023\LearningPrograms\Models\Program::class, 'name' => 'program'],];
     public $attachOne = [];
     public $attachMany = [];
 }

@@ -70,7 +70,9 @@ class Image extends Model
             'otherKey' => 'images_list_id'
         ]
     ];
-    public $morphTo = [];
+    public $morphTo = [
+        'images' => []
+    ];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];

@@ -68,7 +68,9 @@ class Schedule extends Model
     public $hasMany = [];
     public $belongsTo = [];
     public $belongsToMany = [];
-    public $morphTo = [];
+    public $morphTo = [
+        'schedule' => []
+    ];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
