@@ -116,7 +116,10 @@ trait HasViewMode
         }
 
         // Custom structure reordering logic
-        if ($this->model->isClassInstanceOf(\October\Contracts\Database\SortableRelationInterface::class)) {
+        if (
+            $this->model->isClassInstanceOf(\October\Contracts\Database\SortableRelationInterface::class) &&
+            $this->model->isSortableRelation($this->field)
+        ) {
             $widget->bindEvent('list.reorderStructure', function () {
                 $this->model->setSortableRelationOrder($this->field, post('sort_orders'), array_keys((array) post('sort_orders')));
             });
@@ -235,8 +238,10 @@ trait HasViewMode
             return null;
         }
 
-        $usingSortableRelation = $this->model->isClassInstanceOf(\October\Contracts\Database\SortableRelationInterface::class);
-        if ($usingSortableRelation) {
+        if (
+            $this->model->isClassInstanceOf(\October\Contracts\Database\SortableRelationInterface::class) &&
+            $this->model->isSortableRelation($this->field)
+        ) {
             $structureConfig['includeSortOrders'] = true;
         }
 

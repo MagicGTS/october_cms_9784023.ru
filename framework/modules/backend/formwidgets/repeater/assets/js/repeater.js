@@ -219,6 +219,7 @@
     }
 
     Repeater.prototype.clickDuplicateItem = function(ev) {
+        this.eventOnAddItem && this.eventOnAddItem();
         this.onDuplicateItem(this.findItemFromTarget(ev.target));
     }
 

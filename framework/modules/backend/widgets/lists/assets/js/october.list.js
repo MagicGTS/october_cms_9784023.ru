@@ -275,15 +275,11 @@
     }
 
     $.oc.listToggleChecked = function(el) {
-        $(el)
-            .closest('[data-control="listwidget"]')
-            .listWidget('toggleChecked', el);
+        $(el).closest('.control-list').listWidget('toggleChecked', el);
     }
 
     $.oc.listGetChecked = function(el) {
-        return $(el)
-            .closest('[data-control="listwidget"]')
-            .listWidget('getChecked');
+        return $(el).closest('.control-list').listWidget('getChecked');
     }
 
     // LIST WIDGET DATA-API
@@ -330,7 +326,10 @@
             }
 
             $buttonEl.on('ajaxSetup', function (ev, context) {
-                context.options.data.checked = $.oc.listGetChecked('#' + listId + ' > .control-list:first');
+                var checked = $.oc.listGetChecked('#' + listId + ' > .control-list:first');
+                if (checked.length) {
+                    context.options.data.checked = checked;
+                }
             });
 
             $buttonEl.data('oc.listCheckedRequest', true);

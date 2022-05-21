@@ -8,7 +8,9 @@
         "php": "^8.1",
         "october/rain": "^3.0",
         "laravel/framework": "^9.0",
-        "october/all": "^3.0"
+        "october/all": "^3.0",
+        "shahiemseymor/bbcode-plugin": "^1.0",
+        "reazzon/gutenberg-plugin": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5|^9.0",
