@@ -16,9 +16,11 @@ class CreateFireSafetiesTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
             $table->string('name', 256);
-            $table->decimal('cost', 6, 2);
+            $table->decimal('cost_min', 6, 2);
+            $table->decimal('cost_max', 6, 2)->nullable();;
             $table->mediumText('description')->nullable();
-            $table->tinyInteger('hours');
+            $table->tinyInteger('hours_min');
+            $table->tinyInteger('hours_max')->nullable();;
             $table->string('learning_form', 256);
             $table->mediumText('fines_description')->nullable();
             $table->string('fines_links', 256);

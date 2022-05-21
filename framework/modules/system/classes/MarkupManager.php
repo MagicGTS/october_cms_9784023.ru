@@ -1,11 +1,9 @@
 <?php namespace System\Classes;
 
 use App;
-use Str;
 use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
 use Twig\TwigFilter as TwigSimpleFilter;
 use Twig\TwigFunction as TwigSimpleFunction;
-use ApplicationException;
 
 /**
  * MarkupManager class manages Twig functions, token parsers and filters.
@@ -86,7 +84,7 @@ class MarkupManager
     }
 
     /**
-     * Registers a callback function that defines simple Twig extensions.
+     * registerCallback function that defines simple Twig extensions.
      * The callback function should register menu items by calling the manager's
      * `registerFunctions`, `registerFilters`, `registerTokenParsers` function.
      * The manager instance is passed to the callback function as an argument. Usage:
@@ -105,7 +103,7 @@ class MarkupManager
     }
 
     /**
-     * Registers the CMS Twig extension items.
+     * registerExtensions registers the CMS Twig extension items.
      * The argument is an array of the extension definitions. The array keys represent the
      * function/filter name, specific for the plugin/module. Each element in the
      * array should be an associative array.
@@ -177,7 +175,7 @@ class MarkupManager
     }
 
     /**
-     * Returns a list of the registered Twig extensions of a type.
+     * listExtensions returns a list of the registered Twig extensions of a type.
      * @param $type string The Twig extension type
      * @return array
      */
@@ -197,7 +195,7 @@ class MarkupManager
     }
 
     /**
-     * Returns a list of the registered Twig filters.
+     * listFilters returns a list of the registered Twig filters.
      * @return array
      */
     public function listFilters()
@@ -206,7 +204,7 @@ class MarkupManager
     }
 
     /**
-     * Returns a list of the registered Twig functions.
+     * listFunctions returns a list of the registered Twig functions.
      * @return array
      */
     public function listFunctions()
@@ -215,7 +213,7 @@ class MarkupManager
     }
 
     /**
-     * Returns a list of the registered Twig token parsers.
+     * listTokenParsers returns a list of the registered Twig token parsers.
      * @return array
      */
     public function listTokenParsers()
@@ -237,7 +235,7 @@ class MarkupManager
         foreach ($this->listFunctions() as $item) {
             $functions[] = new TwigSimpleFunction(
                 $item->name,
-                $this->makeItemCallback($item),
+                $item->getTwigCallback(),
                 $item->getTwigOptions()
             );
         }
@@ -259,7 +257,7 @@ class MarkupManager
         foreach ($this->listFilters() as $item) {
             $filters[] = new TwigSimpleFilter(
                 $item->name,
-                $this->makeItemCallback($item),
+                $item->getTwigCallback(),
                 $item->getTwigOptions()
             );
         }
@@ -268,34 +266,7 @@ class MarkupManager
     }
 
     /**
-     * makeItemCallback handles wildcard call
-     */
-    protected function makeItemCallback($item)
-    {
-        // Handle a wildcard function
-        if (strpos($item->name, '*') !== false && $item->isWildCallable()) {
-            return function ($name) use ($item) {
-                $arguments = array_slice(func_get_args(), 1);
-                $method = $item->getWildCallback(Str::camel($name));
-                return call_user_func_array($method, $arguments);
-            };
-        }
-
-        // Cannot call item method
-        $callable = $item->callback;
-        if (!is_callable($callable)) {
-            throw new ApplicationException("The markup filter/function for '{$item->name}' is not callable.");
-        }
-
-        // Wrap in a closure to prevent Twig from reflecting facades
-        // when applying its named closure support
-        return function(...$args) use ($callable) {
-            return $callable(...$args);
-        };
-    }
-
-    /**
-     * Makes a set of Twig token parsers for use in a twig extension.
+     * makeTwigTokenParsers makes a set of Twig token parsers for use in a twig extension.
      * @param  array $parsers Current collection
      * @return array
      */

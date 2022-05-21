@@ -74,7 +74,7 @@ class HighAltitudeWorks extends Model
         'created_at',
         'updated_at'
     ];
-
+    public $implement = ['ReaZzon.Gutenberg.Behaviors.Gutenbergable'];
     /**
      * @var array hasOne and other relations
      */

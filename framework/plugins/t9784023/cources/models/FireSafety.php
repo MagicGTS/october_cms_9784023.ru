@@ -24,9 +24,11 @@ class FireSafety extends Model
      */
     protected $fillable = [
         'name',
-        'cost',
+        'cost_min',
+        'cost_max',
         'description',
-        'hours',
+        'hours_min',
+        'hours_max',
         'learning_form',
         'fines_description',
         'fines_links',
