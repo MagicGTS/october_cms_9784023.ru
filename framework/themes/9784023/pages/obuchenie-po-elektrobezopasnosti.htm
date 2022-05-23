@@ -1,0 +1,48 @@
+url = "/obuchenie-po-elektrobezopasnosti"
+layout = "layout"
+title = "Обучение по электробезопасности"
+meta_title = "Обучение по электробезопасности"
+==
+<?php
+function onStart()
+{
+ 
+     $this['img_circle'] = 'themes/9784023/assets/img/jpg/bigSearch-electro.jpg';
+ 
+
+}
+?>
+==
+<section class="wrap" name="body_header">   
+{% partial "dublheader"  %}
+   <div class="body_header">
+      <div class="body_header_title">
+          <h2 class="">Обучение по Электробезопасности</h2>
+          <p>ОЧУ ДПО «Учебный центр «Амулет» приглашает на обучение по электробезопасности на группу допуска от 2 до 5
+        для проведения работ с электроустановками до и выше 1000 В. Наши слушатели проходят курс очно в учебных классах
+        или дистанционно без посещения занятий в Москве. Благодаря наглядной подаче информации учащиеся эффективно усваивают
+        программу при любом формате подготовки и приступают к исполнению трудовых обязанностей сразу по окончании обучения.</p>
+      
+          <button>Записаться</button>
+      </div>
+    </div>
+    <div>
+        {% partial "circle" img=img_circle %}    
+        <div>
+           <div>
+              <img  src="{{ 'assets/img/svg/future.svg'|theme }}" alt="" width="" height=""><div class="">Срок обучения</div>
+           </div>  
+           <div>
+              <div class=""> <img  src="{{ 'assets/img/svg/teacher.svg'|theme }}" alt="" width="" height="">Срок обучения</div>
+           </div>  
+           <div>
+              <div class=""> <img  src="{{ 'assets/img/svg/wallet.svg'|theme }}" alt="" width="" height="">Срок обучения</div>
+           </div>        
+         </div>
+        <div>
+
+      </div>
+
+      </div>
+   </div> 
+</section>

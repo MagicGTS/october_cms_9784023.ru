@@ -1,12 +1,12 @@
-<div class="dubnav_menu">        
+<div class="dublnav_menu">        
       {% for item in this.page.dubnev %}
         <div class="">/</div>
-        <div class="dubnav_menu_name">
+        <div class="dublnav_menu_name">
           {% if item.link %}<a href="{{ item.link }}"><{% endif %}
           {{ item.name }}
           {% if item.link %}</a>{% endif %}
       {% else %}   
            <div class="">/</div> 
-          <div class="dubnav_menu_name">{{ this.page.title }}</div>
+          <div class="dublnav_menu_name">{{ this.page.title }}</div>
       {% endfor %}    
 </div>
