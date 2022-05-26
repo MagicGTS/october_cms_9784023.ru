@@ -10,18 +10,28 @@ function onStart()
      $this['img_circle'] = 'themes/9784023/assets/img/jpg/bigSearch-electro.jpg';
  
 
+     use \T9784023\Cources\Models\HighAltitudeWorks;
+    $filesystem = Storage::getConfig();
+    Storage::put('1234567890.txt', "12345");
+    $cource = HighAltitudeWorks::find(1)->toArray();
+    $cource ['img_background'] = $filesystem['url'].'/'.$cource['img_background'];
+    $cource ['img_rounded'] = $filesystem['url'].'/'.$cource['img_rounded'];
+    $cource ['files_folder'] = Storage::allFiles($cource['files_folder']);
+    $cource ['result_img_folder'] = Storage::allFiles($cource['result_img_folder']);
+    $this['cource'] = $cource;
+
 }
 ?>
 ==
 <section class="" name="body_header">   
    <div class = "dublheader_electro">
-         <div class = "" name = ""> 
+         <div class = "partial_dublheader_electro" name = ""> 
               {% partial "dublheader"  %}
          </div>
          <div class = "dublheader_electro_info">
-               <div class="body_header">
-                    <div class="body_header_title">
-                         <h2 class="">Обучение по Электробезопасности</h2>
+               <div class="">
+                    <div class="">
+                         <h2 class="dublheader_electro_info_title">Обучение по Электробезопасности</h2>
                          <p>ОЧУ ДПО «Учебный центр «Амулет» приглашает на обучение по электробезопасности на группу допуска от 2 до 5
                        для проведения работ с электроустановками до и выше 1000 В. Наши слушатели проходят курс очно в учебных классах
                        или дистанционно без посещения занятий в Москве. Благодаря наглядной подаче информации учащиеся эффективно усваивают
@@ -30,37 +40,111 @@ function onStart()
                          <button>Записаться</button>
                      </div>
                </div>
-               <div class = "dublheader_electro_infolist_foto">
-                    {% partial "circle" img=img_circle %}   
+               <div >
+                    <div class = "dublheader_electro_infolist_foto">
+                        {% partial "circle" img=img_circle %}  
+                     </div>    
                     <div class = "dublheader_electro_infolist">
                           <div>
                                <div class = "dublheader_electro_infolist_item">
                                     <img  src="{{ 'assets/img/svg/future.svg'|theme }}" alt="" width="" height="">
                                     <p>Срок обучения</p>
                                </div>
-                               <p>от  до  часов</p>
+                               <p>от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</p>
+                              
                           </div> 
                           <div>
                                <div class = "dublheader_electro_infolist_item">
                                     <img  src="{{ 'assets/img/svg/teacher.svg'|theme }}" alt="" width="" height="">
                                     <p>Форма обучения</p>
                                </div>
-                               <p>от  до  часов</p>
+                               <p> {{cource.learning_form}} </p>
                           </div>  
                           <div>
                                <div class = "dublheader_electro_infolist_item">
                                     <img  src="{{ 'assets/img/svg/wallet.svg'|theme }}" alt="" width="" height="">
                                     <p>Стоимость</p>
                                </div>
-                               <p>от  до  часов</p>
+                               <p>от {{cource.cost_min}} за человека</p>
                           </div>  
                     </div>
-                    
+                     
+                  
+                   
                </div>   
          </div>
     </div>     
-     
+
   
+   <div class = "block_commercialoffer">
+        <div class = "commercialoffer_addinfo">
+              <img  src="{{ 'assets/img/svg/studies.svg'|theme }}" alt="" width="" height="">
+              <p>Учебные программы разработаны в соответствии с правилами технической эксплуатации энергоустановок, 
+                  утвержденных нормативно-правовыми актами с учетом последних дополнений и изменений. Каждый курс одобрен инспекторами Ростехнадзора.</p>
+        </div>
+        <button class="commercialoffer_blank">
+             <a class="" href="#">Коммерческое предложение</a> 
+        </button> 
+   </div>
+   
+
+   <div class = "block_studyinstructions">
+        <h3 class="studyinstructions_title">Как пройти обучение?</h3>
+        <div>
+             <div>
+                  <div><img  src="{{ 'assets/img/svg/documents-vector.svg'|theme }}" alt="" width="" height=""></div>
+                  <div>
+                       <p>Скачайте и заполните заявку на нужную Вам программу</p>
+                  </div>
+
+             </div>
+             <div>
+                  <img  src="{{ 'assets/img/svg/arrow.svg'|theme }}" alt="" width="" height="">
+             </div>
+             <div>
+                  <button>Записаться</button>
+                  <div>
+                       <p>Нажмите кнопку "ЗАПИСАТЬСЯ"</p>
+                  </div>
+             </div>
+             <div>
+                  <img  src="{{ 'assets/img/svg/arrow.svg'|theme }}" alt="" width="" height="">
+             </div>
+             <div>
+                  <div>
+                        <div>
+                             <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
+                             <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">
+                        </div>
+                        <div>
+                             <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
+                             <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">                        
+                        </div>
+                        <div>
+                             <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
+                             <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">                 
+                        
+                        </div>
+                  </div>
+                  
+                  <div>Заполните все поля, Нажмите кнопку отправить и ожидайте связи с менеджером.</div>
+                   <div>Заранее можете прислать доп. информацию на почту 9784023@gmail.com.</div>
+
+
+             </div>
+
+
+
+
+
+
+        
+        
+        
+        </div>
+
+
+   </div>
       
        
        
