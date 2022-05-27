@@ -11,8 +11,8 @@ function onStart()
      ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся','counter'=>'6'],
      ['content'=>' по дополнительным профессиональным образовательным программам повышения квалификации обучающихся','counter'=>'7']
      ];
-
-$this['documents'] =[
+     $this['img_circle'] = 'themes/9784023/assets/img/jpg/bigSearch-info.jpg';
+ $this['documents'] =[
     ['link'=>'link.infozzzzzzzzz1', 'document'=>'Карточка контрагента' ],
     ['link'=>'link.infozzzzzzzzz2', 'document'=>'Регистрационные документы' ],
     ['link'=>'link.infozzzzzzzzz3', 'document'=>'Копия лицензии на осуществление образовательной деятельности' ],
@@ -38,8 +38,9 @@ $this['documents'] =[
 }
 ?>
 ==
-{% partial "dubnew-menu" %}
-{% partial "bady-header" %}
+{% partial "dublheader"  %}
+
+{% partial "body-header" img_circle=img_circle %}
 
 
 {% partial "info-about-orgo" %}
