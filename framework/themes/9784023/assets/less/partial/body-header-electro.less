@@ -10,9 +10,9 @@
     background-size: cover;
     padding-top: 1.75em;
     padding-bottom: 2.5em;
-    width: 1565px;
-height: 782px;
-top: 0px;  
+    max-width: 1440px;
+    min-height: 782px;
+    top: 0px;  
  } 
 
 .partial_dublheader_electro{
@@ -98,6 +98,8 @@ top: 0px;
     }
 
 }
+
+
 /* ---Блок Комерческое предложение-----*/
 
 .block_commercialoffer{
@@ -146,49 +148,184 @@ top: 0px;
     }
 }
 
+
 /* block_studyinstructions*/
 
 .block_studyinstructions{
      margin-left: auto;
     margin-right: auto;
     margin-bottom: 3.75rem;
-    max-width: 1112px;
+    width: 1112px;
+
     .studyinstructions_title{
         .fonts_h3; 
         margin-bottom: 2.9rem;
-
     }
+
     .studyinstructions_steps{
         display: flex;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
        justify-content: space-around;
         align-items: center;
-        
+        margin-bottom: 1.25rem;         
    
         .studyinstructions_picture{
             height: 9.18rem;
-            width: 9.18em;
+            width: 9.18rem;
             border-radius: 50%;
             background: @color_11;
-            
             text-align: center;
+            align-items: center;
 
-           .studyinstructions_picture_img{
-   
+            .studyinstructions_picture_img{
+            display: block;
+            height: 4.4rem;
+            margin-top: 30%;
+            align-items: center;              
 
             }
-
-           
-
         }
+      }  
+
+    .studyinstructions_text{
+          max-width: 1035px;
+          margin-left: auto;
+          margin-right: auto;
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+          color: @color_07;
+          margin-bottom: 1.5rem;
+
+          p{
+              .fonts(1.12rem; 1.5rem; 400);              
+               width: 16em;
+          }          
+      }
       
-    }
+    .studyinstructions_dublinfo{
+      
+        min-width: 1112px;
+         .fonts(0.87rem; 1.18rem; 400);  
+         display: flex;
+         justify-content: right; 
+        .studyinstructions_dublinfo_text{           
+           width: 20rem;
+        }
+    }          
 
 }
 
+/* lesson-schedule*/
+.schedule{
+    max-width: 1112px;
+     margin-left: auto;
+     margin-right: auto;
+     margin-bottom: 2.8rem;
+     color: @color_07;
+     .fonts(0.87rem; 1.18rem; 400); 
+   
+     
+     .schedule_header{
+         height: 3.125rem;
+         padding: 0.93rem;
+         border-top: 0.06rem solid @color_52;
+          .fonts(0.87rem; 1.18rem; 400); 
+          font-weight: bold;
+          display: grid;
+          grid-template-columns: 2fr 6fr 1fr 1fr 2fr;
+     }
+     .schedule_info{
+         min-height: 3.125rem;
+         padding: 0.45em 0.93rem;
+         background: @color_11;          
+         display: grid;
+          grid-template-columns: 2fr 6fr 1fr 1fr 2fr;
+          .schedul_info_date{              
+               font-weight: bold;               
+          }
+     }
+  }
 
- p{
-          .fonts(0.87rem; 1.18rem; 400);
-          color: @color_07; 
-          width: 18em;
-          height: auto;
-       }
+/* attention */
+
+.attention{
+    max-width: 1102px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8.12rem;
+    height: 2.81rem;
+    border: 0.06rem solid @color_09;
+    border-radius: 0.19rem;    
+     display: flex;
+     justify-content: space-around;
+    
+
+     .attention_title{
+         height: 100%;
+         padding-top: 0.6rem;
+         padding-right: 2rem;
+         width: 8.5em;
+        border-right: 0.06rem solid @color_09;
+         color: @color_09;
+         .fonts(1rem; 1.5rem; 600);         
+     }
+     .attention_article{
+         height: 100%;         
+         width: 50.3em;        
+         padding-right: 2rem;       
+         color: @color_02;
+         .fonts(0.87rem; 1.18rem; 400);         
+         
+     }
+     .attention_articlelink{
+         height: 100%;       
+         width: 8em;
+         padding-right: 2rem;
+         padding-top: 0.6rem;
+         color: @color_02;
+         .fonts(0.87rem; 1.18rem; 400);   
+         font-weight: bold;
+         text-decoration: none;
+     }
+
+}
+
+/* cost of services"*/
+.price_courses{
+    max-width: 1112px;
+    margin-right: auto;
+    margin-left: auto;
+    .price_courses_title{
+        .fonts_h3; 
+        color: @color_07;
+        height: 5.87rem;
+        width: 39.43rem;
+        margin-bottom: 10.93rem;
+    }
+    .price_courses_header{
+        width: 100%;
+        height: 6.65rem;         
+         border-top: 0.06rem solid @color_11;
+         .fonts(1rem; 1.125rem; 700); 
+         display: grid;
+         grid-template-columns: 5fr 2fr 2fr 2fr;
+         align-items: center;
+         padding-right: 5.5em;
+         padding-left: 5.5em;
+         
+    }
+    .price_courses_info{
+        height: 6.65rem;         
+           width: 100%;
+         .fonts(1rem; 1.125rem; 400); 
+         display: grid;
+         grid-template-columns: 5fr 2fr 2fr 3fr;
+         align-items: center;
+          padding-right: 3.5em;
+         padding-left: 5.5em;
+         
+    }
+}

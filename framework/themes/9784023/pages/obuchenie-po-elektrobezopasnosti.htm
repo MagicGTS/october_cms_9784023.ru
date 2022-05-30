@@ -29,16 +29,14 @@ function onStart()
               {% partial "dublheader"  %}
          </div>
          <div class = "dublheader_electro_info">
-               <div class="">
-                    <div class="">
+               <div class="">                
                          <h2 class="dublheader_electro_info_title">Обучение по Электробезопасности</h2>
                          <p>ОЧУ ДПО «Учебный центр «Амулет» приглашает на обучение по электробезопасности на группу допуска от 2 до 5
                        для проведения работ с электроустановками до и выше 1000 В. Наши слушатели проходят курс очно в учебных классах
                        или дистанционно без посещения занятий в Москве. Благодаря наглядной подаче информации учащиеся эффективно усваивают
                        программу при любом формате подготовки и приступают к исполнению трудовых обязанностей сразу по окончании обучения.</p>
       
-                         <button>Записаться</button>
-                     </div>
+                        <button>Записаться</button>
                </div>
                <div >
                     <div class = "dublheader_electro_infolist_foto">
@@ -67,15 +65,16 @@ function onStart()
                                </div>
                                <p>от {{cource.cost_min}} за человека</p>
                           </div>  
-                    </div>
-                     
-                  
+                    </div>                 
                    
                </div>   
          </div>
     </div>     
 
-  
+</section>
+
+
+<section name="commercialoffer">
    <div class = "block_commercialoffer">
         <div class = "commercialoffer_addinfo">
               <img  src="{{ 'assets/img/svg/studies.svg'|theme }}" alt="" width="" height="">
@@ -85,27 +84,28 @@ function onStart()
         <button class="commercialoffer_blank">
              <a class="" href="#">Коммерческое предложение</a> 
         </button> 
-   </div>
-   
+   </div>   
+</section>
 
+
+<section name="studyinstructions">
    <div class = "block_studyinstructions">
         <h3 class="studyinstructions_title">Как пройти обучение?</h3>
         <div class="studyinstructions_steps">
              <div class="studyinstructions_picture">
-                  <div class="studyinstructions_picture_img"><img  src="{{ 'assets/img/svg/documents-vector.svg'|theme }}" alt="" width="" height=""></div>
+                  <div class = "studyinstructions_picture_img"><img   src="{{ 'assets/img/svg/documents-vector.svg'|theme }}" alt="" width="" height=""></div>
              </div>
              <div>
                   <img  src="{{ 'assets/img/svg/arrow.svg'|theme }}" alt="" width="" height="">
              </div>
              <div class="studyinstructions_picture">
-                  <div class="studyinstructions_picture_img"><button>Записаться</button></div>
+                 <div class = "studyinstructions_picture_img"><img   src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="" height=""></div>
              </div>             
              <div>
                   <img  src="{{ 'assets/img/svg/arrow.svg'|theme }}" alt="" width="" height="">
              </div>
-             <div class="studyinstructions_picture">
-                  <div class="studyinstructions_picture_img">
-                  <div>
+             <div class="studyinstructions_picture">               
+                  <div class = "studyinstructions_picture_img">
                         <div>
                              <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
                              <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">
@@ -117,39 +117,80 @@ function onStart()
                         <div>
                              <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
                              <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">                          
-                        </div> 
+                        </div>                   
                   </div>
-                  </div>
-             </div>      
-       </div>     
-                  <div class="studyinstructions_text">
-                          <p>Скачайте и заполните заявку на нужную Вам программу</p>
+             </div> 
+        </div>                   
+        <div class="studyinstructions_text">
+                  <div >
+                        <p>Скачайте и заполните заявку на нужную Вам программу.</p>
                   </div>            
-                  <div class="studyinstructions_text">
-                        <p>Нажмите кнопку "ЗАПИСАТЬСЯ"</p>
+                  <div >
+                        <p>Нажмите кнопку "ЗАПИСАТЬСЯ".</p>
                   </div>           
-                  <div class="studyinstructions_text">
-                        <p>Заполните все поля, Нажмите кнопку отправить и ожидайте связи с менеджером.<p>
-                        <div>Заранее можете прислать доп. информацию на почту 9784023@gmail.com.</div>
-                  </div>
-             
+                  <div>
+                        <p>Заполните все поля. Нажмите кнопку отправить и ожидайте связи с менеджером.<p>                       
+                  </div
+         </div>    
+    
+       
+       </div>      
+       <div class="studyinstructions_dublinfo">
+            <div class="studyinstructions_dublinfo_text">Заранее можете прислать доп. информацию на почту 9784023@gmail.com.</div>
+        </div>           
+      
+</section>
 
-
-
-
-
-
-        
-        
+<section name="lesson-schedule">
+        <div class = "schedule">
+             <header class = "schedule_header">
+                     <div class = "schedul_header_date">Дата</div>
+                     <div class = "schedul_header_suminar">Семинар</div>
+                     <div class = "schedul_header_time">Время</div>
+                     <div class = "schedul_header_office">Кабинет</div>
+             </header>
+             <div class = "schedule_info" >
+                     <div class = "schedul_info_date">10,10,2020</div>
+                     <div class = "schedul_info_suminar">{{cource.name}}</div>
+                     <div class = "schedul_info_time">10.25</div>
+                     <div class = "schedul_info_office">Каб.26</div>
+                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/primaryButton.svg'|theme }}"></a>           
+             </div>
         
         </div>
+</section>
 
 
-   </div>
-      
-       
-       
+<section name = "attention">
+         <div class = "attention">
+              <p class = "attention_title">Внимание !</p>
+              <p class = "attention_article">а отсутствие необходимого и своевременного обучения согласно ч. 3 ст. 5.27.1 КоАП 
+              установлен штраф для работодателей от 110 000 руб. до 130 000 руб.</p>
+              <a class = "attention_articlelink" href ="#">Подробнее</a>
+         </div>
+</section>
+
+<section name="cost of services">
+         <div class="price_courses">
+               <h3 class="price_courses_title">Стоимость курсов обучения по электробезопасности</h3>
            
-           
-      
+             <header class = "price_courses_header">
+                     <div class = "price_courses_courses">Программа обучения</div>
+                     <div class = "price_courses_clock">Кол-во часов</div>
+                     <div class = "price_courses_price">Стоимость за человека</div>
+                     
+             </header>
+             <div class = "price_courses_info" >
+                     <div class = "schedul_info_date">{{cource.name}}</div>
+                     <div class = "schedul_info_suminar">от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</div>
+                     <div class = "schedul_info_time"> {{cource.cost_min}} p</div>
+                    
+                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="161px" height="57px"></a>           
+             </div>
+        
+        </div>
+         </div>
+        
+
+
 </section>
