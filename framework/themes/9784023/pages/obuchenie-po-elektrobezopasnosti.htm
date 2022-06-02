@@ -8,6 +8,8 @@ function onStart()
 {
  
      $this['img_circle'] = 'themes/9784023/assets/img/jpg/bigSearch-electro.jpg';
+     $this['img_dubl_circle'] = 'themes/9784023/assets/img/jpg/bigSearch-electrodiscont.jpg';
+ 
  
 
      use \T9784023\Cources\Models\HighAltitudeWorks;
@@ -36,7 +38,7 @@ function onStart()
                        или дистанционно без посещения занятий в Москве. Благодаря наглядной подаче информации учащиеся эффективно усваивают
                        программу при любом формате подготовки и приступают к исполнению трудовых обязанностей сразу по окончании обучения.</p>
       
-                        <button>Записаться</button>
+                        <buttonn type ="button">Записаться</button>
                </div>
                <div >
                     <div class = "dublheader_electro_infolist_foto">
@@ -187,10 +189,96 @@ function onStart()
                     
                      <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="161px" height="57px"></a>           
              </div>
+             <div class = "price_courses_info" >
+                     <div class = "schedul_info_date">{{cource.name}}</div>
+                     <div class = "schedul_info_suminar">от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</div>
+                     <div class = "schedul_info_time"> {{cource.cost_min}} p</div>
+                    
+                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="161px" height="57px"></a>           
+             </div>
+             <div class = "price_courses_info" >
+                     <div class = "schedul_info_date">{{cource.name}}</div>
+                     <div class = "schedul_info_suminar">от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</div>
+                     <div class = "schedul_info_time"> {{cource.cost_min}} p</div>
+                    
+                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="161px" height="57px"></a>           
+             </div>
         
-        </div>
-         </div>
+        
+       </div>
+       
+           <div class = "link_button">
+                 <a  href ="#">
+                     <button class = "button_open_more" type = "button">Открыть еще <i class="fa fa-angle-right" aria-hidden="true"></i></butten>             
+                 </a>
+           </div>     
+       
         
 
 
 </section>
+
+<section name = "discounts info">
+        <div class = "discount_info">
+            <div class ="discount_infoblock">
+                 <div class = "discount_infoblock_title">
+                  <h3>Бюджетным и казенным учреждениями - скидки!</h3>
+                  <a class = "discount_infoblock_button" href ="#"><img  src="{{ 'assets/img/svg/buttonRegistration.svg'|theme }}" alt="" width="" height=""></a>  
+             </div>
+             <div class = "discount_infoblock_img">
+                  {% partial "circle" img=img_dubl_circle %}  
+             </div>
+
+            </div>
+             
+        </div>
+
+</section>
+
+
+
+
+
+
+
+
+<section name="plan of stady">
+         <div class="plan_stady">
+               <h3 class="plan_stady_title">Учебный план по обучению электробезопасности</h3>
+           
+             <header class = "plan_stady_header">
+                     <div class = "plan_stady_item">№</div>
+                     <div class = "">Наименование раздела</div>
+                     <div class = "plan_stady_item">Кол-во часов Л/ПЗ</div>
+                     
+             </header>
+             <div class = "plan_stady_info" >
+                     <div class = "plan_stady_item">1</div>
+                     <div class = "">Управление электрохозяйством. Подготовка персонала к эксплуатации электроустановок. Система управления электрохозяйством.</div>
+                     <div class = "plan_stady_item">4</div>                           
+             </div>
+             <div class = "plan_stady_info" >
+                     <div class = "plan_stady_item">1</div>
+                     <div class = "">Управление электрохозяйством. Подготовка персонала к эксплуатации электроустановок. Система управления электрохозяйством.</div>
+                     <div class = "plan_stady_item">4</div>                           
+             </div>
+             <div class = "plan_stady_info" >
+                     <div class = "plan_stady_item">1</div>
+                     <div class = "">Управление электрохозяйством. Подготовка персонала к эксплуатации электроустановок. Система управления электрохозяйством.</div>
+                     <div class = "plan_stady_item">4</div>                           
+             </div>         
+        </div>
+       <div class = "link_button">
+             <a  href ="#">
+                     <button class = "button_open_more" type = "button">Открыть еще <i class="fa fa-angle-right" aria-hidden="true"></i></butten>             
+             </a>    
+       </div>   
+</section>
+<section name = "dubl electro info">
+          <div class="dubl_electro_info">    
+               <a href="#">Кому нужно проходить обучение<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+               <a href="#">Чему учат на курсах?<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+               <a href="#">Электробезопасность следует посетить тем, кто<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+               <a href="#">Как записаться на обучение?<i class="fa fa-angle-right" aria-hidden="true"></i></a>   
+          </div>
+</sectionN
