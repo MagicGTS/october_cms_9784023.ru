@@ -42,11 +42,11 @@ class ProjectSync extends Command
             $composer->update();
 
             // Check dependencies
-            passthru('php artisan plugin:check --no-migrate');
+            passthru(PHP_BINARY.' artisan plugin:check --no-migrate');
 
             // Lock themes
             if (System::hasModule('Cms')) {
-                passthru('php artisan theme:check');
+                passthru(PHP_BINARY.' artisan theme:check');
             }
 
             // Migrate database
@@ -54,7 +54,7 @@ class ProjectSync extends Command
             $this->line('');
 
             $errCode = null;
-            passthru('php artisan october:migrate', $errCode);
+            passthru(PHP_BINARY.' artisan october:migrate', $errCode);
 
             if ($errCode !== 0) {
                 $this->output->error('Migration failed. Check output above');

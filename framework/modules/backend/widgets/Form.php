@@ -164,7 +164,7 @@ class Form extends WidgetBase implements FormElement
     }
 
     /**
-     * Renders the widget.
+     * render the widget.
      *
      * Options:
      *  - preview: Render this form as an uneditable preview. Default: false
@@ -690,43 +690,6 @@ class Form extends WidgetBase implements FormElement
     }
 
     /**
-     * addFields programatically, used internally and for extensibility
-     * @param array $fields
-     * @param string $addToArea
-     */
-    public function addFields(array $fields, $addToArea = null)
-    {
-        foreach ($fields as $name => $config) {
-            $fieldObj = $this->makeFormField($name, $config);
-
-            // Check form field matches the active context
-            if ($fieldObj->context !== null) {
-                $context = is_array($fieldObj->context) ? $fieldObj->context : [$fieldObj->context];
-                if (!in_array($this->getContext(), $context)) {
-                    continue;
-                }
-            }
-
-            // Field name without @context suffix
-            $fieldName = $fieldObj->fieldName;
-
-            $this->allFields[$fieldName] = $fieldObj;
-
-            switch (strtolower($addToArea)) {
-                case FormTabs::SECTION_PRIMARY:
-                    $this->allTabs->primary->addField($fieldName, $fieldObj);
-                    break;
-                case FormTabs::SECTION_SECONDARY:
-                    $this->allTabs->secondary->addField($fieldName, $fieldObj);
-                    break;
-                default:
-                    $this->allTabs->outside->addField($fieldName, $fieldObj);
-                    break;
-            }
-        }
-    }
-
-    /**
      * addFieldsFromModel from the model
      */
     protected function addFieldsFromModel(string $addToArea = null): void
@@ -756,19 +719,83 @@ class Form extends WidgetBase implements FormElement
     }
 
     /**
+     * addFields programatically, used internally and for extensibility
+     * @param array $fields
+     * @param string $addToArea
+     */
+    public function addFields(array $fields, $addToArea = null): ElementHolder
+    {
+        $built = [];
+        foreach ($fields as $name => $config) {
+            $fieldObj = $built[$name] = $this->makeFormField($name, $config);
+
+            // Check form field matches the active context
+            if ($fieldObj->context !== null) {
+                $context = is_array($fieldObj->context) ? $fieldObj->context : [$fieldObj->context];
+                if (!in_array($this->getContext(), $context)) {
+                    continue;
+                }
+            }
+
+            // Field name without @context suffix
+            $fieldName = $fieldObj->fieldName;
+
+            $this->allFields[$fieldName] = $fieldObj;
+
+            switch (strtolower($addToArea)) {
+                case FormTabs::SECTION_PRIMARY:
+                    $this->allTabs->primary->addField($fieldName, $fieldObj);
+                    break;
+                case FormTabs::SECTION_SECONDARY:
+                    $this->allTabs->secondary->addField($fieldName, $fieldObj);
+                    break;
+                default:
+                    $this->allTabs->outside->addField($fieldName, $fieldObj);
+                    break;
+            }
+        }
+
+        return new ElementHolder($built);
+    }
+
+    /**
+     * addField
+     */
+    public function addField($name, $config = []): FormField
+    {
+        return $this->addFields([$name => $config])->$name;
+    }
+
+    /**
      * addTabFields
      */
-    public function addTabFields(array $fields)
+    public function addTabFields(array $fields): ElementHolder
     {
-        $this->addFields($fields, 'primary');
+        return $this->addFields($fields, FormTabs::SECTION_PRIMARY);
+    }
+
+    /**
+     * addTabField
+     */
+    public function addTabField($name, $config = []): FormField
+    {
+        return $this->addTabFields([$name => $config])->$name;
     }
 
     /**
      * addSecondaryTabFields
      */
-    public function addSecondaryTabFields(array $fields)
+    public function addSecondaryTabFields(array $fields): ElementHolder
     {
-        $this->addFields($fields, 'secondary');
+        return $this->addFields($fields, FormTabs::SECTION_SECONDARY);
+    }
+
+    /**
+     * addSecondaryTabField
+     */
+    public function addSecondaryTabField($name, $config = []): FormField
+    {
+        return $this->addSecondaryTabFields([$name => $config])->$name;
     }
 
     /**
@@ -914,7 +941,7 @@ class Form extends WidgetBase implements FormElement
     }
 
     /**
-     * Looks up the field value.
+     * getFieldValue looks up the field value.
      * @param mixed $field
      * @param mixed $data
      * @return string
@@ -929,7 +956,7 @@ class Form extends WidgetBase implements FormElement
             if (!isset($this->allFields[$field])) {
                 throw new SystemException(Lang::get(
                     'backend::lang.form.missing_definition',
-                    compact('field')
+                    ['field' => $field]
                 ));
             }
 

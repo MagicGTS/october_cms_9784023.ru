@@ -536,6 +536,25 @@ class Blueprint extends Extendable
     }
 
     /**
+     * getPermissionCodeName
+     */
+    public function getPermissionCodeName($name = null): string
+    {
+        $code = str_replace('-', '', $this->uuid);
+
+        if ($this instanceof \Tailor\Classes\Blueprint\GlobalBlueprint) {
+            $prefix = 'tailor.global.';
+        }
+        else {
+            $prefix = 'tailor.entry.';
+        }
+
+        $suffix = $name !== null ? '.' . $name : '';
+
+        return $prefix . $code . $suffix;
+    }
+
+    /**
      * newCollection instance
      */
     public function newCollection(array $templates = []): BlueprintCollection

@@ -7,5 +7,11 @@
   "Draft Saved": "Taslak Kaydedildi",
   "Draft Applied": "Taslak Uygulandı",
   "Draft Created": "Taslak Oluşturuldu",
-  "Draft Discarded": "Taslak Silindi"
+  "Draft Discarded": "Taslak Silindi",
+  "Create Entry": "Giriş Oluştur",
+  "Publish Entry": "Girişi Yayınla",
+  "Delete Entry": "Girişi sil",
+  "Entries have been disabled": "Girişler devre dışı bırakıldı",
+  "Entries have been enabled": "Girişler etkinleştirildi",
+  "Entries have been deleted": "girişler silindi"
 }

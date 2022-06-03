@@ -36,7 +36,7 @@
                         <div class="item-title no-wrap-text">
                             <i class="<?= $this->itemTypeToIconClass($item, $itemType) ?>"></i> <?= e(basename($item->path)) ?>
 
-                            <?php if (!$this->readOnly): ?>
+                            <?php if ($this->checkHasPermission('mediaDelete')): ?>
                                 <a
                                     href="#"
                                     data-rename

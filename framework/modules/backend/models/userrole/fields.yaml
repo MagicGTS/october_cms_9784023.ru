@@ -24,3 +24,12 @@ tabs:
             label: backend::lang.user.role.description_field
             type: textarea
             size: tiny
+
+        color_background:
+            label: Background Color
+            type: colorpicker
+
+        permissions:
+            tab: backend::lang.user.permissions
+            type: Backend\FormWidgets\PermissionEditor
+            mode: checkbox

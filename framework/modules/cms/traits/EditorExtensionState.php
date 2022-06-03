@@ -290,7 +290,7 @@ trait EditorExtensionState
      */
     private function loadLayoutsForUiLists($theme, $user)
     {
-        if ($user->hasAnyAccess(['cms.manage_layouts'])) {
+        if ($user->hasAnyAccess(['editor.cms_layouts'])) {
             // Use layout list from Navigator
             return [];
         }
@@ -310,7 +310,7 @@ trait EditorExtensionState
      */
     private function loadPartialsForUiLists($theme, $user)
     {
-        if ($user->hasAnyAccess(['cms.manage_partials'])) {
+        if ($user->hasAnyAccess(['editor.cms_partials'])) {
             // Use partial list from Navigator
             return [];
         }
@@ -330,7 +330,7 @@ trait EditorExtensionState
      */
     private function loadContentForUiLists($theme, $user)
     {
-        if ($user->hasAnyAccess(['cms.manage_content'])) {
+        if ($user->hasAnyAccess(['editor.cms_content'])) {
             // Use content file list from Navigator
             return [];
         }
@@ -350,7 +350,7 @@ trait EditorExtensionState
      */
     private function loadPagesForUiLists($theme, $user)
     {
-        if ($user->hasAnyAccess(['cms.manage_pages'])) {
+        if ($user->hasAnyAccess(['editor.cms_pages'])) {
             // Use page list from Navigator
             return [];
         }

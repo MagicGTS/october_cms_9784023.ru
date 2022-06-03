@@ -80,9 +80,10 @@ class VersionManager
 
         // No updates needed
         if ((string) $currentVersion === (string) $databaseVersion) {
-            $this->note('- <info>Nothing to update.</info>');
-            return;
+            return false;
         }
+
+        $this->note($code);
 
         $newUpdates = $this->getNewFileVersions($code, $databaseVersion);
 

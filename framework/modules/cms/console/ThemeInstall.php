@@ -84,7 +84,7 @@ class ThemeInstall extends Command
         }
 
         // Check dependencies
-        passthru('php artisan plugin:check');
+        passthru(PHP_BINARY.' artisan plugin:check');
 
         $this->output->success("Theme '${name}' installed");
     }

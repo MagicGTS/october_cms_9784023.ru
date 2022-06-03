@@ -977,7 +977,7 @@ class Lists extends WidgetBase implements ListElement
         foreach ($columns as $columnName => $config) {
             // Check if user has permissions to show this column
             $permissions = array_get($config, 'permissions');
-            if (!empty($permissions) && !BackendAuth::getUser()->hasAccess($permissions, false)) {
+            if (!empty($permissions) && !BackendAuth::userHasAccess($permissions, false)) {
                 continue;
             }
 

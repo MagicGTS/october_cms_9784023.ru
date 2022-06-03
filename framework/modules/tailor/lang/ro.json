@@ -7,5 +7,11 @@
   "Draft Saved": "Schiță salvată",
   "Draft Applied": "Ciornă aplicată",
   "Draft Created": "Ciornă creată",
-  "Draft Discarded": "Ciornă eliminată"
+  "Draft Discarded": "Ciornă eliminată",
+  "Create Entry": "Creați intrare",
+  "Publish Entry": "Publicați intrarea",
+  "Delete Entry": "Ștergeți intrarea",
+  "Entries have been disabled": "Intrările au fost dezactivate",
+  "Entries have been enabled": "Intrările au fost activate",
+  "Entries have been deleted": "Intrările au fost șterse"
 }

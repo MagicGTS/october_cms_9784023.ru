@@ -51,7 +51,7 @@ trait FieldProcessor
         foreach ($fields as $fieldName => $field) {
             if (
                 $field->permissions &&
-                !BackendAuth::getUser()->hasAccess($field->permissions, false)
+                !BackendAuth::userHasAccess($field->permissions, false)
             ) {
                 $this->removeField($fieldName);
             }
@@ -110,7 +110,7 @@ trait FieldProcessor
             }
 
             // Specified explicitly on the object already
-            if ($field->hasOptions() && is_array($field->options)) {
+            if ($field->hasOptions()) {
                 continue;
             }
 

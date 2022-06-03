@@ -8,7 +8,6 @@ use Config;
 use Schema;
 use Backend;
 use BackendMenu;
-use BackendAuth;
 use System as SystemHelper;
 use System\Models\EventLog;
 use System\Models\MailSetting;
@@ -21,6 +20,7 @@ use System\Classes\SettingsManager;
 use System\Twig\Engine as TwigEngine;
 use System\Twig\Loader as TwigLoader;
 use System\Twig\Extension as TwigExtension;
+use Backend\Classes\RoleManager;
 use Backend\Classes\WidgetManager;
 use October\Rain\Support\ModuleServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -194,6 +194,7 @@ class ServiceProvider extends ModuleServiceProvider
                 'studly' => [\Str::class, 'studly'],
                 'md' => [\Markdown::class, 'parse'],
                 'md_safe' => [\Markdown::class, 'parseSafe'],
+                'md_clean' => [\Markdown::class, 'parseClean'],
                 'time_since' => [\System\Helpers\DateTime::class, 'timeSince'],
                 'time_tense' => [\System\Helpers\DateTime::class, 'timeTense'],
             ]);
@@ -231,9 +232,6 @@ class ServiceProvider extends ModuleServiceProvider
         $this->registerConsoleCommand('october.fresh', \System\Console\OctoberFresh::class);
         $this->registerConsoleCommand('october.passwd', \System\Console\OctoberPasswd::class);
 
-        $this->registerConsoleCommand('project.set', \System\Console\ProjectSet::class);
-        $this->registerConsoleCommand('project.sync', \System\Console\ProjectSync::class);
-
         $this->registerConsoleCommand('plugin.install', \System\Console\PluginInstall::class);
         $this->registerConsoleCommand('plugin.remove', \System\Console\PluginRemove::class);
         $this->registerConsoleCommand('plugin.disable', \System\Console\PluginDisable::class);
@@ -241,6 +239,8 @@ class ServiceProvider extends ModuleServiceProvider
         $this->registerConsoleCommand('plugin.refresh', \System\Console\PluginRefresh::class);
         $this->registerConsoleCommand('plugin.list', \System\Console\PluginList::class);
         $this->registerConsoleCommand('plugin.check', \System\Console\PluginCheck::class);
+
+        $this->registerConsoleCommand('project.sync', \System\Console\ProjectSync::class);
     }
 
     /**
@@ -409,23 +409,25 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerBackendPermissions()
     {
-        BackendAuth::registerCallback(function ($manager) {
+        RoleManager::instance()->registerCallback(function ($manager) {
             $manager->registerPermissions('October.System', [
-                'system.manage_updates' => [
-                    'label' => 'system::lang.permissions.manage_software_updates',
-                    'tab' => 'system::lang.permissions.name'
-                ],
-                'system.access_logs' => [
-                    'label' => 'system::lang.permissions.access_logs',
-                    'tab' => 'system::lang.permissions.name'
-                ],
-                'system.manage_mail_settings' => [
-                    'label' => 'system::lang.permissions.manage_mail_settings',
-                    'tab' => 'system::lang.permissions.name'
-                ],
-                'system.manage_mail_templates' => [
+                // Mail
+                'mail.templates' => [
                     'label' => 'system::lang.permissions.manage_mail_templates',
-                    'tab' => 'system::lang.permissions.name'
+                    'tab' => 'Mail',
+                    'order' => 300
+                ],
+                'mail.settings' => [
+                    'label' => 'system::lang.permissions.manage_mail_settings',
+                    'tab' => 'Mail',
+                    'order' => 900
+                ],
+
+                // Utilities
+                'utilities.logs' => [
+                    'label' => 'system::lang.permissions.access_logs',
+                    'tab' => 'Utilities',
+                    'order' => 400
                 ]
             ]);
         });
@@ -448,7 +450,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_SYSTEM,
                     'icon' => 'octo-icon-download',
                     'url' => Backend::url('system/updates'),
-                    'permissions' => ['system.manage_updates'],
+                    'permissions' => ['general.backend.perform_updates'],
                     'order' => 300
                 ],
                 'my_updates' => [
@@ -457,7 +459,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_MYSETTINGS,
                     'icon' => 'octo-icon-components',
                     'url' => Backend::url('system/updates'),
-                    'permissions' => ['system.manage_updates'],
+                    'permissions' => ['general.backend.perform_updates'],
                     'order' => 520,
                     'context' => 'mysettings'
                 ],
@@ -467,7 +469,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_MAIL,
                     'icon' => 'octo-icon-mail-messages',
                     'url' => Backend::url('system/mailtemplates'),
-                    'permissions' => ['system.manage_mail_templates'],
+                    'permissions' => ['mail.templates'],
                     'order' => 610
                 ],
                 'mail_settings' => [
@@ -476,7 +478,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_MAIL,
                     'icon' => 'octo-icon-mail-settings',
                     'class' => 'System\Models\MailSetting',
-                    'permissions' => ['system.manage_mail_settings'],
+                    'permissions' => ['mail.settings'],
                     'order' => 620
                 ],
                 'mail_brand_settings' => [
@@ -485,7 +487,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_MAIL,
                     'icon' => 'octo-icon-mail-branding',
                     'url' => Backend::url('system/mailbrandsettings'),
-                    'permissions' => ['system.manage_mail_templates'],
+                    'permissions' => ['mail.templates'],
                     'order' => 630
                 ],
                 'event_logs' => [
@@ -494,7 +496,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_LOGS,
                     'icon' => 'octo-icon-text-format-ul',
                     'url' => Backend::url('system/eventlogs'),
-                    'permissions' => ['system.access_logs'],
+                    'permissions' => ['utilities.logs'],
                     'order' => 900,
                     'keywords' => 'error exception'
                 ],
@@ -504,7 +506,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_LOGS,
                     'icon' => 'icon-file-o',
                     'url' => Backend::url('system/requestlogs'),
-                    'permissions' => ['system.access_logs'],
+                    'permissions' => ['utilities.logs'],
                     'order' => 910,
                     'keywords' => '404 error'
                 ],

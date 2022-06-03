@@ -183,7 +183,7 @@ class MailManager
 
         $html = $this->parseTwig($content, $data);
 
-        $html = Markdown::parseSafe($html);
+        $html = Markdown::parseNoIndent($html);
 
         return $html;
     }

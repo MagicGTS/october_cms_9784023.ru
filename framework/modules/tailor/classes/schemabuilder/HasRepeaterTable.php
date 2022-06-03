@@ -25,6 +25,8 @@ trait HasRepeaterTable
         Schema::create($tableName, function ($table) {
             $this->defineRepeaterTableColumns($table);
         });
+
+        $this->actionCount++;
     }
 
     /**

@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: High Altitude Work
+
+# Model Form Field configuration
+form: $/t9784023/cources/models/highaltitudework/fields.yaml
+
+# Model Class name
+modelClass: T9784023\Cources\Models\HighAltitudeWorks
+
+# Default redirect location
+defaultRedirect: t9784023/cources/highaltitudeworks
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: t9784023/cources/highaltitudeworks/update/:id
+    redirectClose: t9784023/cources/highaltitudeworks
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: t9784023/cources/highaltitudeworks
+    redirectClose: t9784023/cources/highaltitudeworks
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

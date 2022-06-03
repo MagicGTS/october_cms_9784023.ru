@@ -7,5 +7,11 @@
   "Draft Saved": "Entwurf gespeichert",
   "Draft Applied": "Entwurf angewendet",
   "Draft Created": "Entwurf erstellt",
-  "Draft Discarded": "Entwurf verworfen"
+  "Draft Discarded": "Entwurf verworfen",
+  "Create Entry": "Eintrag erstellen",
+  "Publish Entry": "Eintrag veröffentlichen",
+  "Delete Entry": "Eintrag löschen",
+  "Entries have been disabled": "Einträge wurden deaktiviert",
+  "Entries have been enabled": "Einträge wurden aktiviert",
+  "Entries have been deleted": "Einträge wurden gelöscht"
 }

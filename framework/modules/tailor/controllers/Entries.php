@@ -12,6 +12,7 @@ use Backend\Classes\WildcardController;
 use Tailor\Classes\Blueprint\SingleBlueprint;
 use Tailor\Classes\Blueprint\StructureBlueprint;
 use ApplicationException;
+use ForbiddenException;
 
 /**
  * Entries controller
@@ -49,20 +50,9 @@ class Entries extends WildcardController
     public $importExportConfig = 'config_import_export.yaml';
 
     /**
-     * @var array requiredPermissions to view this page
-     */
-    // public $requiredPermissions = ['tailor.access_entries'];
-    public $requiredPermissions = [];
-
-    /**
      * @var Blueprint activeSource
      */
     protected $activeSource;
-
-    /**
-     * @var Blueprint[] allSources
-     */
-    protected $allSources;
 
     /**
      * @var string actionMethod is the action method to call
@@ -76,7 +66,7 @@ class Entries extends WildcardController
     {
         // Pop off first parameter as source handle
         $sourceHandle = array_shift($this->params);
-        $this->makeBlueprintSources($sourceHandle);
+        $this->makeBlueprintSource($sourceHandle);
 
         $validMethods = ['create', 'export', 'import', 'download'];
         $slug = $this->params[0] ?? null;
@@ -95,6 +85,8 @@ class Entries extends WildcardController
             $this->handleError(new ApplicationException("Cannot find [${sourceHandle}] section"));
             return;
         }
+
+        $this->checkSourcePermission();
 
         $this->setNavigationContext();
 
@@ -162,20 +154,23 @@ class Entries extends WildcardController
 
                 switch ($bulkAction) {
                     case 'disable':
+                        $this->checkSourcePermission('publish');
                         $model->is_enabled = false;
                         $model->save();
-                        Flash::success('Entries have been disabled');
+                        Flash::success(__('Entries have been disabled'));
                         break;
 
                     case 'enable':
+                        $this->checkSourcePermission('publish');
                         $model->is_enabled = true;
                         $model->save();
-                        Flash::success('Entries have been enabled');
+                        Flash::success(__('Entries have been enabled'));
                         break;
 
                     case 'delete':
+                        $this->checkSourcePermission('delete');
                         $model->delete();
-                        Flash::success('Entries have been deleted');
+                        Flash::success(__('Entries have been deleted'));
                         break;
                 }
             }
@@ -189,6 +184,8 @@ class Entries extends WildcardController
      */
     public function create()
     {
+        $this->checkSourcePermission('create');
+
         if ($this->isSectionDraftable()) {
             return $this->asExtension('DraftController')->create();
         }
@@ -248,7 +245,6 @@ class Entries extends WildcardController
         $this->vars['primaryModel'] = $model;
         $this->vars['entityName'] = $this->activeSource->name ?? '';
         $this->vars['activeSource'] = $this->activeSource;
-        $this->vars['sources'] = $this->allSources;
 
         if ($model) {
             $this->vars['initialState'] = [
@@ -263,7 +259,8 @@ class Entries extends WildcardController
                 'hasPreviewPage' => $this->hasPreviewPage(),
                 'statusCodeOptions' => $model->getStatusCodeOptions(),
                 'showTreeControls' => $this->isSectionStructured() && $this->activeSource->hasTree(),
-                'fullSlug' => $model->fullslug
+                'fullSlug' => $model->fullslug,
+                'canDelete' => $this->hasSourcePermission('delete')
             ];
 
             $showEntryTypeSelector = isset($this->vars['initialState']['entryTypeOptions']) &&
@@ -350,6 +347,8 @@ class Entries extends WildcardController
      */
     public function onDelete($recordId = null)
     {
+        $this->checkSourcePermission('delete');
+
         if ($this->actionMethod === 'update') {
             return $this->asExtension('FormController')->update_onDelete($recordId);
         }
@@ -546,6 +545,18 @@ class Entries extends WildcardController
     }
 
     /**
+     * formExtendFields
+     */
+    public function formExtendFields($widget)
+    {
+        if (!$this->hasSourcePermission('publish')) {
+            $widget->getField('is_enabled')->hidden();
+            $widget->getField('published_at')->hidden();
+            $widget->getField('expired_at')->hidden();
+        }
+    }
+
+    /**
      * importExportExtendModel
      */
     public function importExportExtendModel($model)
@@ -604,20 +615,55 @@ class Entries extends WildcardController
     }
 
     /**
-     * makeBlueprintSources
+     * makeBlueprintSource
      */
-    protected function makeBlueprintSources($activeSource = null): void
+    protected function makeBlueprintSource($activeSource = null): void
     {
-        $this->allSources = BlueprintIndexer::instance()->listSections();
-
         if (!$activeSource) {
-            $this->activeSource = $this->allSources[0] ?? null;
+            foreach (BlueprintIndexer::instance()->listSections() as $proposedSource) {
+                $this->activeSource = $proposedSource;
+
+                if ($this->checkSourcePermission(null, false)) {
+                    break;
+                }
+            }
         }
         else {
             $this->activeSource = $activeSource
                 ? BlueprintIndexer::instance()->findSectionByHandle($activeSource)
                 : null;
         }
+    }
+
+    /**
+     * checkSourcePermission
+     */
+    protected function checkSourcePermission($names = null, $throwException = true)
+    {
+        if ($names) {
+            $permissionNames = array_map(function($name) {
+                return $this->activeSource->getPermissionCodeName($name);
+            }, (array) $names);
+        }
+        else {
+            $permissionNames = [$this->activeSource->getPermissionCodeName()];
+        }
+
+        $hasPermission = $this->user->hasAnyAccess($permissionNames);
+
+        if (!$hasPermission && $throwException) {
+            throw new ForbiddenException;
+        }
+
+        return $hasPermission;
+    }
+
+    /**
+     * hasSourcePermission
+     */
+    protected function hasSourcePermission(...$names)
+    {
+        return $this->checkSourcePermission($names, false);
     }
 
     /**

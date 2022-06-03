@@ -23,7 +23,7 @@
                 <i class="icon-star"></i>
                 <?= e(trans('cms::lang.theme.active_button')) ?>
             </button>
-        <?php else: ?>
+        <?php elseif (BackendAuth::userHasAccess('cms.themes.activate')): ?>
             <button
                 type="submit"
                 data-request="onSetActiveTheme"
@@ -34,7 +34,7 @@
                 <?= e(trans('cms::lang.theme.activate_button')) ?>
             </button>
         <?php endif ?>
-        <?php if ($theme->hasCustomData()): ?>
+        <?php if (BackendAuth::userHasAccess('cms.theme_customize') && $theme->hasCustomData()): ?>
             <a
                 href="<?= Backend::url('cms/themeoptions/update/'.$theme->getDirName()) ?>"
                 class="btn btn-secondary">
@@ -50,46 +50,48 @@
                 <?= e(trans('cms::lang.theme.manage_button')) ?>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li role="presentation">
-                    <a
-                        role="menuitem"
-                        tabindex="-1"
-                        data-control="popup"
-                        data-size="huge"
-                        data-handler="onLoadFieldsForm"
-                        data-request-data="theme: '<?= e($theme->getDirName()) ?>'"
-                        href="javascript:;"
-                    >
-                        <i class="icon-pencil"></i>
-                        <?= e(trans('cms::lang.theme.edit_properties_button')) ?>
-                    </a>
-                </li>
-                <li role="presentation">
-                    <a
-                        role="menuitem"
-                        tabindex="-1"
-                        data-control="popup"
-                        data-handler="onLoadDuplicateForm"
-                        data-request-data="theme: '<?= e($theme->getDirName()) ?>'"
-                        href="javascript:;"
-                    >
-                        <i class="icon-copy"></i>
-                        <?= e(trans('cms::lang.theme.duplicate_button')) ?>
-                    </a>
-                </li>
-                <li role="presentation">
-                    <a
-                        role="menuitem"
-                        tabindex="-1"
-                        data-control="popup"
-                        data-handler="onLoadImportForm"
-                        data-request-data="theme: '<?= e($theme->getDirName()) ?>'"
-                        href="javascript:;"
-                    >
-                        <i class="icon-upload"></i>
-                        <?= e(trans('cms::lang.theme.import_button')) ?>
-                    </a>
-                </li>
+                <?php if (BackendAuth::userHasAccess('cms.themes.create')): ?>
+                    <li role="presentation">
+                        <a
+                            role="menuitem"
+                            tabindex="-1"
+                            data-control="popup"
+                            data-size="huge"
+                            data-handler="onLoadFieldsForm"
+                            data-request-data="theme: '<?= e($theme->getDirName()) ?>'"
+                            href="javascript:;"
+                        >
+                            <i class="icon-pencil"></i>
+                            <?= e(trans('cms::lang.theme.edit_properties_button')) ?>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a
+                            role="menuitem"
+                            tabindex="-1"
+                            data-control="popup"
+                            data-handler="onLoadDuplicateForm"
+                            data-request-data="theme: '<?= e($theme->getDirName()) ?>'"
+                            href="javascript:;"
+                        >
+                            <i class="icon-copy"></i>
+                            <?= e(trans('cms::lang.theme.duplicate_button')) ?>
+                        </a>
+                    </li>
+                    <li role="presentation">
+                        <a
+                            role="menuitem"
+                            tabindex="-1"
+                            data-control="popup"
+                            data-handler="onLoadImportForm"
+                            data-request-data="theme: '<?= e($theme->getDirName()) ?>'"
+                            href="javascript:;"
+                        >
+                            <i class="icon-upload"></i>
+                            <?= e(trans('cms::lang.theme.import_button')) ?>
+                        </a>
+                    </li>
+                <?php endif ?>
                 <li role="presentation">
                     <a
                         role="menuitem"
@@ -103,7 +105,7 @@
                         <?= e(trans('cms::lang.theme.export_button')) ?>
                     </a>
                 </li>
-                <?php if (!$theme->isActiveTheme()): ?>
+                <?php if (!$theme->isActiveTheme() && BackendAuth::userHasAccess('cms.themes.delete')): ?>
                     <li role="presentation" class="divider"></li>
                     <li role="presentation">
                         <a

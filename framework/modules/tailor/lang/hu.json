@@ -7,5 +7,11 @@
   "Draft Saved": "Piszkozat mentve",
   "Draft Applied": "Alkalmazott tervezet",
   "Draft Created": "Vázlat létrehozva",
-  "Draft Discarded": "Piszkozat elvetve"
+  "Draft Discarded": "Piszkozat elvetve",
+  "Create Entry": "Bejegyzés létrehozása",
+  "Publish Entry": "Bejegyzés közzététele",
+  "Delete Entry": "Bejegyzés törlése",
+  "Entries have been disabled": "A bejegyzések letiltva",
+  "Entries have been enabled": "A bejegyzések engedélyezve vannak",
+  "Entries have been deleted": "A bejegyzések törölve"
 }

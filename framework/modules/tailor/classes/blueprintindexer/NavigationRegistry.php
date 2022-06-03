@@ -1,5 +1,6 @@
 <?php namespace Tailor\Classes\BlueprintIndexer;
 
+use Backend;
 use Tailor\Classes\NavigationItem;
 use System\Classes\SettingsManager;
 use Tailor\Classes\Blueprint\EntryBlueprint;
@@ -108,9 +109,7 @@ trait NavigationRegistry
         $primary = [];
         $secondary = [];
 
-        /*
-         * Sections
-         */
+        // Sections
         foreach (EntryBlueprint::listInProject() as $blueprint) {
             if ($config = $this->buildNavigationConfig($blueprint, true)) {
                 $primary[$blueprint->uuid] = $config;
@@ -121,9 +120,7 @@ trait NavigationRegistry
             }
         }
 
-        /*
-         * Globals
-         */
+        // Globals
         foreach (GlobalBlueprint::listInProject() as $blueprint) {
             if ($config = $this->buildNavigationConfig($blueprint, true)) {
                 $primary[$blueprint->uuid] = $config;
@@ -134,9 +131,7 @@ trait NavigationRegistry
             }
         }
 
-        /*
-         * Set parent codes
-         */
+        // Set parent codes
         foreach ($secondary as &$item) {
             if (!isset($item['parent'])) {
                 continue;
@@ -208,6 +203,10 @@ trait NavigationRegistry
             $config['description'] = $blueprint->description;
         }
 
+        if (!$isPrimary) {
+            $config['permissionCode'] = $blueprint->getPermissionCodeName();
+        }
+
         return $config;
     }
 
@@ -226,10 +225,10 @@ trait NavigationRegistry
                 'label' => 'Content',
                 'icon' => 'icon-pencil-square-o',
                 'iconSvg' => 'modules/tailor/assets/images/tailor-icon.svg',
-                'url' => 'tailor/entries',
-                // 'permissions' => ['tailor.*'],
+                'url' => Backend::url('tailor/entries'),
                 'order' => 100,
-                'sideMenu' => $sideMenu
+                'sideMenu' => $sideMenu,
+                'permissions' => $this->buildParentNavigationPermissions($sideMenu),
             ]
         ];
     }
@@ -260,8 +259,11 @@ trait NavigationRegistry
         $result = [];
 
         foreach ($this->listPrimaryNavigation() as $item) {
+            $sideMenu = $this->getNavigationSideMenu($item);
+
             $result[$item->code] = $item->toBackendMenuArray() + [
-                'sideMenu' => $this->getNavigationSideMenu($item)
+                'sideMenu' => $sideMenu,
+                'permissions' => $this->buildParentNavigationPermissions($sideMenu),
             ];
         }
 
@@ -306,11 +308,23 @@ trait NavigationRegistry
                 continue;
             }
 
-            $result[$item->code] = $item->toBackendSettingsArray() + [
-                'permissions' => ['tailor.*']
-            ];
+            $result[$item->code] = $item->toBackendSettingsArray();
         }
 
         return $result;
+    }
+
+    /**
+     * buildParentNavigationPermissions
+     */
+    protected function buildParentNavigationPermissions($items)
+    {
+        $permissions = [];
+
+        foreach ($items as $item) {
+            $permissions = array_merge($permissions, (array) $item['permissions']);
+        }
+
+        return $permissions;
     }
 }
