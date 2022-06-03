@@ -33,7 +33,7 @@ class OctoberMigrate extends Command
             return $this->handleRollback();
         }
 
-        $this->line('Migrating application and plugins...');
+        $this->line('Migrating Application and Plugins');
 
         UpdateManager::instance()->setNotesCommand($this)->update();
     }

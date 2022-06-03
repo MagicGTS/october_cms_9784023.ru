@@ -127,13 +127,19 @@ class StateManager extends ControllerBehavior
         return $result;
     }
 
+    /**
+     * loadUserData
+     */
     private function loadUserData()
     {
         return [
-            'useMediaManager' => BackendAuth::userHasAccess('media.manage_media')
+            'useMediaManager' => BackendAuth::userHasAccess('media.library')
         ];
     }
 
+    /**
+     * loadGlobalInspectorConfigs
+     */
     private function loadGlobalInspectorConfigs()
     {
         $path = __DIR__.'/statemanager/inspector-configs.json';

@@ -42,22 +42,24 @@
                     <span class="btn-text">
                         <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('backend/users') ?>"><?= e(trans('backend::lang.form.cancel')) ?></a>
                     </span>
-                    <?php if ($formModel->trashed()): ?>
-                        <button
-                            type="button"
-                            class="oc-icon-user-plus btn-icon info pull-right"
-                            data-request="onRestore"
-                            data-load-indicator="<?= e(trans('backend::lang.form.restoring')) ?>"
-                            data-request-confirm="<?= e(trans('backend::lang.form.confirm_restore')) ?>">
-                        </button>
-                    <?php else: ?>
-                        <button
-                            type="button"
-                            class="oc-icon-trash-o btn-icon danger pull-right"
-                            data-request="onDelete"
-                            data-load-indicator="<?= e(trans('backend::lang.form.deleting')) ?>"
-                            data-request-confirm="<?= e(trans('backend::lang.user.delete_confirm')) ?>">
-                        </button>
+                    <?php if (BackendAuth::userHasAccess('admins.manage.delete')): ?>
+                        <?php if ($formModel->trashed()): ?>
+                            <button
+                                type="button"
+                                class="oc-icon-user-plus btn-icon info pull-right"
+                                data-request="onRestore"
+                                data-load-indicator="<?= e(trans('backend::lang.form.restoring')) ?>"
+                                data-request-confirm="<?= e(trans('backend::lang.form.confirm_restore')) ?>">
+                            </button>
+                        <?php else: ?>
+                            <button
+                                type="button"
+                                class="oc-icon-trash-o btn-icon danger pull-right"
+                                data-request="onDelete"
+                                data-load-indicator="<?= e(trans('backend::lang.form.deleting')) ?>"
+                                data-request-confirm="<?= e(trans('backend::lang.user.delete_confirm')) ?>">
+                            </button>
+                        <?php endif ?>
                     <?php endif ?>
                 </div>
             </div>

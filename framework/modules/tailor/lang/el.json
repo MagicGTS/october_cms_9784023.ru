@@ -7,5 +7,11 @@
   "Draft Saved": "Το πρόχειρο αποθηκεύτηκε",
   "Draft Applied": "Εφαρμόστηκε το σχέδιο",
   "Draft Created": "Δημιουργήθηκε το προσχέδιο",
-  "Draft Discarded": "Το σχέδιο απορρίφθηκε"
+  "Draft Discarded": "Το σχέδιο απορρίφθηκε",
+  "Create Entry": "Δημιουργία Καταχώρισης",
+  "Publish Entry": "Δημοσίευση καταχώρισης",
+  "Delete Entry": "Διαγραφή συμμετοχής",
+  "Entries have been disabled": "Οι καταχωρήσεις έχουν απενεργοποιηθεί",
+  "Entries have been enabled": "Οι καταχωρήσεις έχουν ενεργοποιηθεί",
+  "Entries have been deleted": "Οι καταχωρήσεις έχουν διαγραφεί"
 }

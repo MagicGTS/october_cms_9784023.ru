@@ -21,7 +21,7 @@ class EditorExtension extends ExtensionBase
     const ICON_COLOR_BLUEPRINT = '#1563B5';
 
     const DOCUMENT_TYPE_PERMISSIONS = [
-        EditorExtension::DOCUMENT_TYPE_BLUEPRINT => ['tailor.manage_blueprints']
+        EditorExtension::DOCUMENT_TYPE_BLUEPRINT => ['editor.tailor_blueprints']
     ];
 
     /**
@@ -109,7 +109,7 @@ class EditorExtension extends ExtensionBase
 
         $tailorSection = $sectionList->addSection('Tailor', 'tailor');
         $tailorSection->setHasApiMenuItems(true);
-        $tailorSection->setUserDataElement('uniqueKey', 'tailor:root'); 
+        $tailorSection->setUserDataElement('uniqueKey', 'tailor:root');
 
         $this->addSectionMenuItems($tailorSection);
 
@@ -173,7 +173,7 @@ class EditorExtension extends ExtensionBase
         $createMenuItem->setIcon('octo-icon-create');
 
         $menuConfiguration = [
-            'tailor.manage_blueprints' => [
+            'editor.tailor_blueprints' => [
                 'label' => 'tailor::lang.editor.blueprint',
                 'document' => EditorExtension::DOCUMENT_TYPE_BLUEPRINT
             ]

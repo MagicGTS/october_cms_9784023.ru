@@ -25,6 +25,8 @@ trait HasJoinTable
         Schema::create($tableName, function ($table) {
             $this->defineJoinTableColumns($table);
         });
+
+        $this->actionCount++;
     }
 
     /**

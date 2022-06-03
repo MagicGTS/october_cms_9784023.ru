@@ -149,7 +149,7 @@ class FormField extends FieldDefinition
     }
 
     /**
-     * Adds attributes used specifically by the Trigger API
+     * filterTriggerAttributes adds attributes used specifically by the Trigger API
      * @param  array $attributes
      * @param  string $position
      * @return array
@@ -209,7 +209,7 @@ class FormField extends FieldDefinition
     }
 
     /**
-     * Adds attributes used specifically by the Input Preset API
+     * filterPresetAttributes adds attributes used specifically by the Input Preset API
      * @param  array $attributes
      * @param  string $position
      * @return array
@@ -248,7 +248,7 @@ class FormField extends FieldDefinition
     }
 
     /**
-     * Returns a value suitable for the field name property.
+     * getName returns a value suitable for the field name property.
      * @param  string $arrayName Specify a custom array name
      * @return string
      */
@@ -266,7 +266,7 @@ class FormField extends FieldDefinition
     }
 
     /**
-     * Returns a value suitable for the field id property.
+     * getId returns a value suitable for the field id property.
      * @param  string $suffix Specify a suffix string
      * @return string
      */
@@ -291,7 +291,7 @@ class FormField extends FieldDefinition
     }
 
     /**
-     * Returns this fields value from a supplied data set, which can be
+     * getValueFromData returns this fields value from a supplied data set, which can be
      * an array or a model or another generic collection.
      * @param mixed $data
      * @param mixed $default
@@ -304,7 +304,7 @@ class FormField extends FieldDefinition
     }
 
     /**
-     * Returns the default value for this field, the supplied data is used
+     * getDefaultFromData returns the default value for this field, the supplied data is used
      * to source data when defaultFrom is specified.
      * @param mixed $data
      * @return mixed

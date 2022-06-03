@@ -16,7 +16,9 @@
 
     <?= $this->makePartial('toolbar') ?>
 
-    <?= (!$this->readOnly) ? $this->makePartial('upload-progress') : '' ?>
+    <?php if ($this->checkHasPermission('mediaCreate')): ?>
+        <?= $this->makePartial('upload-progress') ?>
+    <?php endif ?>
 
     <div class="layout-row whiteboard">
         <div class="layout">

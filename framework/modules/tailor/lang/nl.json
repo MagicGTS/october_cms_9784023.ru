@@ -7,5 +7,11 @@
   "Draft Saved": "Concept opgeslagen",
   "Draft Applied": "Concept toegepast",
   "Draft Created": "Concept gemaakt",
-  "Draft Discarded": "Concept verwijderd"
+  "Draft Discarded": "Concept verwijderd",
+  "Create Entry": "Invoer maken",
+  "Publish Entry": "Bericht publiceren",
+  "Delete Entry": "Invoer verwijderen",
+  "Entries have been disabled": "Invoer is uitgeschakeld",
+  "Entries have been enabled": "Invoer is ingeschakeld",
+  "Entries have been deleted": "Inzendingen zijn verwijderd"
 }

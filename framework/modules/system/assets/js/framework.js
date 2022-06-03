@@ -164,7 +164,7 @@ if (window.jQuery.request !== undefined) {
                 if (useFlash && data['X_OCTOBER_FLASH_MESSAGES']) {
                     $.each(data['X_OCTOBER_FLASH_MESSAGES'], function(type, message) {
                         requestOptions.handleFlashMessage(message, type);
-                    })
+                    });
                 }
 
                 /*
@@ -176,7 +176,7 @@ if (window.jQuery.request !== undefined) {
                     $triggerEl.trigger('ajaxSuccess', [context, data, textStatus, jqXHR]);
                     options.evalSuccess && $.proxy(new Function('data', options.evalSuccess), $el.get(0))(data);
                     options.afterUpdate.apply(context, [data, textStatus, jqXHR]);
-                })
+                });
 
                 return updatePromise;
             },

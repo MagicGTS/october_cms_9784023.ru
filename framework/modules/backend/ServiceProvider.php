@@ -8,7 +8,9 @@ use BackendAuth;
 use System\Classes\MailManager;
 use System\Classes\CombineAssets;
 use System\Classes\SettingsManager;
+use Backend\Classes\RoleManager;
 use Backend\Classes\WidgetManager;
+use Backend\Models\UserRole;
 use October\Rain\Auth\AuthException;
 use October\Rain\Support\ModuleServiceProvider;
 
@@ -95,7 +97,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'icon' => 'icon-dashboard',
                     'iconSvg' => 'modules/backend/assets/images/dashboard-icon.svg',
                     'url' => Backend::url('backend'),
-                    'permissions' => ['backend.access_dashboard'],
+                    'permissions' => ['dashboard'],
                     'order' => 10
                 ]
             ]);
@@ -120,31 +122,102 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerBackendPermissions()
     {
-        BackendAuth::registerCallback(function ($manager) {
+        RoleManager::instance()->registerCallback(function ($manager) {
             $manager->registerPermissions('October.Backend', [
-                'backend.access_dashboard' => [
+                // General
+                'general.backend' => [
+                    'label' => 'Access the Backend Panel',
+                    'tab' => 'General',
+                    'order' => 200
+                ],
+                'general.backend.view_offline' => [
+                    'label' => 'View Backend During Maintenance',
+                    'tab' => 'General',
+                    'order' => 300
+                ],
+                'general.backend.perform_updates' => [
+                    'label' => 'Perform Software Updates',
+                    'tab' => 'General',
+                    'roles' => UserRole::CODE_DEVELOPER,
+                    'order' => 300
+                ],
+
+                // Dashboard
+                'dashboard' => [
                     'label' => 'system::lang.permissions.view_the_dashboard',
-                    'tab' => 'system::lang.permissions.name'
+                    'tab' => 'Dashboard',
+                    'order' => 200
                 ],
-                'backend.manage_default_dashboard' => [
+                'dashboard.defaults' => [
                     'label' => 'system::lang.permissions.manage_default_dashboard',
-                    'tab' => 'system::lang.permissions.name',
+                    'tab' => 'Dashboard',
+                    'order' => 300,
+                    'roles' => UserRole::CODE_DEVELOPER,
                 ],
-                'backend.manage_users' => [
-                    'label' => 'system::lang.permissions.manage_other_administrators',
-                    'tab' => 'system::lang.permissions.name'
+
+                // Administrators
+                'admins.manage' => [
+                    'label' => 'Manage Admins',
+                    'tab' => 'Administrators',
+                    'order' => 200
                 ],
-                'backend.manage_preferences' => [
+                'admins.manage.create' => [
+                    'label' => 'Create Admins',
+                    'tab' => 'Administrators',
+                    'order' => 300
+                ],
+                // 'admins.manage.moderate' => [
+                //     'label' => 'Moderate Admins',
+                //     'comment' => 'Manage account suspension and ban admin accounts',
+                //     'tab' => 'Administrators',
+                //     'order' => 400
+                // ],
+                'admins.manage.roles' => [
+                    'label' => 'Manage Roles',
+                    'comment' => 'Allow users to create new roles and manage roles lower than their highest role.',
+                    'tab' => 'Administrators',
+                    'order' => 500
+                ],
+                'admins.manage.groups' => [
+                    'label' => 'Manage Groups',
+                    'tab' => 'Administrators',
+                    'order' => 600
+                ],
+                'admins.manage.other_admins' => [
+                    'label' => 'Manage Other Admins',
+                    'comment' => 'Allow users to reset passwords and update emails.',
+                    'tab' => 'Administrators',
+                    'order' => 700
+                ],
+                'admins.manage.delete' => [
+                    'label' => 'Delete Admins',
+                    'tab' => 'Administrators',
+                    'order' => 800
+                ],
+
+                // Preferences
+                'preferences' => [
                     'label' => 'system::lang.permissions.manage_preferences',
-                    'tab' => 'system::lang.permissions.name'
+                    'tab' => 'Preferences',
+                    'order' => 400
                 ],
-                'backend.manage_editor' => [
+                'preferences.code_editor' => [
                     'label' => 'system::lang.permissions.manage_editor',
-                    'tab' => 'system::lang.permissions.name'
+                    'tab' => 'Preferences',
+                    'order' => 500
                 ],
-                'backend.manage_branding' => [
+
+                // Settings
+                'settings.customize_backend' => [
                     'label' => 'system::lang.permissions.manage_branding',
-                    'tab' => 'system::lang.permissions.name'
+                    'tab' => 'Settings',
+                    'order' => 400
+                ],
+                'settings.editor_settings' => [
+                    'label' => 'Global Editor Settings',
+                    'comment' => 'backend::lang.editor.menu_description',
+                    'tab' => 'Settings',
+                    'order' => 500
                 ]
             ]);
         });
@@ -185,12 +258,6 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerBackendSettings()
     {
-        Event::listen('system.settings.extendItems', function ($manager) {
-            if ((!$user = BackendAuth::getUser()) || !$user->isSuperUser()) {
-                $manager->removeSettingItem('October.Backend', 'adminroles');
-            }
-        });
-
         SettingsManager::instance()->registerCallback(function ($manager) {
             $manager->registerSettingItems('October.Backend', [
                 'administrators' => [
@@ -199,7 +266,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_TEAM,
                     'icon' => 'octo-icon-users',
                     'url' => Backend::url('backend/users'),
-                    'permissions' => ['backend.manage_users'],
+                    'permissions' => ['admins.manage'],
                     'order' => 400
                 ],
                 'adminroles' => [
@@ -208,7 +275,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_TEAM,
                     'icon' => 'octo-icon-id-card-1',
                     'url' => Backend::url('backend/userroles'),
-                    'permissions' => ['backend.manage_users'],
+                    'permissions' => ['admins.manage.roles'],
                     'order' => 410
                 ],
                 'admingroups' => [
@@ -217,7 +284,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_TEAM,
                     'icon' => 'octo-icon-user-group',
                     'url' => Backend::url('backend/usergroups'),
-                    'permissions' => ['backend.manage_users'],
+                    'permissions' => ['admins.manage.groups'],
                     'order' => 420
                 ],
                 'branding' => [
@@ -226,7 +293,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_SYSTEM,
                     'icon' => 'octo-icon-paint-brush-1',
                     'class' => 'Backend\Models\BrandSetting',
-                    'permissions' => ['backend.manage_branding'],
+                    'permissions' => ['settings.customize_backend'],
                     'order' => 500,
                     'keywords' => 'brand style'
                 ],
@@ -236,7 +303,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_SYSTEM,
                     'icon' => 'icon-code',
                     'class' => 'Backend\Models\EditorSetting',
-                    'permissions' => ['backend.manage_editor'],
+                    'permissions' => ['settings.editor_settings'],
                     'order' => 500,
                     'keywords' => 'html code class style'
                 ],
@@ -256,7 +323,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_MYSETTINGS,
                     'icon' => 'octo-icon-app-window',
                     'url' => Backend::url('backend/preferences'),
-                    'permissions' => ['backend.manage_preferences'],
+                    'permissions' => ['preferences'],
                     'order' => 510,
                     'context' => 'mysettings'
                 ],
@@ -266,7 +333,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_LOGS,
                     'icon' => 'octo-icon-lock',
                     'url' => Backend::url('backend/accesslogs'),
-                    'permissions' => ['system.access_logs'],
+                    'permissions' => ['utilities.logs'],
                     'order' => 920
                 ]
             ]);

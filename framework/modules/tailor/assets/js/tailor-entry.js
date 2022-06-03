@@ -2,7 +2,7 @@ $.oc.module.register('tailor.app', function () {
     'use strict';
 
     const TailorAppBase = $.oc.module.import('tailor.app.base');
-    
+
     class TailorApp extends TailorAppBase {
         constructor() {
             super();
@@ -220,7 +220,7 @@ $.oc.module.register('tailor.app', function () {
                 this.state.toolbarExtraButtons
             ];
 
-            if (!this.state.initial.isCreateAction) {
+            if (this.state.initial.canDelete && !this.state.initial.isCreateAction) {
                 this.state.toolbarElements.push(
                     {
                         type: 'button',
@@ -237,7 +237,7 @@ $.oc.module.register('tailor.app', function () {
                     }
                 );
             }
-        
+
             if (this.state.initial.hasPreviewPage && !this.state.initial.isCreateAction) {
                 this.state.toolbarElements.push({
                     type: 'button',

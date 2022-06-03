@@ -3,8 +3,8 @@
 use App;
 use Backend;
 use BackendMenu;
-use BackendAuth;
 use Backend\Models\UserRole;
+use Backend\Classes\RoleManager;
 use October\Rain\Support\ModuleServiceProvider;
 
 /**
@@ -48,7 +48,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'url' => Backend::url('editor'),
                     'order' => 90,
                     'permissions' => [
-                        'editor.access_editor'
+                        'editor'
                     ]
                 ]
             ]);
@@ -60,14 +60,15 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerBackendPermissions()
     {
-        BackendAuth::registerCallback(function ($manager) {
+        RoleManager::instance()->registerCallback(function ($manager) {
             $manager->registerPermissions('October.Editor', [
-                'editor.access_editor' => [
-                    'label' => 'editor::lang.permissions.access_editor',
-                    'tab' => 'editor::lang.permissions.name',
+                'editor' => [
+                    'label' => 'Access the Editor Tool',
+                    'comment' => 'editor::lang.permissions.access_editor',
+                    'tab' => 'Editor',
                     'roles' => UserRole::CODE_DEVELOPER,
                     'order' => 100
-                ]
+                ],
             ]);
         });
     }

@@ -79,6 +79,11 @@ class UpdateManager
     protected $repository;
 
     /**
+     * @var int migrateCount number of migrations that occured.
+     */
+    protected $migrateCount = 0;
+
+    /**
      * Initialize this singleton.
      */
     protected function init()
@@ -114,6 +119,8 @@ class UpdateManager
      */
     public function update()
     {
+        $this->migrateCount = 0;
+
         $firstUp = !Schema::hasTable($this->getMigrationTableName());
         if ($firstUp) {
             $this->repository->createRepository();
@@ -133,6 +140,11 @@ class UpdateManager
 
         // Reset update count
         Parameter::set('system::update.count', 0);
+
+        // Nothing updated
+        if ($this->migrateCount === 0) {
+            $this->note('<info>Nothing to migrate.</info>');
+        }
 
         /**
          * @event system.updater.migrate
@@ -452,13 +464,18 @@ class UpdateManager
      */
     public function migrateModule(string $module)
     {
+        // Suppress the "Nothing to migrate" message
         if (isset($this->notesOutput)) {
-            $this->migrator->setOutput($this->notesOutput);
+            $this->migrator->setOutput(new \Symfony\Component\Console\Output\NullOutput);
+
+            Event::listen(\Illuminate\Database\Events\MigrationsStarted::class, function() {
+                $this->migrator->setOutput($this->notesOutput);
+            });
         }
 
-        $this->note($module);
-
-        $this->migrator->run(base_path() . '/modules/'.strtolower($module).'/database/migrations');
+        if ($this->migrator->run(base_path('modules/'.strtolower($module).'/database/migrations'))) {
+            $this->migrateCount++;
+        }
     }
 
     /**
@@ -581,11 +598,11 @@ class UpdateManager
             return;
         }
 
-        $this->note($name);
-
         $this->versionManager->setNotesOutput($this->notesOutput);
 
-        $this->versionManager->updatePlugin($plugin);
+        if ($this->versionManager->updatePlugin($plugin)) {
+            $this->migrateCount++;
+        }
     }
 
     /**

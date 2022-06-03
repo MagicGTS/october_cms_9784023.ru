@@ -19,14 +19,14 @@ class Index extends Controller
 {
     use \Backend\Traits\InspectableContainer;
 
-    public $requiredPermissions = ['editor.access_editor'];
+    public $requiredPermissions = ['editor'];
 
     public $implement = [
         \Editor\Behaviors\StateManager::class
     ];
 
     /**
-     * Constructor.
+     * __construct
      */
     public function __construct()
     {

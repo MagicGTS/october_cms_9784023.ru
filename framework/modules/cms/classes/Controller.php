@@ -149,17 +149,13 @@ class Controller
             $url = '/';
         }
 
-        /*
-         * Hidden page
-         */
+        // Hidden page
         $page = $this->router->findByUrl($url);
         if ($page && $page->is_hidden && !BackendAuth::getUser()) {
             $page = null;
         }
 
-        /*
-         * Maintenance mode
-         */
+        // Maintenance mode
         if (MaintenanceSetting::isEnabled()) {
             if (!Request::ajax()) {
                 $this->setStatusCode(503);

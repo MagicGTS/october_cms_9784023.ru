@@ -39,7 +39,7 @@ class Updates extends Controller
     /**
      * @var array requiredPermissions to view this page.
      */
-    public $requiredPermissions = ['system.manage_updates'];
+    public $requiredPermissions = ['general.backend.perform_updates'];
 
     /**
      * @var System\Widgets\Changelog

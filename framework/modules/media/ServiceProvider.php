@@ -6,6 +6,7 @@ use BackendMenu;
 use BackendAuth;
 use Media\Widgets\MediaManager;
 use System\Classes\MarkupManager;
+use Backend\Classes\RoleManager;
 use Backend\Classes\WidgetManager;
 use October\Rain\Support\ModuleServiceProvider;
 
@@ -52,7 +53,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'icon' => 'icon-image',
                     'iconSvg' => 'modules/media/assets/images/media-icon.svg',
                     'url' => Backend::url('media'),
-                    'permissions' => ['media.*'],
+                    'permissions' => ['media.library'],
                     'order' => 200
                 ]
             ]);
@@ -60,15 +61,33 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * Register permissions
+     * registerBackendPermissions
      */
     protected function registerBackendPermissions()
     {
-        BackendAuth::registerCallback(function ($manager) {
+        RoleManager::instance()->registerCallback(function ($manager) {
             $manager->registerPermissions('October.Media', [
-                'media.manage_media' => [
-                    'label' => 'backend::lang.permissions.manage_media',
-                    'tab' => 'system::lang.permissions.name',
+                'media.library' => [
+                    'label' => 'Access the Media Manager',
+                    'tab' => 'Media',
+                    'order' => 300
+                ],
+                'media.library.create' => [
+                    'label' => 'Upload Media',
+                    'comment' => 'backend::lang.permissions.manage_media',
+                    'tab' => 'Media',
+                    'order' => 400
+                ],
+                // 'media.library.update' => [
+                //     'label' => 'Modify Media',
+                //     'comment' => 'Change meta data and other information',
+                //     'tab' => 'Media',
+                //     'order' => 500
+                // ],
+                'media.library.delete' => [
+                    'label' => 'Delete Media',
+                    'tab' => 'Media',
+                    'order' => 600
                 ]
             ]);
         });
@@ -102,8 +121,7 @@ class ServiceProvider extends ModuleServiceProvider
     protected function registerGlobalInstance()
     {
         \Backend\Classes\Controller::extend(function($controller) {
-            $user = BackendAuth::getUser();
-            if (!$user || !$user->hasAccess('media.*')) {
+            if (!BackendAuth::userHasAccess('media.library')) {
                 return;
             }
 

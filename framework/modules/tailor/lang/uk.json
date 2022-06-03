@@ -7,5 +7,11 @@
   "Draft Saved": "Чернетку збережено",
   "Draft Applied": "Проект застосовано",
   "Draft Created": "Чернетка створена",
-  "Draft Discarded": "Чернетку відхилено"
+  "Draft Discarded": "Чернетку відхилено",
+  "Create Entry": "Створити запис",
+  "Publish Entry": "Опублікувати запис",
+  "Delete Entry": "Видалити запис",
+  "Entries have been disabled": "Записи вимкнено",
+  "Entries have been enabled": "Записи ввімкнено",
+  "Entries have been deleted": "Записи видалено"
 }

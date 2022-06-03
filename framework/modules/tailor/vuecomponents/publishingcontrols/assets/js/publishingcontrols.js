@@ -11,7 +11,6 @@ $.oc.module.register('tailor.publishingcontrols', function () {
                 default: "EntryRecord"
             },
             lang: Object,
-            hasDateControls: Boolean,
             entryState: Object
         },
         data: function () {
@@ -70,18 +69,21 @@ $.oc.module.register('tailor.publishingcontrols', function () {
             },
 
             getStateFromDom() {
+                let result = {};
+
                 let enabledFormGroup = domTools.findFormGroup(this.makeFieldName('is_enabled'));
-                let result = {
-                    enabled: enabledFormGroup.find('input[type=checkbox]').is(':checked')
-                };
+                if (enabledFormGroup) {
+                    result.enabled = enabledFormGroup.find('input[type=checkbox]').is(':checked');
+                }
 
                 let slugFormGroup = domTools.findFormGroup(this.makeFieldName('slug'));
-                result.slug = slugFormGroup.find('input[type=text]').val().trim();
+                if (slugFormGroup) {
+                    result.slug = slugFormGroup.find('input[type=text]').val().trim();
+                }
 
-                if (this.hasDateControls) {
-                    let publishedDateFormGroup = domTools.findFormGroup(this.makeFieldName('published_at'));
-                    let expiryDateFormGroup = domTools.findFormGroup(this.makeFieldName('expired_at'));
-    
+                let publishedDateFormGroup = domTools.findFormGroup(this.makeFieldName('published_at'));
+                let expiryDateFormGroup = domTools.findFormGroup(this.makeFieldName('expired_at'));
+                if (publishedDateFormGroup && expiryDateFormGroup) {
                     result.publishDate = publishedDateFormGroup.find('input[type=text]').val().trim();
                     result.expiryDate = expiryDateFormGroup.find('input[type=text]').val().trim();
                 }
@@ -94,13 +96,18 @@ $.oc.module.register('tailor.publishingcontrols', function () {
                 return result;
             },
 
+            hasDateControls() {
+                return domTools.findFormGroup(this.makeFieldName('published_at')) &&
+                    domTools.findFormGroup(this.makeFieldName('expired_at'));
+            },
+
             synchStateFromDom(isInit, ev) {
                 let state = this.getStateFromDom();
-    
+
                 if (isInit) {
                     this.state.saved = $.oc.vueUtils.getCleanObject(state);
 
-                    if (this.hasDateControls) {
+                    if (this.hasDateControls()) {
                         this.showPublishDate = this.state.saved.publishDate.length > 0;
                         this.showExpiryDate = this.state.saved.expiryDate.length > 0;
                     }
@@ -114,24 +121,27 @@ $.oc.module.register('tailor.publishingcontrols', function () {
             },
 
             moveDateControls() {
-                $(this.$refs.publishDate).append(domTools.findFormGroup(this.makeFieldName('published_at')));
-                $(this.$refs.expiryDate).append(domTools.findFormGroup(this.makeFieldName('expired_at')));
+                let publishedEl = domTools.findFormGroup(this.makeFieldName('published_at'));
+                let expiredEl = domTools.findFormGroup(this.makeFieldName('expired_at'));
+
+                if (expiredEl && publishedEl) {
+                    $(this.$refs.publishDate).append(publishedEl);
+                    $(this.$refs.expiryDate).append(expiredEl);
+                }
 
                 setTimeout(_ => {
                     // Date picker initializes on document.render and triggers the change event
                     // on the inputs. Add change handlers after the date picker finishes initializing.
-
                     this.synchStateFromDom(true);
 
-                    formGroup = domTools.findFormGroup(this.makeFieldName('slug'));
-                    formGroup.find('input[type=text]').on('change keyup paste', ev => this.synchStateFromDom(false, ev));
+                    let slugEl = domTools.findFormGroup(this.makeFieldName('slug'));
+                    if (slugEl) {
+                        slugEl.find('input[type=text]').on('change keyup paste', ev => this.synchStateFromDom(false, ev));
+                    }
 
-                    if (this.hasDateControls) {
-                        formGroup = domTools.findFormGroup(this.makeFieldName('published_at'));
-                        formGroup.find('input[type=text]').on('change keyup paste', ev => this.synchStateFromDom(false, ev));
-        
-                        formGroup = domTools.findFormGroup(this.makeFieldName('expired_at'));
-                        formGroup.find('input[type=text]').on('change keyup paste', _ => this.synchStateFromDom());
+                    if (expiredEl && publishedEl) {
+                        publishedEl.find('input[type=text]').on('change keyup paste', ev => this.synchStateFromDom(false, ev));
+                        expiredEl.find('input[type=text]').on('change keyup paste', _ => this.synchStateFromDom());
                     }
 
                     if (this.entryState.initial.showTreeControls) {
@@ -145,7 +155,9 @@ $.oc.module.register('tailor.publishingcontrols', function () {
                 $(document).one("render", _ => this.moveDateControls());
 
                 let formGroup = domTools.findFormGroup(this.makeFieldName('is_enabled'));
-                formGroup.find('input[type=checkbox]').on('change', _ => this.synchStateFromDom());
+                if (formGroup) {
+                    formGroup.find('input[type=checkbox]').on('change', _ => this.synchStateFromDom());
+                }
             },
 
             onRemovePublishDateClick() {

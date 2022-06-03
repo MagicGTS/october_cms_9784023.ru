@@ -19,7 +19,7 @@
             <span class="js-link" @click="$emit('publishdraftclick', $event)"><?= e(Lang::get('tailor::lang.edit.apply_draft_to_make_primary')) ?></span>.
         </p>
 
-        <div class="enabled-controls" v-show="state.current.enabled && hasDateControls">
+        <div class="enabled-controls" v-show="state.current.enabled">
             <div class="date-section">
                 <p v-show="!showPublishDate">
                     <i class="octo-icon-calendar-check"></i>

@@ -88,11 +88,7 @@ class EntryRecord extends Model
     {
         $entryName = $this->getContentFieldsetDefinition()->name ?? '';
 
-        $host->addFormField('title', 'Title')->useConfig([
-            'autoFocus' => true,
-            'cssClass' => 'primary-title-field',
-            'placeholder' => "New {$entryName} Entry"
-        ]);
+        $host->addFormField('title', 'Title')->autoFocus()->cssClass('primary-title-field')->placeholder("New {$entryName} Entry");
     }
 
     /**
@@ -108,10 +104,10 @@ class EntryRecord extends Model
      */
     public function defineSecondaryFormFields(FormElement $host)
     {
-        $host->addFormField('slug', 'Slug')->useConfig(['preset' => ['field' => 'title', 'type' => 'slug']]);
-        $host->addFormField('is_enabled', 'Enabled')->displayAs('switch');
-        $host->addFormField('published_at', 'Publish Date')->displayAs('datepicker')->useConfig(['defaultTimeMidnight'=>true]);
-        $host->addFormField('expired_at', 'Expiry Date')->displayAs('datepicker')->useConfig(['defaultTimeMidnight'=>true]);
+        $host->addFormField('slug', 'Slug')->preset(['field' => 'title', 'type' => 'slug']);
+        $host->addFormField('is_enabled', 'Enabled')->displayAs('switch')->defaults(1);
+        $host->addFormField('published_at', 'Publish Date')->displayAs('datepicker')->defaultTimeMidnight();
+        $host->addFormField('expired_at', 'Expiry Date')->displayAs('datepicker')->defaultTimeMidnight();
         $host->addFormField('parent_id', 'Parent')->displayAs('dropdown');
     }
 

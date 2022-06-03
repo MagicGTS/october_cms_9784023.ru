@@ -41,7 +41,7 @@ class ElectricalSafety extends Model
         'youtube_url',
         'img_background',
         'img_rounded',
-        'files_folder'
+        'files_folder',
     ];
 
     /**

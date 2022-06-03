@@ -122,7 +122,7 @@ trait EditorExtensionAssetsState
     protected function loadAssetsForUiLists($theme, $user)
     {
         // Use asset list from Navigator
-        if ($user->hasAnyAccess(['cms.manage_assets'])) {
+        if ($user->hasAnyAccess(['editor.cms_assets'])) {
             return [];
         }
 
