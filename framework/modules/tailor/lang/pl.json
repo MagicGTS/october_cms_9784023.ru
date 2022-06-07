@@ -7,5 +7,11 @@
   "Draft Saved": "Zapisano wersję roboczą",
   "Draft Applied": "Zastosowano wersję roboczą",
   "Draft Created": "Utworzono wersję roboczą",
-  "Draft Discarded": "Wersja robocza odrzucona"
+  "Draft Discarded": "Wersja robocza odrzucona",
+  "Create Entry": "Utwórz wpis",
+  "Publish Entry": "Opublikuj wpis",
+  "Delete Entry": "Usuń wpis",
+  "Entries have been disabled": "Wpisy zostały wyłączone",
+  "Entries have been enabled": "Wpisy zostały włączone",
+  "Entries have been deleted": "Wpisy zostały usunięte"
 }

@@ -43,7 +43,7 @@ class MailBrandSettings extends SettingsController
     /**
      * @var array requiredPermissions to view this page.
      */
-    public $requiredPermissions = ['system.manage_mail_templates'];
+    public $requiredPermissions = ['mail.templates'];
 
     /**
      * @var string bodyClass HTML body tag class

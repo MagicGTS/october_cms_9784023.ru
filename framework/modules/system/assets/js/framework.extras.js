@@ -213,7 +213,7 @@
         $(document.body).append($element);
 
         setTimeout(function() {
-            $element.addClass('in');
+            $element.addClass('show');
         }, 100);
 
         var timer = window.setTimeout(remove, options.interval * 1000);
@@ -225,7 +225,7 @@
         function remove() {
             window.clearInterval(timer);
 
-            $element.removeClass('in');
+            $element.removeClass('show');
             $element.hasClass('fade')
                 ? $element.one('transitionend', removeElement)
                 : removeElement();
@@ -248,7 +248,7 @@
     // ===============
 
     $(document).render(function(){
-        $('[data-control=flash-message]').each(function(){
+        $('[data-control=flash-message]').each(function() {
             $.oc.flashMsg($(this).data(), this);
         });
     });

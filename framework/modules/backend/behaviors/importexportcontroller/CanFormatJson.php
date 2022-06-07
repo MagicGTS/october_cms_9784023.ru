@@ -1,7 +1,6 @@
 <?php namespace Backend\Behaviors\ImportExportController;
 
 use File;
-use ApplicationException;
 
 /**
  * CanFormatJson contains logic for JSON files
@@ -18,7 +17,7 @@ trait CanFormatJson
         $contents = json_decode($jsonPath, true);
 
         if ($contents === null) {
-            throw new ApplicationException('Could not parse JSON file');
+            return [];
         }
 
         return array_keys(array_first($contents));

@@ -20,7 +20,7 @@
             </a>
         </li>
         <li role="separator" class="dropdown-divider"></li>
-        <?php if (BackendAuth::getUser()->hasAccess('backend.manage_default_dashboard')): ?>
+        <?php if (BackendAuth::userHasAccess('dashboard.defaults')): ?>
             <li role="presentation">
                 <a
                     role="menuitem"

@@ -34,11 +34,18 @@ class BlueprintIndexer
     public static $memoryCache = [];
 
     /**
+     * @var int migrateCount number of migrations that occured.
+     */
+    protected $migrateCount = 0;
+
+    /**
      * migrate
      */
     public function migrate()
     {
         static::clearCache();
+
+        $this->migrateCount = 0;
 
         $this->note('Migrating Content Tables');
 
@@ -54,6 +61,10 @@ class BlueprintIndexer
             if ($blueprint instanceof EntryBlueprint) {
                 $this->migrateContentInternal($blueprint);
             }
+        }
+
+        if ($this->migrateCount === 0) {
+            $this->note('<info>Nothing to migrate.</info>');
         }
     }
 
@@ -78,8 +89,10 @@ class BlueprintIndexer
     protected function migrateContentInternal(Blueprint $blueprint)
     {
         if ($fieldset = $this->findContentFieldset($blueprint->uuid)) {
-            $this->note('- <info>'.$blueprint->name.'</info>: '.$blueprint->handle .' ['.$blueprint->getContentTableName().']');
-            SchemaBuilder::migrateBlueprint($blueprint, $fieldset);
+            if (SchemaBuilder::migrateBlueprint($blueprint, $fieldset)) {
+                $this->note('- <info>'.$blueprint->name.'</info>: '.$blueprint->handle .' ['.$blueprint->getContentTableName().']');
+                $this->migrateCount++;
+            }
         }
     }
 
@@ -135,7 +148,7 @@ class BlueprintIndexer
         $rootPath = cache_path('cms/cache/blueprints');
 
         if (!File::exists($rootPath)) {
-            File::makeDirectory($rootPath);
+            File::makeDirectory($rootPath, 0755, true);
         }
 
         return $rootPath.'/'.$name.'.json';
@@ -157,7 +170,7 @@ class BlueprintIndexer
         $rootPath = cache_path('cms/cache/blueprints');
 
         if (!File::exists($rootPath)) {
-            File::makeDirectory($rootPath);
+            File::makeDirectory($rootPath, 0755, true);
             return;
         }
 

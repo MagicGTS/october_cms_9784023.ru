@@ -85,14 +85,14 @@ fields:
         label: File columns
         type: partial
         path: ~/modules/backend/behaviors/importexportcontroller/partials/_import_file_columns.php
-        dependsOn: [import_file, first_row_titles, format_delimiter, format_enclosure, format_escape, format_encoding]
+        dependsOn: [import_file, file_format, first_row_titles, format_delimiter, format_enclosure, format_escape, format_encoding]
         span: left
 
     import_db_columns:
         label: Database fields
         type: partial
         path: ~/modules/backend/behaviors/importexportcontroller/partials/_import_db_columns.php
-        dependsOn: [import_file, first_row_titles, format_delimiter, format_enclosure, format_escape, format_encoding]
+        dependsOn: [import_file, file_format, first_row_titles, format_delimiter, format_enclosure, format_escape, format_encoding]
         span: right
 
     step3_section:

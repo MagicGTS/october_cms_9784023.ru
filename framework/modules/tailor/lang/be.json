@@ -7,5 +7,11 @@
   "Draft Saved": "Чарнавік захаваны",
   "Draft Applied": "Чарнавік прыменены",
   "Draft Created": "Чарнавік створаны",
-  "Draft Discarded": "Чарнавік адхілены"
+  "Draft Discarded": "Чарнавік адхілены",
+  "Create Entry": "Стварыць запіс",
+  "Publish Entry": "Апублікаваць запіс",
+  "Delete Entry": "Выдаліць запіс",
+  "Entries have been disabled": "Запісы былі адключаныя",
+  "Entries have been enabled": "Запісы былі ўключаны",
+  "Entries have been deleted": "Запісы выдалены"
 }

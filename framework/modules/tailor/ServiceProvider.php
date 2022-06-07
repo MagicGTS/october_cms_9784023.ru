@@ -2,12 +2,12 @@
 
 use App;
 use Event;
-use BackendAuth;
 use BackendMenu;
 use Backend\Models\UserRole;
 use Cms\Classes\ComponentManager;
 use Tailor\Classes\FieldManager;
 use Tailor\Classes\BlueprintIndexer;
+use Backend\Classes\RoleManager;
 use System\Classes\SettingsManager;
 use October\Rain\Support\ModuleServiceProvider;
 
@@ -110,18 +110,19 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerBackendPermissions()
     {
-        BackendAuth::registerCallback(function ($manager) {
+        RoleManager::instance()->registerCallback(function ($manager) {
             $manager->registerPermissions('October.Tailor', [
-                'tailor.manage_blueprints' => [
+                // Editor
+                'editor.tailor_blueprints' => [
                     'label' => 'tailor::lang.permissions.manage_blueprints',
-                    'tab' => 'tailor::lang.permissions.name',
+                    'tab' => 'Editor',
                     'roles' => UserRole::CODE_DEVELOPER,
                     'order' => 100
                 ]
             ]);
         });
 
-        BackendAuth::registerCallback(function ($manager) {
+        RoleManager::instance()->registerCallback(function ($manager) {
             $manager->registerPermissions(
                 'October.Tailor',
                 BlueprintIndexer::instance()->getPermissionDefinitions()

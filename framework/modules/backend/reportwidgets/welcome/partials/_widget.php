@@ -15,7 +15,7 @@
                     <p>
                         <strong><?= Backend::dateTime($lastSeen->created_at, ['formatAlias' => 'dateTimeLongMin']) ?></strong>
                     </p>
-                    <?php if (BackendAuth::getUser()->hasAccess('system.access_logs')): ?>
+                    <?php if (BackendAuth::userHasAccess('utilities.logs')): ?>
                         <p>
                             <a href="<?= Backend::url('backend/accesslogs') ?>"><?= e(trans('backend::lang.dashboard.welcome.view_access_logs')) ?></a>
                         </p>

@@ -3,7 +3,6 @@
 use App;
 use Event;
 use Backend;
-use BackendAuth;
 use Cms\Models\ThemeLog;
 use Cms\Models\ThemeData;
 use Cms\Classes\CmsObject;
@@ -12,6 +11,7 @@ use Cms\Classes\ThemeManager;
 use Cms\Classes\CmsObjectCache;
 use Cms\Classes\ComponentManager;
 use Backend\Models\UserRole;
+use Backend\Classes\RoleManager;
 use Backend\Classes\WidgetManager;
 use System\Classes\SettingsManager;
 use October\Rain\Support\ModuleServiceProvider;
@@ -129,48 +129,88 @@ class ServiceProvider extends ModuleServiceProvider
      */
     protected function registerBackendPermissions()
     {
-        BackendAuth::registerCallback(function ($manager) {
+        RoleManager::instance()->registerCallback(function ($manager) {
             $manager->registerPermissions('October.Cms', [
-                'cms.manage_content' => [
-                    'label' => 'cms::lang.permissions.manage_content',
-                    'tab' => 'cms::lang.permissions.name',
-                    'roles' => UserRole::CODE_DEVELOPER,
+                // General
+                'general.view_offline' => [
+                    'label' => 'View Website During Maintenance',
+                    'tab' => 'General',
                     'order' => 100
                 ],
-                'cms.manage_assets' => [
-                    'label' => 'cms::lang.permissions.manage_assets',
-                    'tab' => 'cms::lang.permissions.name',
+
+                // Editor
+                'editor.cms_content' => [
+                    'label' => 'Manage Content',
+                    'comment' => 'cms::lang.permissions.manage_content',
+                    'tab' => 'Editor',
                     'roles' => UserRole::CODE_DEVELOPER,
-                    'order' => 100
+                    'order' => 200
                 ],
-                'cms.manage_pages' => [
-                    'label' => 'cms::lang.permissions.manage_pages',
-                    'tab' => 'cms::lang.permissions.name',
+                'editor.cms_assets' => [
+                    'label' => 'Manage Asset Files',
+                    'comment' => 'cms::lang.permissions.manage_assets',
+                    'tab' => 'Editor',
                     'roles' => UserRole::CODE_DEVELOPER,
-                    'order' => 100
+                    'order' => 300
                 ],
-                'cms.manage_layouts' => [
-                    'label' => 'cms::lang.permissions.manage_layouts',
-                    'tab' => 'cms::lang.permissions.name',
+                'editor.cms_pages' => [
+                    'label' => 'Manage Pages',
+                    'comment' => 'cms::lang.permissions.manage_pages',
+                    'tab' => 'Editor',
                     'roles' => UserRole::CODE_DEVELOPER,
-                    'order' => 100
+                    'order' => 400
                 ],
-                'cms.manage_partials' => [
-                    'label' => 'cms::lang.permissions.manage_partials',
-                    'tab' => 'cms::lang.permissions.name',
+                'editor.cms_partials' => [
+                    'label' => 'Manage Partials',
+                    'comment' => 'cms::lang.permissions.manage_partials',
+                    'tab' => 'Editor',
                     'roles' => UserRole::CODE_DEVELOPER,
-                    'order' => 100
+                    'order' => 500
                 ],
-                'cms.manage_themes' => [
-                    'label' => 'cms::lang.permissions.manage_themes',
-                    'tab' => 'cms::lang.permissions.name',
+                'editor.cms_layouts' => [
+                    'label' => 'Manage Layouts',
+                    'comment' => 'cms::lang.permissions.manage_layouts',
+                    'tab' => 'Editor',
                     'roles' => UserRole::CODE_DEVELOPER,
-                    'order' => 100
+                    'order' => 600
                 ],
-                'cms.manage_theme_options' => [
-                    'label' => 'cms::lang.permissions.manage_theme_options',
-                    'tab' => 'cms::lang.permissions.name',
-                    'order' => 100
+
+                // Themes
+                'cms.themes' => [
+                    'label' => 'Manage Themes',
+                    'comment' => 'cms::lang.permissions.manage_themes',
+                    'tab' => 'Themes',
+                    'roles' => UserRole::CODE_DEVELOPER,
+                    'order' => 300
+                ],
+                'cms.themes.create' => [
+                    'label' => 'Create Theme',
+                    'tab' => 'Themes',
+                    'roles' => UserRole::CODE_DEVELOPER,
+                    'order' => 400
+                ],
+                'cms.themes.activate' => [
+                    'label' => 'Activate Theme',
+                    'tab' => 'Themes',
+                    'roles' => UserRole::CODE_DEVELOPER,
+                    'order' => 600
+                ],
+                'cms.themes.delete' => [
+                    'label' => 'Delete Theme',
+                    'tab' => 'Themes',
+                    'roles' => UserRole::CODE_DEVELOPER,
+                    'order' => 600
+                ],
+                'cms.maintenance_mode' => [
+                    'label' => 'Manage Maintenance Mode',
+                    'tab' => 'Themes',
+                    'order' => 900
+                ],
+                'cms.theme_customize' => [
+                    'label' => 'Customize Theme',
+                    'comment' => 'cms::lang.permissions.manage_theme_options',
+                    'tab' => 'Themes',
+                    'order' => 400
                 ],
             ]);
         });
@@ -189,7 +229,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_CMS,
                     'icon' => 'octo-icon-text-image',
                     'url' => Backend::url('cms/themes'),
-                    'permissions' => ['cms.manage_themes', 'cms.manage_theme_options'],
+                    'permissions' => ['cms.themes', 'cms.theme_customize'],
                     'order' => 200
                 ],
                 'maintenance_settings' => [
@@ -198,7 +238,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_CMS,
                     'icon' => 'octo-icon-power',
                     'class' => \Cms\Models\MaintenanceSetting::class,
-                    'permissions' => ['cms.manage_themes'],
+                    'permissions' => ['cms.maintenance_mode'],
                     'order' => 300
                 ],
                 'theme_logs' => [
@@ -207,7 +247,7 @@ class ServiceProvider extends ModuleServiceProvider
                     'category' => SettingsManager::CATEGORY_LOGS,
                     'icon' => 'icon-magic',
                     'url' => Backend::url('cms/themelogs'),
-                    'permissions' => ['system.access_logs'],
+                    'permissions' => ['utilities.logs'],
                     'order' => 910,
                     'keywords' => 'theme change log'
                 ]

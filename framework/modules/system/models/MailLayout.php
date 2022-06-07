@@ -147,7 +147,7 @@ class MailLayout extends Model
     {
         $sections = self::getTemplateSections($path);
 
-        $css = '
+        $defaultCss = '
 @media only screen and (max-width: 600px) {
     .inner-body {
         width: 100% !important;
@@ -166,7 +166,7 @@ class MailLayout extends Model
         ';
 
         $this->name = array_get($sections, 'settings.name', '???');
-        $this->content_css = $css;
+        $this->content_css = $sections['css'] ?? $defaultCss;
         $this->content_html =  $sections['html'] ?? '';
         $this->content_text = $sections['text'] ?? '';
     }

@@ -2,13 +2,13 @@
 
 use Lang;
 use View;
-use Response;
 use Backend;
 use BackendAuth;
 use Backend\Classes\ControllerBehavior;
 use Backend\Behaviors\ImportExportController\TranscodeFilter;
 use League\Csv\Reader as CsvReader;
 use ApplicationException;
+use ForbiddenException;
 
 /**
  * ImportExportController adds features for importing and exporting data.
@@ -107,7 +107,6 @@ class ImportExportController extends ControllerBehavior
     /**
      * checkPermissionsForType checks to see if the import/export is controlled by permissions
      * and if the logged in user has permissions.
-     * @return \View
      */
     protected function checkPermissionsForType($type)
     {
@@ -115,7 +114,7 @@ class ImportExportController extends ControllerBehavior
             ($permissions = $this->getConfig($type.'[permissions]')) &&
             (!BackendAuth::getUser()->hasAnyAccess((array) $permissions))
         ) {
-            return Response::make(View::make('backend::access_denied'), 403);
+            throw new ForbiddenException;
         }
     }
 

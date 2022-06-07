@@ -7,5 +7,11 @@
   "Draft Saved": "已保存草稿",
   "Draft Applied": "已申請草稿",
   "Draft Created": "已創建草稿",
-  "Draft Discarded": "丟棄草稿"
+  "Draft Discarded": "丟棄草稿",
+  "Create Entry": "創建條目",
+  "Publish Entry": "發布條目",
+  "Delete Entry": "刪除條目",
+  "Entries have been disabled": "條目已被禁用",
+  "Entries have been enabled": "條目已啟用",
+  "Entries have been deleted": "條目已被刪除"
 }

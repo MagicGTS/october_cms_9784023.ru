@@ -2,7 +2,7 @@
     <div class="control-toolbar toolbar-padded">
         <div class="toolbar-item toolbar-primary">
             <div data-control="toolbar">
-                <?php if (!$this->readOnly): ?>
+                <?php if ($this->checkHasPermission('mediaCreate')): ?>
                     <div class="btn-group offset-right">
                         <button type="button" class="btn btn-primary oc-icon-upload" data-control="upload"
                             ><?= e(trans('backend::lang.media.upload')) ?></button>
@@ -12,7 +12,7 @@
 
                 <button type="button" class="btn btn-default oc-icon-refresh empty offset-right" data-command="refresh"></button>
 
-                <?php if (!$this->readOnly): ?>
+                <?php if ($this->checkHasPermission('mediaDelete')): ?>
                     <div class="btn-group offset-right">
                         <button type="button" class="btn btn-default oc-icon-reply-all" data-command="move"
                             ><?= e(trans('backend::lang.media.move')) ?></button>

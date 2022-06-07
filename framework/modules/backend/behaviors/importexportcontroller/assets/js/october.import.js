@@ -106,9 +106,10 @@
                 label = $.trim($('> span', $this).text());
                 name = $this.data('column-name');
 
-                if (fileColumns[name] || fileColumns[label]) {
-                    $this.appendTo($('.import-column-bindings > ul', fileColumns[name]));
-                    self.matchColumn($this, fileColumns[name]);
+                var matchedColumn = fileColumns[name] || fileColumns[label];
+                if (matchedColumn) {
+                    $this.appendTo($('.import-column-bindings > ul', matchedColumn));
+                    self.matchColumn($this, matchedColumn);
                 }
             });
         }

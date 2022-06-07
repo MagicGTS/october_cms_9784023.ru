@@ -5,6 +5,7 @@ use Tailor\Models\GlobalRecord;
 use Tailor\Classes\BlueprintIndexer;
 use Backend\Classes\WildcardController;
 use ApplicationException;
+use ForbiddenException;
 
 /**
  * Globals controller
@@ -27,20 +28,9 @@ class Globals extends WildcardController
     public $formConfig = 'config_form.yaml';
 
     /**
-     * @var array requiredPermissions to view this page
-     */
-    // public $requiredPermissions = ['tailor.access_collections'];
-    public $requiredPermissions = [];
-
-    /**
      * @var GlobalBlueprint activeSource
      */
     protected $activeSource;
-
-    /**
-     * @var GlobalBlueprint[] allSources
-     */
-    protected $allSources;
 
     /**
      * beforeDisplay
@@ -50,12 +40,14 @@ class Globals extends WildcardController
         // Pop off first parameter as source handle
         $sourceHandle = array_shift($this->params);
 
-        $this->makeBlueprintSources($sourceHandle);
+        $this->makeBlueprintSource($sourceHandle);
 
         if (!$this->activeSource) {
             $this->handleError(new ApplicationException("Cannot find [${sourceHandle}] global"));
             return;
         }
+
+        $this->checkSourcePermission();
 
         $this->setNavigationContext();
     }
@@ -83,7 +75,6 @@ class Globals extends WildcardController
     {
         $this->vars['entityName'] = $this->activeSource->name ?? '';
         $this->vars['activeSource'] = $this->activeSource;
-        $this->vars['sources'] = $this->allSources;
     }
 
     /**
@@ -103,20 +94,40 @@ class Globals extends WildcardController
     }
 
     /**
-     * makeBlueprintSources
+     * makeBlueprintSource
      */
-    protected function makeBlueprintSources($activeSource = null)
+    protected function makeBlueprintSource($activeSource = null)
     {
-        $this->allSources = BlueprintIndexer::instance()->listGlobals();
-
         if (!$activeSource) {
-            $this->activeSource = $this->allSources[0] ?? null;
+            $this->activeSource = BlueprintIndexer::instance()->listGlobals()[0] ?? null;
         }
         else {
             $this->activeSource = $activeSource
                 ? BlueprintIndexer::instance()->findGlobalByHandle($activeSource)
                 : null;
         }
+    }
+
+    /**
+     * checkSourcePermission
+     */
+    protected function checkSourcePermission($permissionName = null, $throwException = true)
+    {
+        $hasPermission = $this->user->hasAnyAccess([$this->activeSource->getPermissionCodeName($permissionName)]);
+
+        if ($throwException && !$hasPermission) {
+            throw new ForbiddenException;
+        }
+
+        return $hasPermission;
+    }
+
+    /**
+     * hasSourcePermission
+     */
+    protected function hasSourcePermission($permissionName = null)
+    {
+        return $this->checkSourcePermission($permissionName, false);
     }
 
     /**
