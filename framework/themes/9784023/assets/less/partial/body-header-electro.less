@@ -428,7 +428,7 @@
         height: 6.65rem;         
         .fonts(1rem; 1.125rem; 700); 
          display: grid;
-         grid-template-columns: 1fr 10fr 1fr;
+         grid-template-columns: 1fr 9fr 2fr;
          align-items: center;
           background-color:  @color_white;          
     }
@@ -437,7 +437,7 @@
          width: 100%;
          .fonts(1rem; 1.125rem; 400); 
          display: grid;
-         grid-template-columns: 1fr 10fr 1fr;
+         grid-template-columns: 1fr 9fr 2fr;
          align-items: center;           
     }
     .plan_stady_item{
@@ -453,10 +453,8 @@
 }    
 /* dubl electro info */
     .dubl_electro_info{
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 1110px;
-        margin-top: 1.89rem;
+        margin: 1.89rem auto;        
+        max-width: 1110px;       
         display: flex; 
         flex-wrap: wrap;   
 
@@ -485,7 +483,167 @@
             float: right;
             color: @color_02;        
             }
-        }   
+        }        
+    }
+
+    /* result study */
+    .result_study {
+        height: 22.25rem;
+        background: @color_11;
+        margin-bottom: 3.43rem;
+
+        .result_studyblock{
+            height: 100%;
+            display: flex;            
+            color: @color_07;          
+            padding-top: 1.5rem;
+
+            .result_studyblock_info{
+                width: 37.43em;
+                .result_studyblock_title{
+                     .fonts_h3; 
+                }
+                p{
+                  .fonts(1.125em; 1.5em; 400;);    
+                  max-width: 539px;    
+                }
+            }
+            .result_studyblock_info > *{
+                padding-bottom: 1.5rem;
+            }
+
+            .result_studyblock_img{
+                width: 30rem; 
+                display: flex;                
+                align-items: center;
+                
+                .result_studyblock_img_item{              
+                    margin-left: auto;
+                    margin-right: auto;
+                    width: 272px;
+                    height: 155px;
+                    position: relative;
+                    & > *{
+                        position: absolute;                 
+                    }
+                    .profCard {
+                        left: 4.68rem;
+                    }
+                    .titleProfCard{
+                        left: 6.81em;
+                        top: 3.41rem;
+                    }
+                }
+            }
+        }
+    }
+    
+    /* quick offer */
+
+    .quick_offer{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4.63rem;
 
         
+        .quick_offer_dok{
+            width: 34.62em;
+            height: 36.18rem;            
+            border: 0.0625rem solid @color_07;
+            box-sizing: border-box;
+            border-radius: 0.25rem;
+                        
+           .quick_offer_dok_title{
+                padding-top: 1.125rem;
+               padding-left: 1.375em;
+               color: @color_07;
+               .fonts(1em; 1.19em; 700;);   
+               height: 2.875rem;
+               border-bottom: 0.0625rem solid @color_07;             
+              }
+
+             .quick_offer_dok_block{
+               padding-top: 1.125rem;
+               padding-right: 2.06em;
+               padding-left: 1.375em;
+             } 
+
+             .quick_offer_dok_item{   
+                margin-bottom: 2rem;          
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .fonts(1.125em; 1.5em; 400;);
+                color: @color_07;  
+              }
+        }
+        .quick_offer_info{
+            width: 31.18em;
+            height: 26rem;       
+            border: 0.0625rem solid @color_09;
+            box-sizing: border-box;
+            border-radius: 0.25rem;
+
+            .quick_offer_info_title{
+                 padding-left: 1.68em;
+                 padding-top: 1.125rem;
+                 color: @color_09;
+                .fonts(1em; 1.19em; 600;);   
+                 height: 2.875rem;
+                 border-bottom: 0.0625rem solid @color_09;        
+            }
+            .quick_offer_info_item{
+                  padding-top: 1rem;   
+                 padding-left: 1.68em;
+                 .fonts(0.875em; 1.18em; 400;);  
+                 color: @color_02; 
+                 p{
+                     padding-bottom: 0.75rem;
+                 }
+            }
+        }
+    }
+
+    /* video siminars */
+    .siminar_video{
+        margin-bottom: 4.18rem;
+
+        .siminar_video_title{
+            margin-bottom: 4.65rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5.875rem;
+            h3{
+               .fonts_h3; 
+                color: @color_07;
+            }
+        }
+
+        .siminar_video_block{
+            margin-left: -1.5em;
+            margin-right: -1.5em;
+            display: flex;
+
+            .siminar_video_block_item{
+                height: 17.625rem;
+                width: 17.375em;
+
+                button{
+                    height: 13rem;
+                    width: 17.5em;
+                    border-radius: 1rem;
+                    background: @color_02;
+                    border: none;
+                    margin-bottom: 1rem;
+                }
+                p{
+                    .fonts(0.875em; 1.125em; 400;);  
+                    color: @color_02; 
+                    width: 16em;
+                }
+            }
+         
+        }
+
     }
