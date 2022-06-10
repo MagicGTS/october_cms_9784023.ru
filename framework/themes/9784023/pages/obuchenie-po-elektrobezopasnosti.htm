@@ -21,6 +21,7 @@ function onStart()
     $cource ['files_folder'] = Storage::allFiles($cource['files_folder']);
     $cource ['result_img_folder'] = Storage::allFiles($cource['result_img_folder']);
     $this['cource'] = $cource;
+    $cource = HighAltitudeWorks::with(['schedule', 'program'])->find(1)->toArray();
 
 }
 ?>
@@ -84,7 +85,7 @@ function onStart()
                   утвержденных нормативно-правовыми актами с учетом последних дополнений и изменений. Каждый курс одобрен инспекторами Ростехнадзора.</p>
         </div>
         <button class="commercialoffer_blank">
-             <a class="" href="#">Коммерческое предложение</a> 
+             <a class="" href="{{'commercial-offer'|page }}">Коммерческое предложение</a> 
         </button> 
    </div>   
 </section>
@@ -152,11 +153,11 @@ function onStart()
                      <div class = "schedul_header_office">Кабинет</div>
              </header>
              <div class = "schedule_info" >
-                     <div class = "schedul_info_date">10,10,2020</div>
+                     <div class = "schedul_info_date">10.10.2020</div>
                      <div class = "schedul_info_suminar">{{cource.name}}</div>
                      <div class = "schedul_info_time">10.25</div>
                      <div class = "schedul_info_office">Каб.26</div>
-                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/primaryButton.svg'|theme }}"></a>           
+                     <a class = "schedul_info_button" href ="#" download="" title=""><img  src="{{ 'assets/img/svg/primaryButton.svg'|theme }}"></a>           
              </div>
         
         </div>

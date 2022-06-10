@@ -59,32 +59,29 @@ class NavigationManager
     protected static $menuDisplayTree;
 
     /**
-     * @var System\Classes\PluginManager pluginManager
-     */
-    protected $pluginManager;
-
-    /**
-     * init this singleton.
-     */
-    protected function init()
-    {
-        $this->pluginManager = PluginManager::instance();
-    }
-
-    /**
      * loadItems from modules and plugins
      */
     protected function loadItems()
     {
         $this->items = [];
 
-        // Load module items
+        // Load external items
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
 
+        // Load module items
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                $items = $provider->registerNavigation();
+                if (is_array($items)) {
+                    $this->registerMenuItems('October.'.$module, $items);
+                }
+            }
+        }
+
         // Load plugin items
-        foreach ($this->pluginManager->getPlugins() as $id => $plugin) {
+        foreach (PluginManager::instance()->getPlugins() as $id => $plugin) {
             $items = $plugin->registerNavigation();
             if (is_array($items)) {
                 $this->registerMenuItems($id, $items);

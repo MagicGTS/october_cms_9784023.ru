@@ -539,8 +539,14 @@ class Entries extends WildcardController
      */
     public function formExtendModel($model)
     {
+        // Entry type switching
         if ($entryType = post('EntryRecord[content_group]')) {
             $model->setBlueprintGroup($entryType);
+        }
+
+        // Default value
+        if (!$model->exists) {
+            $model->is_enabled = true;
         }
     }
 

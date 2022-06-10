@@ -14,6 +14,7 @@ function onStart()
     $cource ['files_folder'] = Storage::allFiles($cource['files_folder']);
     $cource ['result_img_folder'] = Storage::allFiles($cource['result_img_folder']);
     $this['cource'] = $cource;
+    $cource = HighAltitudeWorks::with(['schedule', 'program'])->find(1)->toArray();
 }
 ?>
 ==

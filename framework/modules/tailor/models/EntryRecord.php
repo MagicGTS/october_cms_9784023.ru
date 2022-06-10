@@ -105,7 +105,7 @@ class EntryRecord extends Model
     public function defineSecondaryFormFields(FormElement $host)
     {
         $host->addFormField('slug', 'Slug')->preset(['field' => 'title', 'type' => 'slug']);
-        $host->addFormField('is_enabled', 'Enabled')->displayAs('switch')->defaults(1);
+        $host->addFormField('is_enabled', 'Enabled')->displayAs('switch');
         $host->addFormField('published_at', 'Publish Date')->displayAs('datepicker')->defaultTimeMidnight();
         $host->addFormField('expired_at', 'Expiry Date')->displayAs('datepicker')->defaultTimeMidnight();
         $host->addFormField('parent_id', 'Parent')->displayAs('dropdown');

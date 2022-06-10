@@ -1,6 +1,7 @@
 <?php namespace System\Classes;
 
 use App;
+use System;
 use Markdown;
 use System\Models\MailPartial;
 use System\Models\MailTemplate;
@@ -19,11 +20,6 @@ use TijsVerkoyen\CssToInlineStyles\CssToInlineStyles;
 class MailManager
 {
     use \October\Rain\Support\Traits\Singleton;
-
-    /**
-     * @var array Cache of registration callbacks.
-     */
-    protected $callbacks = [];
 
     /**
      * @var array A cache of customised mail templates.
@@ -49,6 +45,11 @@ class MailManager
      * @var bool Internal marker for rendering mode
      */
     protected $isHtmlRenderMode = false;
+
+    /**
+     * @var array Cache of registration callbacks.
+     */
+    protected static $callbacks = [];
 
     /**
      * addContentFromEvent handles adding content from the `mailer.beforeAddContent` event
@@ -183,7 +184,7 @@ class MailManager
 
         $html = $this->parseTwig($content, $data);
 
-        $html = Markdown::parseNoIndent($html);
+        $html = Markdown::parseIndent($html);
 
         return $html;
     }
@@ -301,14 +302,31 @@ class MailManager
     //
 
     /**
-     * Loads registered mail templates from modules and plugins
+     * loadRegisteredTemplates loads registered mail templates from modules and plugins
      * @return void
      */
     public function loadRegisteredTemplates()
     {
-        // Load module templates
-        foreach ($this->callbacks as $callback) {
+        // Load external templates
+        foreach (static::$callbacks as $callback) {
             $callback($this);
+        }
+
+        // Load module items
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                if (is_array($layouts = $provider->registerMailLayouts())) {
+                    $this->registerMailLayouts($layouts);
+                }
+
+                if (is_array($templates = $provider->registerMailTemplates())) {
+                    $this->registerMailTemplates($templates);
+                }
+
+                if (is_array($partials = $provider->registerMailPartials())) {
+                    $this->registerMailPartials($partials);
+                }
+            }
         }
 
         // Load plugin widgets
@@ -343,7 +361,7 @@ class MailManager
     }
 
     /**
-     * Returns a list of the registered templates.
+     * listRegisteredTemplates returns a list of the registered templates.
      * @return array
      */
     public function listRegisteredTemplates()
@@ -356,7 +374,7 @@ class MailManager
     }
 
     /**
-     * Returns a list of the registered partials.
+     * listRegisteredPartials returns a list of the registered partials.
      * @return array
      */
     public function listRegisteredPartials()
@@ -369,7 +387,7 @@ class MailManager
     }
 
     /**
-     * Returns a list of the registered layouts.
+     * listRegisteredLayouts returns a list of the registered layouts.
      * @return array
      */
     public function listRegisteredLayouts()
@@ -382,7 +400,7 @@ class MailManager
     }
 
     /**
-     * Registers a callback function that defines mail templates.
+     * registerCallback registers a callback function that defines mail templates.
      * The callback function should register templates by calling the manager's
      * registerMailTemplates() function. Thi instance is passed to the
      * callback function as an argument. Usage:
@@ -393,13 +411,13 @@ class MailManager
      *
      * @param callable $callback A callable function.
      */
-    public function registerCallback(callable $callback)
+    public static function registerCallback(callable $callback)
     {
-        $this->callbacks[] = $callback;
+        self::$callbacks[] = $callback;
     }
 
     /**
-     * Registers mail views and manageable templates.
+     * registerMailTemplates registers mail views and manageable templates.
      */
     public function registerMailTemplates(array $definitions)
     {
@@ -418,7 +436,7 @@ class MailManager
     }
 
     /**
-     * Registers mail views and manageable layouts.
+     * registerMailPartials registers mail views and manageable layouts.
      */
     public function registerMailPartials(array $definitions)
     {
@@ -430,7 +448,7 @@ class MailManager
     }
 
     /**
-     * Registers mail views and manageable layouts.
+     * registerMailLayouts registers mail views and manageable layouts.
      */
     public function registerMailLayouts(array $definitions)
     {

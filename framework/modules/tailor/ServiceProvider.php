@@ -1,14 +1,8 @@
 <?php namespace Tailor;
 
-use App;
 use Event;
-use BackendMenu;
 use Backend\Models\UserRole;
-use Cms\Classes\ComponentManager;
-use Tailor\Classes\FieldManager;
 use Tailor\Classes\BlueprintIndexer;
-use Backend\Classes\RoleManager;
-use System\Classes\SettingsManager;
 use October\Rain\Support\ModuleServiceProvider;
 
 /**
@@ -23,18 +17,11 @@ class ServiceProvider extends ModuleServiceProvider
     {
         parent::register('tailor');
 
+        $this->registerEditorEvents();
         $this->registerConsole();
-        $this->registerContentFields();
-        $this->registerComponents();
-        $this->registerDeferredContentBinding();
-        $this->bootEditorEvents();
 
-        // Backend specific
-        if (App::runningInBackend()) {
-            $this->registerBackendNavigation();
-            $this->registerBackendPermissions();
-            $this->registerBackendSettings();
-        }
+        $this->extendMigrateCommand();
+        $this->extendDeferredBindingForContent();
     }
 
     /**
@@ -43,91 +30,52 @@ class ServiceProvider extends ModuleServiceProvider
     public function boot()
     {
         parent::boot('tailor');
-
-        // Migrate blueprints
-        Event::listen('system.updater.migrate', function ($updateManager) {
-            BlueprintIndexer::instance()
-                ->setNotesOutput($updateManager->getNotesOutput())->migrate();
-        });
     }
 
     /**
      * registerComponents
      */
-    protected function registerComponents()
+    public function registerComponents()
     {
-        ComponentManager::instance()->registerComponents(function ($manager) {
-            $manager->registerComponent(\Tailor\Components\GlobalComponent::class, 'global', $this);
-            $manager->registerComponent(\Tailor\Components\SectionComponent::class, 'section', $this);
-            $manager->registerComponent(\Tailor\Components\CollectionComponent::class, 'collection', $this);
-            $manager->registerComponent(\Cms\Components\Resources::class, 'resources', $this);
-        });
+        return [
+           \Tailor\Components\GlobalComponent::class => 'global',
+           \Tailor\Components\SectionComponent::class => 'section',
+           \Tailor\Components\CollectionComponent::class => 'collection',
+           \Cms\Components\Resources::class => 'resources'
+        ];
     }
 
     /**
-     * registerDeferredContentBinding
+     * registerNavigation
      */
-    protected function registerDeferredContentBinding()
+    public function registerNavigation()
     {
-        \Tailor\Models\EntryRecord::registerDeferredContentModel();
-        \Tailor\Models\RepeaterItem::registerDeferredContentModel();
-        \Tailor\Models\GlobalRecord::registerDeferredContentModel();
+        return BlueprintIndexer::instance()->getNavigationMainMenu() +
+            BlueprintIndexer::instance()->getNavigationContentMainMenu();
     }
 
     /**
-     * registerBackendNavigation
+     * registerSettings
      */
-    protected function registerBackendNavigation()
+    public function registerSettings()
     {
-        BackendMenu::registerCallback(function ($manager) {
-            $manager->registerMenuItems(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getNavigationContentMainMenu()
-            );
-
-            $manager->registerMenuItems(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getNavigationMainMenu()
-            );
-        });
+        return BlueprintIndexer::instance()->getNavigationSettingsMenu();
     }
 
     /**
-     * registerBackendSettings
+     * registerPermissions
      */
-    protected function registerBackendSettings()
+    public function registerPermissions()
     {
-        SettingsManager::instance()->registerCallback(function ($manager) {
-            $manager->registerSettingItems(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getNavigationSettingsMenu()
-            );
-        });
-    }
-
-    /**
-     * registerBackendPermissions
-     */
-    protected function registerBackendPermissions()
-    {
-        RoleManager::instance()->registerCallback(function ($manager) {
-            $manager->registerPermissions('October.Tailor', [
-                // Editor
-                'editor.tailor_blueprints' => [
-                    'label' => 'tailor::lang.permissions.manage_blueprints',
-                    'tab' => 'Editor',
-                    'roles' => UserRole::CODE_DEVELOPER,
-                    'order' => 100
-                ]
-            ]);
-        });
-
-        RoleManager::instance()->registerCallback(function ($manager) {
-            $manager->registerPermissions(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getPermissionDefinitions()
-            );
-        });
+        return [
+            // Editor
+            'editor.tailor_blueprints' => [
+                'label' => 'tailor::lang.permissions.manage_blueprints',
+                'tab' => 'Editor',
+                'roles' => UserRole::CODE_DEVELOPER,
+                'order' => 100
+            ]
+        ] + BlueprintIndexer::instance()->getPermissionDefinitions();
     }
 
     /**
@@ -142,29 +90,56 @@ class ServiceProvider extends ModuleServiceProvider
     /**
      * registerContentFields
      */
-    protected function registerContentFields()
+    public function registerContentFields()
     {
-        FieldManager::instance()->registerCustomFields(function ($manager) {
-            $manager->registerCustomField(\Tailor\ContentFields\MixinField::class, 'mixin');
-            $manager->registerCustomField(\Tailor\ContentFields\EntriesField::class, 'entries');
-            $manager->registerCustomField(\Tailor\ContentFields\RepeaterField::class, 'repeater');
-            $manager->registerCustomField(\Tailor\ContentFields\RichEditorField::class, 'richeditor');
-            $manager->registerCustomField(\Tailor\ContentFields\MarkdownField::class, 'markdown');
-            $manager->registerCustomField(\Tailor\ContentFields\FileUploadField::class, 'fileupload');
-            $manager->registerCustomField(\Tailor\ContentFields\MediaFinderField::class, 'mediafinder');
-            $manager->registerCustomField(\Tailor\ContentFields\CheckboxField::class, 'checkbox');
-            $manager->registerCustomField(\Tailor\ContentFields\DataTableField::class, 'datatable');
-            $manager->registerCustomField(\Tailor\ContentFields\TextareaField::class, 'textarea');
+        return [
+            \Tailor\ContentFields\MixinField::class => 'mixin',
+            \Tailor\ContentFields\EntriesField::class => 'entries',
+            \Tailor\ContentFields\RepeaterField::class => 'repeater',
+            \Tailor\ContentFields\RichEditorField::class => 'richeditor',
+            \Tailor\ContentFields\MarkdownField::class => 'markdown',
+            \Tailor\ContentFields\FileUploadField::class => 'fileupload',
+            \Tailor\ContentFields\MediaFinderField::class => 'mediafinder',
+            \Tailor\ContentFields\CheckboxField::class => 'checkbox',
+            \Tailor\ContentFields\DataTableField::class => 'datatable',
+            \Tailor\ContentFields\TextareaField::class => 'textarea'
+        ];
+    }
+
+    /**
+     * registerEditorEvents handles Editor events
+     */
+    protected function registerEditorEvents()
+    {
+        Event::listen('editor.extension.register', function () {
+            return \Tailor\Classes\EditorExtension::class;
         });
     }
 
     /**
-     * bootEditorEvents handles Editor events
+     * extendMigrateCommand to migrate blueprints
      */
-    protected function bootEditorEvents()
+    public function extendMigrateCommand()
     {
-        Event::listen('editor.extension.register', function () {
-            return \Tailor\Classes\EditorExtension::class;
+        Event::listen('system.updater.migrate', function ($updateManager) {
+            BlueprintIndexer::instance()
+                ->setNotesOutput($updateManager->getNotesOutput())->migrate();
+        });
+    }
+
+    /**
+     * extendDeferredBindingForContent
+     */
+    protected function extendDeferredBindingForContent()
+    {
+        Event::listen('deferredBinding.newMasterInstance', function($model, $masterObject) {
+            if (
+                $masterObject instanceof \Tailor\Models\EntryRecord ||
+                $masterObject instanceof \Tailor\Models\RepeaterItem ||
+                $masterObject instanceof \Tailor\Models\GlobalRecord
+            ) {
+                $masterObject->extendDeferredContentModel($model);
+            }
         });
     }
 }

@@ -1,8 +1,10 @@
 <?php namespace Tailor\Classes;
 
+use App;
 use File;
 use System;
 use Tailor\Classes\Blueprint\EntryBlueprint;
+use System\Helpers\Cache as CacheHelper;
 
 /**
  * BlueprintIndexer super class responsible for indexing blueprints
@@ -24,11 +26,6 @@ class BlueprintIndexer
     use \Tailor\Classes\BlueprintIndexer\NavigationRegistry;
 
     /**
-     * @var bool useCache
-     */
-    protected $useCache;
-
-    /**
      * @var array cache collection
      */
     public static $memoryCache = [];
@@ -37,6 +34,11 @@ class BlueprintIndexer
      * @var int migrateCount number of migrations that occured.
      */
     protected $migrateCount = 0;
+
+    /**
+     * @var bool debugChecked for the debug cache buster
+     */
+    protected $debugChecked = false;
 
     /**
      * migrate
@@ -101,12 +103,12 @@ class BlueprintIndexer
      */
     protected function getCache($name): array
     {
-        if ($this->useCache === null) {
-            $this->useCache = !System::checkDebugMode();
+        if (App::runningUnitTests()) {
+            return [];
         }
 
-        if (!$this->useCache) {
-            return [];
+        if (System::checkDebugMode()) {
+            $this->resetCacheInDebugMode();
         }
 
         if (array_key_exists($name, static::$memoryCache)) {
@@ -119,15 +121,40 @@ class BlueprintIndexer
             return [];
         }
 
-        return static::$memoryCache[$name] = json_decode(File::get($fileName), true);
+        return static::$memoryCache[$name] = File::getRequire($fileName);
     }
 
     /**
-     * toggleCache
+     * resetCacheInDebugMode
      */
-    public function toggleCache($value): void
+    protected function resetCacheInDebugMode()
     {
-        $this->useCache = $value;
+        if ($this->debugChecked) {
+            return;
+        }
+
+        if (!file_exists(app_path('blueprints'))) {
+            return;
+        }
+
+        $currentMtime = 0;
+        $mtime = File::lastModifiedRecursive(app_path('blueprints'));
+        $debugFile = $this->makeCacheFile('debug');
+
+        if (file_exists($debugFile)) {
+            $currentMtime = File::getRequire($debugFile)['mtime'] ?? 0;
+        }
+
+        if ($mtime > $currentMtime) {
+            $this->clearCache();
+        }
+
+        File::put(
+            $debugFile,
+            '<?php return '.var_export(compact('mtime'), true).';'
+        );
+
+        $this->debugChecked = true;
     }
 
     /**
@@ -135,23 +162,10 @@ class BlueprintIndexer
      */
     protected function putCache($name, array $contents): void
     {
-        if ($this->useCache) {
-            File::put($this->makeCacheFile($name), json_encode($contents));
-        }
-    }
-
-    /**
-     * makeCacheFile
-     */
-    protected function makeCacheFile($name): string
-    {
-        $rootPath = cache_path('cms/cache/blueprints');
-
-        if (!File::exists($rootPath)) {
-            File::makeDirectory($rootPath, 0755, true);
-        }
-
-        return $rootPath.'/'.$name.'.json';
+        File::put(
+            $this->makeCacheFile($name),
+            '<?php return '.var_export($contents, true).';'
+        );
     }
 
     /**
@@ -163,17 +177,18 @@ class BlueprintIndexer
     }
 
     /**
+     * makeCacheFile
+     */
+    protected function makeCacheFile($name): string
+    {
+        return cache_path("cms/blueprint-${name}.php");
+    }
+
+    /**
      * clearCache clears the disk cache
      */
     public static function clearCache()
     {
-        $rootPath = cache_path('cms/cache/blueprints');
-
-        if (!File::exists($rootPath)) {
-            File::makeDirectory($rootPath, 0755, true);
-            return;
-        }
-
-        File::cleanDirectory($rootPath);
+        CacheHelper::instance()->clearBlueprintCache();
     }
 }

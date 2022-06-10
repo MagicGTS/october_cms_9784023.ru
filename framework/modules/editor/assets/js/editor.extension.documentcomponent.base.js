@@ -189,6 +189,7 @@ $.oc.module.register('editor.extension.documentcomponent.base', function() {
                     if (!suppressGlobalDocumentError) {
                         this.$emit('tabfatalerror');
                     }
+                    console.error(error);
                     return error;
                 }
             },

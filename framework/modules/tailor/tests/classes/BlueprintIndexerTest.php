@@ -9,7 +9,6 @@ class BlueprintIndexerTest extends TestCase
     {
         parent::setUp();
         Blueprint::setExternalBasePath(base_path('modules/tailor/tests/fixtures/blueprints'));
-        BlueprintIndexer::instance()->toggleCache(false);
     }
 
     /**

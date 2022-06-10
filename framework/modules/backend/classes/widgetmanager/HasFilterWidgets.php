@@ -2,6 +2,7 @@
 
 use App;
 use Str;
+use System;
 
 /**
  * HasFilterWidgets
@@ -36,9 +37,21 @@ trait HasFilterWidgets
         if ($this->filterWidgets === null) {
             $this->filterWidgets = [];
 
-            // Load module widgets
+            // Load external widgets
             foreach ($this->filterWidgetCallbacks as $callback) {
                 $callback($this);
+            }
+
+            // Load module items
+            foreach (System::listModules() as $module) {
+                if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                    $widgets = $provider->registerFilterWidgets();
+                    if (is_array($widgets)) {
+                        foreach ($widgets as $className => $widgetInfo) {
+                            $this->registerFilterWidget($className, $widgetInfo);
+                        }
+                    }
+                }
             }
 
             // Load plugin widgets

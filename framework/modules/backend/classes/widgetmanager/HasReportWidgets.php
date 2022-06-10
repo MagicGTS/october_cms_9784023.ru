@@ -2,6 +2,7 @@
 
 use App;
 use Event;
+use System;
 use BackendAuth;
 use SystemException;
 
@@ -32,9 +33,21 @@ trait HasReportWidgets
         if ($this->reportWidgets === null) {
             $this->reportWidgets = [];
 
-            //  Load module widgets
+            // Load external widgets
             foreach ($this->reportWidgetCallbacks as $callback) {
                 $callback($this);
+            }
+
+            // Load module items
+            foreach (System::listModules() as $module) {
+                if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                    $widgets = $provider->registerReportWidgets();
+                    if (is_array($widgets)) {
+                        foreach ($widgets as $className => $widgetInfo) {
+                            $this->registerReportWidget($className, $widgetInfo);
+                        }
+                    }
+                }
             }
 
             // Load plugin widgets

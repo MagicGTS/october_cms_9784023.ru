@@ -29,23 +29,17 @@ trait DeferredContentModel
     }
 
     /**
-     * registerDeferredContentModel
+     * extendDeferredContentModel
      */
-    public static function registerDeferredContentModel()
+    public function extendDeferredContentModel($model)
     {
-        DeferredBinding::extend(function($model) {
-            $model->bindEvent('deferredBinding.newMasterInstance', function($masterObject) use ($model) {
-                if ($masterObject instanceof self) {
-                    $pivotData = $model->pivot_data;
+        $pivotData = $model->pivot_data;
 
-                    if ($masterObject instanceof RepeaterItem) {
-                        $masterObject->extendWithBlueprintSpawn($pivotData['_contentSpawnPath']);
-                    }
-                    else {
-                        $masterObject->extendWithBlueprint($pivotData['_contentUuid']);
-                    }
-                }
-            });
-        });
+        if ($this instanceof RepeaterItem) {
+            $this->extendWithBlueprintSpawn($pivotData['_contentSpawnPath']);
+        }
+        else {
+            $this->extendWithBlueprint($pivotData['_contentUuid']);
+        }
     }
 }

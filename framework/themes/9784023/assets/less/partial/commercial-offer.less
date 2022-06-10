@@ -1,0 +1,19 @@
+.print-doc{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: right;    
+    color: @color_07;
+     .fonts(1.125rem; 1.5rem; 700);     
+
+}
+
+
+
+@media print {
+.header, .footer, .print-doc {
+display:none;
+}
+}

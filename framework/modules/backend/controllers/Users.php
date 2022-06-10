@@ -2,6 +2,7 @@
 
 use Lang;
 use Flash;
+use Config;
 use Backend;
 use Redirect;
 use BackendAuth;
@@ -251,10 +252,18 @@ class Users extends SettingsController
         $result = $this->asExtension('FormController')->update_onSave($this->user->id, 'myaccount');
 
         // If the password or login name has been updated, reauthenticate the user
+        //
         $loginChanged = $this->user->login != post('User[login]');
         $passwordChanged = strlen(post('User[password]'));
         if ($loginChanged || $passwordChanged) {
-            BackendAuth::login($this->user->reload(), true);
+
+            // Determine remember policy
+            $remember = Config::get('backend.force_remember');
+            if ($remember === null) {
+                $remember = BackendAuth::hasRemember();
+            }
+
+            BackendAuth::login($this->user->reload(), (bool) $remember);
         }
 
         return $result;

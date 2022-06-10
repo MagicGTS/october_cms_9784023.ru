@@ -8,7 +8,7 @@ items:
       reference: svedeniya-ob-obrazovatelnoj-organizacii
       component: About
     - title: "Каталог&nbsp;услуг"
-      reference: services
+      reference: obuchenie-po-elektrobezopasnosti
       component: Services
     - title: "Цены"
       reference: prices

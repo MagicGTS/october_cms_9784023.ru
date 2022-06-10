@@ -2,6 +2,7 @@
 
 use App;
 use Str;
+use System;
 use Config;
 use System\Classes\PluginManager;
 use SystemException;
@@ -54,9 +55,16 @@ class ComponentManager
      */
     protected function loadComponents()
     {
-        // Load module components
+        // Load external components
         foreach ($this->callbacks as $callback) {
             $callback($this);
+        }
+
+        // Load module items
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                $this->loadComponentsFromArray($provider->registerComponents(), $provider);
+            }
         }
 
         // Load plugin components
@@ -123,9 +131,7 @@ class ComponentManager
         }
 
         $className = Str::normalizeClassName($className);
-
         $this->codeMap[$code] = $className;
-
         $this->classMap[$className] = $code;
 
         if ($owner !== null) {
