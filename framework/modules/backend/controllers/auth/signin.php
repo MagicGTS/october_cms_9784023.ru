@@ -38,7 +38,7 @@
                 maxlength="255" />
         </div>
 
-        <?php if (Config::get('backend.force_remember', true) === null): ?>
+        <?php if (Config::get('backend.force_remember') === null): ?>
             <!-- Remember Checkbox -->
             <div class="form-group">
                 <div class="form-check">
@@ -60,7 +60,7 @@
         </button>
 
         <p class="pull-right forgot-password">
-            <!-- Forgot your password? -->
+            <!-- Forgot password? -->
             <a href="<?= Backend::url('backend/auth/restore') ?>">
                 <?= e(trans('backend::lang.account.forgot_password')) ?>
             </a>

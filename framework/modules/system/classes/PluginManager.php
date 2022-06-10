@@ -4,11 +4,10 @@ use Db;
 use App;
 use Str;
 use File;
-use Lang;
 use Log;
-use View;
 use Config;
 use Schema;
+use System;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use SystemException;
@@ -194,25 +193,12 @@ class PluginManager
             $pluginId = $this->getIdentifier($plugin);
         }
 
-        if (!$plugin) {
+        if (!$plugin || $plugin->disabled) {
             return;
         }
 
         $pluginPath = $this->getPluginPath($plugin);
         $pluginNamespace = strtolower($pluginId);
-
-        // Register language namespaces
-        $langPath = $pluginPath . '/lang';
-        if (is_dir($langPath)) {
-            Lang::addNamespace($pluginNamespace, $langPath);
-            if (App::runningInBackend()) {
-                Lang::addJsonPath($langPath);
-            }
-        }
-
-        if ($plugin->disabled) {
-            return;
-        }
 
         // Register plugin class autoloaders
         $autoloadPath = $pluginPath . '/vendor/autoload.php';
@@ -231,7 +217,20 @@ class PluginManager
         // Register views path
         $viewsPath = $pluginPath . '/views';
         if (is_dir($viewsPath)) {
-            View::addNamespace($pluginNamespace, $viewsPath);
+            $this->callAfterResolving('view', function ($view) use ($pluginNamespace, $viewsPath) {
+                $view->addNamespace($pluginNamespace, $viewsPath);
+            });
+        }
+
+        // Register language namespaces
+        $langPath = $pluginPath . '/lang';
+        if (is_dir($langPath)) {
+            $this->callAfterResolving('translator', function ($translator) use ($pluginNamespace, $langPath) {
+                $translator->addNamespace($pluginNamespace, $langPath);
+                if (App::runningInBackend()) {
+                    $translator->addJsonPath($langPath);
+                }
+            });
         }
 
         // Add init, if available
@@ -242,7 +241,7 @@ class PluginManager
 
         // Add routes, if available
         $routesFile = $pluginPath . '/routes.php';
-        if (file_exists($routesFile) && !$this->app->routesAreCached()) {
+        if (!$this->app->routesAreCached() && file_exists($routesFile)) {
             require $routesFile;
         }
     }
@@ -256,8 +255,8 @@ class PluginManager
             return;
         }
 
-        foreach ($this->plugins as $plugin) {
-            $this->bootPlugin($plugin);
+        foreach ($this->plugins as $pluginId => $plugin) {
+            $this->bootPlugin($plugin, $pluginId);
         }
 
         $this->booted = true;
@@ -268,13 +267,30 @@ class PluginManager
      * @param PluginBase $plugin
      * @return void
      */
-    public function bootPlugin($plugin)
+    public function bootPlugin($plugin, $pluginId = null)
     {
+        if (!$pluginId) {
+            $pluginId = $this->getIdentifier($plugin);
+        }
+
         if (!$plugin || $plugin->disabled) {
             return;
         }
 
         $plugin->boot();
+    }
+
+    /**
+     * callAfterResolving sets up an after resolving listener, or fire immediately
+     * if already resolved.
+     */
+    protected function callAfterResolving($name, $callback)
+    {
+        $this->app->afterResolving($name, $callback);
+
+        if ($this->app->resolved($name)) {
+            $callback($this->app->make($name), $this->app);
+        }
     }
 
     /**
@@ -478,19 +494,26 @@ class PluginManager
 
         $results = [];
 
+        // Load module items
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                if (method_exists($provider, $methodName)) {
+                    $results['October.'.$module] = $provider->{$methodName}();
+                }
+            }
+        }
+
         // Load plugin items
         foreach ($this->getPlugins() as $id => $plugin) {
-            if (!method_exists($plugin, $methodName)) {
-                continue;
+            if (method_exists($plugin, $methodName)) {
+                $results[$id] = $plugin->{$methodName}();
             }
-
-            $results[$id] = $plugin->{$methodName}();
         }
 
         // Load app items
         if ($app = App::getProvider(\App\Provider::class)) {
             if (method_exists($app, $methodName)) {
-                $results[$id] = $app->{$methodName}();
+                $results['October.App'] = $app->{$methodName}();
             }
         }
 

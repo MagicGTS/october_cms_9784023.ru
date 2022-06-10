@@ -1,6 +1,5 @@
 <?php
 
-use Backend\Classes\Controller;
 use Backend\Classes\NavigationManager;
 
 class NavigationManagerTest extends TestCase

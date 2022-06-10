@@ -1,0 +1,26 @@
+url = "/novosti"
+layout = "layout"
+title = "Новости"
+meta_title = "Новости"
+==
+<?php
+function onStart()
+{
+ 
+
+}
+?>
+==
+
+<main>
+    <div class="page_wrapper">
+        {% partial "dublheader"  %}
+
+        {% partial "news-preview" %}
+
+        {% partial "news-blog" %}
+
+        {% partial "course-selection" %}
+    </div>
+</main>
+           

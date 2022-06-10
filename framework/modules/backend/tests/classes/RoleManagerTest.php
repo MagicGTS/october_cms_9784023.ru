@@ -35,11 +35,9 @@ class RoleManagerTest extends TestCase
     public function testListPermissions()
     {
         $permissions = $this->instance->listPermissions();
-        $this->assertCount(2, $permissions);
-        $this->assertEquals([
-            'test.permission_one',
-            'test.permission_two'
-        ], collect($permissions)->pluck('code')->toArray());
+        $permissionCodes = collect($permissions)->pluck('code')->toArray();
+        $this->assertContains('test.permission_one', $permissionCodes);
+        $this->assertContains('test.permission_two', $permissionCodes);
     }
 
     public function testRegisterPermissions()
@@ -53,12 +51,11 @@ class RoleManagerTest extends TestCase
         ]);
 
         $permissions = $this->instance->listPermissions();
-        $this->assertCount(3, $permissions);
-        $this->assertEquals([
-            'test.permission_three',
-            'test.permission_one',
-            'test.permission_two'
-        ], collect($permissions)->pluck('code')->toArray());
+        $permissionCodes = collect($permissions)->pluck('code')->toArray();
+
+        $this->assertContains('test.permission_one', $permissionCodes);
+        $this->assertContains('test.permission_two', $permissionCodes);
+        $this->assertContains('test.permission_three', $permissionCodes);
     }
 
     public function testRegisterPermissionsThroughCallbacks()
@@ -86,13 +83,12 @@ class RoleManagerTest extends TestCase
         });
 
         $permissions = $this->instance->listPermissions();
-        $this->assertCount(4, $permissions);
-        $this->assertEquals([
-            'test.permission_three',
-            'test.permission_one',
-            'test.permission_two',
-            'test.permission_four'
-        ], collect($permissions)->pluck('code')->toArray());
+        $permissionCodes = collect($permissions)->pluck('code')->toArray();
+
+        $this->assertContains('test.permission_one', $permissionCodes);
+        $this->assertContains('test.permission_two', $permissionCodes);
+        $this->assertContains('test.permission_three', $permissionCodes);
+        $this->assertContains('test.permission_four', $permissionCodes);
     }
 
     public function testRegisterAdditionalTab()
@@ -116,19 +112,16 @@ class RoleManagerTest extends TestCase
         });
 
         $tabs = $this->listTabbedPermissions($this->instance->listPermissions());
-        $this->assertCount(2, $tabs);
-        $this->assertEquals([
-            'Test 2',
-            'Test'
-        ], array_keys($tabs));
-        $this->assertEquals([
-            'test.permission_three',
-            'test.permission_four'
-        ], collect($tabs['Test 2'])->pluck('code')->toArray());
-        $this->assertEquals([
-            'test.permission_one',
-            'test.permission_two',
-        ], collect($tabs['Test'])->pluck('code')->toArray());
+        $this->assertArrayHasKey('Test', $tabs);
+        $this->assertArrayHasKey('Test 2', $tabs);
+
+        $tabs1 = collect($tabs['Test'])->pluck('code')->toArray();
+        $this->assertContains('test.permission_one', $tabs1);
+        $this->assertContains('test.permission_two', $tabs1);
+
+        $tabs2 = collect($tabs['Test 2'])->pluck('code')->toArray();
+        $this->assertContains('test.permission_three', $tabs2);
+        $this->assertContains('test.permission_four', $tabs2);
     }
 
     public function testRemovePermission()
@@ -136,10 +129,8 @@ class RoleManagerTest extends TestCase
         $this->instance->removePermission('October.TestCase', 'test.permission_one');
 
         $permissions = $this->instance->listPermissions();
-        $this->assertCount(1, $permissions);
-        $this->assertEquals([
-            'test.permission_two'
-        ], collect($permissions)->pluck('code')->toArray());
+        $permissionCodes = collect($permissions)->pluck('code')->toArray();
+        $this->assertNotContains('test.permission_one', $permissionCodes);
     }
 
     public function testCannotRemovePermissionsBeforeLoaded()

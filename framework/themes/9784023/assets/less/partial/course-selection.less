@@ -1,0 +1,95 @@
+.course_selection {
+     margin-bottom: 3rem;
+
+     h1 {
+          color: @color_07;
+          font-weight: 700;
+          font-size: 2.5rem;
+          line-height: 2.9375rem;
+          margin-bottom: 3rem;
+     }
+
+     .course_selection_wrapper {
+          display: flex;
+          justify-content: space-between;
+
+          .back_ot {
+               background-color: @color_04;
+          }
+
+          .back_ptm {
+               background-color: @color_02;
+          }
+
+          .back_pteep {
+               background-color: @color_06;
+          }
+
+          .back_dopog {
+               background-color: @color_09;
+          }
+
+          .course_selection_item {
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: space-around;
+               color: @color_white;
+               border-radius: 8px;
+               width: calc(100% / 4);
+               height: 258px;
+               word-wrap: break-word;
+              
+               .course_selection_item_title_wrap {
+                    display: flex;
+                    align-items: center;
+                    margin: 2rem 1rem 1rem;
+                    justify-content: space-evenly;
+                    width: 100%;
+          
+                    h3 {
+                         font-weight: 700;
+                         font-size: 1.75rem;
+                         line-height: 2.0625rem;
+                         width: 150px;
+                         text-transform: uppercase;
+                    }
+
+                    img {
+
+                    }
+               }
+
+               p {
+                    text-align: left;
+                    font-weight: 400;
+                    font-size: 1rem;
+                    line-height: 1.1875rem;
+                    margin: 0.7rem;
+               }
+
+               button {
+                    display: inline-block;
+                    padding: 1rem 2.53rem;
+                    border: 1px solid @color_white;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    font-size: 0.875rem;
+                    line-height: 1.125rem;
+                    background-color: inherit;
+                    color: @color_white;
+                    margin-bottom: 18px;
+               }
+
+          }
+
+          .course_selection_item:not(:last-child) {
+               margin-right: 30px;
+          }
+     }
+
+ 
+}
+    
+    
+    

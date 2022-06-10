@@ -1,6 +1,7 @@
 <?php namespace System\Classes;
 
 use App;
+use System;
 use Twig\TokenParser\AbstractTokenParser as TwigTokenParser;
 use Twig\TwigFilter as TwigSimpleFilter;
 use Twig\TwigFunction as TwigSimpleFunction;
@@ -32,30 +33,24 @@ class MarkupManager
     protected $items;
 
     /**
-     * @var \System\Classes\PluginManager
-     */
-    protected $pluginManager;
-
-    /**
-     * Initialize this singleton.
-     */
-    protected function init()
-    {
-        $this->pluginManager = PluginManager::instance();
-    }
-
-    /**
      * loadExtensions parses all registrations and adds them to this class
      */
     protected function loadExtensions()
     {
-        // Load module items
+        // Load external items
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
 
+        // Load module items
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                $this->loadExtensionsFromArray($provider->registerMarkupTags());
+            }
+        }
+
         // Load plugin items
-        foreach ($this->pluginManager->getPlugins() as $plugin) {
+        foreach (PluginManager::instance()->getPlugins() as $plugin) {
             $this->loadExtensionsFromArray($plugin->registerMarkupTags());
         }
 

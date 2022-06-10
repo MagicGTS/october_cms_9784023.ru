@@ -174,9 +174,7 @@ class Theme
         $activeTheme = $activeFromConfig = Config::get('cms.active_theme');
 
         // Backend override
-        // @todo This needs performance review, use a session marker so
-        // normal users are not constantly checking -sg
-        if (App::hasDatabase() && BackendAuth::getUser()) {
+        if (BackendAuth::hasSession() && App::hasDatabase() && BackendAuth::getUser()) {
             try {
                 $prefTheme = UserPreference::forUser()->get(Theme::EDIT_KEY, null);
             }

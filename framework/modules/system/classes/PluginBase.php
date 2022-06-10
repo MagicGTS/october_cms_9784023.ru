@@ -1,7 +1,7 @@
 <?php namespace System\Classes;
 
 use Backend;
-use Illuminate\Console\Scheduling\Schedule;
+use October\Contracts\Support\OctoberPackage;
 use Illuminate\Support\ServiceProvider as ServiceProviderBase;
 use ReflectionClass;
 use SystemException;
@@ -13,7 +13,7 @@ use Yaml;
  * @package october\system
  * @author Alexey Bobkov, Samuel Georges
  */
-class PluginBase extends ServiceProviderBase
+class PluginBase extends ServiceProviderBase implements OctoberPackage
 {
     /**
      * @var array require plugin dependencies.
@@ -59,8 +59,6 @@ class PluginBase extends ServiceProviderBase
 
     /**
      * register method, called when the plugin is first registered.
-     *
-     * @return void
      */
     public function register()
     {
@@ -68,17 +66,13 @@ class PluginBase extends ServiceProviderBase
 
     /**
      * boot method, called right before the request route.
-     *
-     * @return void
      */
     public function boot()
     {
     }
 
     /**
-     * registerMarkupTags registers CMS markup tags introduced by this plugin.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerMarkupTags()
     {
@@ -86,9 +80,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerComponents registers any frontend components implemented in this plugin.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerComponents()
     {
@@ -96,10 +88,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerNavigation registers backend navigation items for this plugin.
-     *
-     * @return array
-     * @throws SystemException
+     * @inheritDoc
      */
     public function registerNavigation()
     {
@@ -125,10 +114,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerPermissions registers any backend permissions used by this plugin.
-     *
-     * @return array
-     * @throws SystemException
+     * @inheritDoc
      */
     public function registerPermissions()
     {
@@ -142,10 +128,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerSettings registers any backend configuration links used by this plugin.
-     *
-     * @return array
-     * @throws SystemException
+     * @inheritDoc
      */
     public function registerSettings()
     {
@@ -171,31 +154,14 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerSchedule registers scheduled tasks that are executed on a regular basis.
-     *
-     * @param Schedule $schedule
-     * @return void
+     * @inheritDoc
      */
     public function registerSchedule($schedule)
     {
     }
 
     /**
-     * registerReportWidgets registers any report widgets provided by this plugin.
-     * The widgets must be returned in the following format:
-     *
-     *     return [
-     *         'className1'=>[
-     *             'label' => 'My widget 1',
-     *             'context' => ['context-1', 'context-2'],
-     *         ],
-     *         'className2' => [
-     *             'label' => 'My widget 2',
-     *             'context' => 'context-1'
-     *         ]
-     *     ];
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerReportWidgets()
     {
@@ -203,15 +169,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerFormWidgets registers any form widgets implemented in this plugin.
-     * The widgets must be returned in the following format:
-     *
-     *     return [
-     *         ['className1' => 'alias'],
-     *         ['className2' => 'anotherAlias']
-     *     ];
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerFormWidgets()
     {
@@ -219,15 +177,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerFilterWidgets registers any filter widgets implemented in this plugin.
-     * The widgets must be returned in the following format:
-     *
-     *     return [
-     *         ['className1' => 'alias'],
-     *         ['className2' => 'anotherAlias']
-     *     ];
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerFilterWidgets()
     {
@@ -235,10 +185,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerListColumnTypes registers custom backend list column types introduced
-     * by this plugin.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerListColumnTypes()
     {
@@ -246,15 +193,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerMailLayouts registers any mail layouts implemented by this plugin.
-     * The layouts must be returned in the following format:
-     *
-     *     return [
-     *         'marketing' => 'acme.blog::layouts.marketing',
-     *         'notification' => 'acme.blog::layouts.notification',
-     *     ];
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerMailLayouts()
     {
@@ -262,15 +201,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerMailTemplates registers any mail templates implemented by this plugin.
-     * The templates must be returned in the following format:
-     *
-     *     return [
-     *         'acme.blog::mail.welcome',
-     *         'acme.blog::mail.forgot_password',
-     *     ];
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerMailTemplates()
     {
@@ -278,15 +209,7 @@ class PluginBase extends ServiceProviderBase
     }
 
     /**
-     * registerMailPartials registers any mail partials implemented by this plugin.
-     * The partials must be returned in the following format:
-     *
-     *     return [
-     *         'tracking' => 'acme.blog::partials.tracking',
-     *         'promotion' => 'acme.blog::partials.promotion',
-     *     ];
-     *
-     * @return array
+     * @inheritDoc
      */
     public function registerMailPartials()
     {

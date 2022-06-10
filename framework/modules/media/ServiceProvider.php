@@ -22,13 +22,8 @@ class ServiceProvider extends ModuleServiceProvider
     {
         parent::register('media');
 
-        $this->registerMarkupTags();
-
         // Backend specific
         if (App::runningInBackend()) {
-            $this->registerBackendNavigation();
-            $this->registerBackendWidgets();
-            $this->registerBackendPermissions();
             $this->registerGlobalInstance();
         }
     }
@@ -42,77 +37,73 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * registerBackendNavigation
+     * registerNavigation
      */
-    protected function registerBackendNavigation()
+    public function registerNavigation()
     {
-        BackendMenu::registerCallback(function ($manager) {
-            $manager->registerMenuItems('October.Media', [
-                'media' => [
-                    'label' => 'backend::lang.media.menu_label',
-                    'icon' => 'icon-image',
-                    'iconSvg' => 'modules/media/assets/images/media-icon.svg',
-                    'url' => Backend::url('media'),
-                    'permissions' => ['media.library'],
-                    'order' => 200
-                ]
-            ]);
-        });
+        return [
+            'media' => [
+                'label' => 'backend::lang.media.menu_label',
+                'icon' => 'icon-image',
+                'iconSvg' => 'modules/media/assets/images/media-icon.svg',
+                'url' => Backend::url('media'),
+                'permissions' => ['media.library'],
+                'order' => 200
+            ]
+        ];
     }
 
     /**
-     * registerBackendPermissions
+     * registerPermissions
      */
-    protected function registerBackendPermissions()
+    public function registerPermissions()
     {
-        RoleManager::instance()->registerCallback(function ($manager) {
-            $manager->registerPermissions('October.Media', [
-                'media.library' => [
-                    'label' => 'Access the Media Manager',
-                    'tab' => 'Media',
-                    'order' => 300
-                ],
-                'media.library.create' => [
-                    'label' => 'Upload Media',
-                    'comment' => 'backend::lang.permissions.manage_media',
-                    'tab' => 'Media',
-                    'order' => 400
-                ],
-                // 'media.library.update' => [
-                //     'label' => 'Modify Media',
-                //     'comment' => 'Change meta data and other information',
-                //     'tab' => 'Media',
-                //     'order' => 500
-                // ],
-                'media.library.delete' => [
-                    'label' => 'Delete Media',
-                    'tab' => 'Media',
-                    'order' => 600
-                ]
-            ]);
-        });
+        return [
+            'media.library' => [
+                'label' => 'Access the Media Manager',
+                'tab' => 'Media',
+                'order' => 300
+            ],
+            'media.library.create' => [
+                'label' => 'Upload Media',
+                'comment' => 'backend::lang.permissions.manage_media',
+                'tab' => 'Media',
+                'order' => 400
+            ],
+            // 'media.library.update' => [
+            //     'label' => 'Modify Media',
+            //     'comment' => 'Change meta data and other information',
+            //     'tab' => 'Media',
+            //     'order' => 500
+            // ],
+            'media.library.delete' => [
+                'label' => 'Delete Media',
+                'tab' => 'Media',
+                'order' => 600
+            ]
+        ];
     }
 
     /**
-     * registerBackendWidgets
+     * registerFormWidgets
      */
-    protected function registerBackendWidgets()
+    public function registerFormWidgets()
     {
-        WidgetManager::instance()->registerFormWidgets(function ($manager) {
-            $manager->registerFormWidget(\Media\FormWidgets\MediaFinder::class, 'mediafinder');
-        });
+        return [
+            \Media\FormWidgets\MediaFinder::class => 'mediafinder'
+        ];
     }
 
     /**
      * registerMarkupTags
      */
-    protected function registerMarkupTags()
+    public function registerMarkupTags()
     {
-        MarkupManager::instance()->registerCallback(function ($manager) {
-            $manager->registerFilters([
-                'media' => [\Media\Classes\MediaLibrary::class, 'url'],
-            ]);
-        });
+        return [
+            'filters' => [
+                'media'  => [\Media\Classes\MediaLibrary::class, 'url'],
+            ]
+        ];
     }
 
     /**

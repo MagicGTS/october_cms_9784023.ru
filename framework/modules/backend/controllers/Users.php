@@ -2,6 +2,7 @@
 
 use Lang;
 use Flash;
+use Config;
 use Backend;
 use Redirect;
 use BackendAuth;
@@ -106,6 +107,16 @@ class Users extends SettingsController
             if ($groupField = $form->getField('groups')) {
                 $groupField->value($defaultGroupIds);
             }
+
+        }
+
+        // Mark default groups
+        if (!$form->model->exists) {
+            $defaultGroupIds = UserGroup::where('is_new_user_default', true)->pluck('id')->all();
+
+            if ($groupField = $form->getField('groups')) {
+                $groupField->value($defaultGroupIds);
+            }
         }
     }
 
@@ -118,6 +129,15 @@ class Users extends SettingsController
     }
 
     /**
+     * listExtendQuery extends the list query to hide superusers if the current user is not a superuser themselves
+     */
+    public function listExtendQuery($query)
+    {
+        $this->applyRankPermissionsToQuery($query);
+    }
+
+    /**
+
      * listFilterExtendScopes prevents non-superusers from even seeing the is_superuser filter
      */
     public function listFilterExtendScopes($filterWidget)
@@ -251,10 +271,19 @@ class Users extends SettingsController
         $result = $this->asExtension('FormController')->update_onSave($this->user->id, 'myaccount');
 
         // If the password or login name has been updated, reauthenticate the user
+        //
         $loginChanged = $this->user->login != post('User[login]');
         $passwordChanged = strlen(post('User[password]'));
         if ($loginChanged || $passwordChanged) {
-            BackendAuth::login($this->user->reload(), true);
+
+            // Determine remember policy
+            $remember = Config::get('backend.force_remember');
+            if ($remember === null) {
+                $remember = BackendAuth::hasRemember();
+            }
+
+            BackendAuth::login($this->user->reload(), (bool) $remember);
+
         }
 
         return $result;

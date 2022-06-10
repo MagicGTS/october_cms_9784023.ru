@@ -22,11 +22,11 @@
 
     $scripts = [
         Url::asset('modules/system/assets/js/vendor/jquery.min.js'),
+        Url::asset('modules/system/assets/js/vue.bundle-min.js'),
         Url::asset('modules/system/assets/js/framework.js'),
         Backend::skinAsset('assets/vendor/bootstrap/bootstrap.min.js'),
         Backend::skinAsset('assets/js/vendor-min.js'),
         Backend::skinAsset('assets/js/october-min.js'),
-        Url::asset('modules/system/assets/js/vue.bundle-min.js'),
         Url::asset('modules/system/assets/js/lang/lang.'.App::getLocale().'.js'),
     ];
 ?>

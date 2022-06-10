@@ -1,0 +1,75 @@
+.reviews_from_people {
+    margin-bottom: 5rem;
+
+    .reviews_from_people_wrapper {
+        background: @color_04;
+        box-shadow: 0px 4px 4px #E5E5E5;
+        padding: 2rem 2rem;
+        margin-bottom: 7rem;
+        border-radius: 5px;
+
+        .reviews_from_people_title {
+            font-weight: 700;
+            font-size: 2.5rem;
+            line-height: 2.9375rem;
+            color: @color_white;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .reviews_from_people_cards_wrapper {
+            display: flex;
+            .reviews_from_people_cards_item {
+                width: calc(100% / 4);
+                height: 328px;
+                margin-right: 2rem;
+                margin-bottom: 5rem;
+                background: @color_white;
+                box-shadow: 1px 10px 10px rgba(102, 62, 51, 0.02), 
+                            10px 20px 20px rgba(102, 62, 51, 0.04), 
+                            20px 30px 30px rgba(102, 62, 51, 0.06);
+                border-radius: 8px;
+                padding: 1rem;
+
+                .reviews_from_people_cards_item_wrapp {
+                    display: flex;
+                    margin-top: 2rem;
+                    margin-bottom: 1rem;
+
+                    .reviews_from_people_cards_item_img {
+                        margin-right: 1rem;
+
+                        img {
+                            border-radius: 50%;
+                        }
+                    }
+    
+                    .reviews_from_people_cards_item_name {
+                        font-weight: 700;
+                        font-size: 20px;
+                        line-height: 24px;
+                        color: @color_53;
+                    }
+
+                }
+
+                .reviews_from_people_cards_item_text {
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 19px;
+                    color: @color_52;
+                }
+            }
+
+            .reviews_from_people_cards_item:last-child {
+                margin-right: 0;
+            }
+
+        }
+
+    }
+  
+}
+    
+    
+    

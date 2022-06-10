@@ -116,7 +116,8 @@ class MarkdownEditor extends FormWidgetBase
     {
         $value = (string) post($this->getFieldName());
         $previewHtml = $this->safe
-            ? Markdown::parseNoIndent($value)
+            ? Markdown::parseIndent($value)
+
             : Markdown::parse($value);
 
         return [

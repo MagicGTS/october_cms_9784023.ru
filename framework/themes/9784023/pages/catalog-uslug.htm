@@ -1,0 +1,28 @@
+url = "/catalog-uslug"
+layout = "layout"
+title = "Каталог услуг"
+meta_title = "Каталог услуг"
+==
+<?php
+function onStart()
+{
+ 
+
+}
+?>
+==
+
+<main>
+    <div class="page_wrapper">
+        {% partial "dublheader"  %}
+
+        {% partial "catalog-preview" %}
+
+        {% partial "service-cards" %}
+
+        {% partial "service-benefits" %}
+
+        {% partial "feedback-form" %}
+    </div>
+</main>
+           

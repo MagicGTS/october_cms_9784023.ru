@@ -1,0 +1,66 @@
+.service_cards {
+     margin-bottom: 3rem;
+    
+    .service_cards_wrapper {
+          display: flex;
+          justify-content: space-around;
+
+     
+          .service_cards_item {
+               width: 349px;
+               height: 441px;
+               background-color: @color_03;
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: space-between;
+               border-radius: 8px;
+
+               p {
+                    color: @color_07;
+                    font-weight: 700;
+                    font-size: 2rem;
+                    line-height: 2.375rem;
+                    text-align: center;
+               }
+
+               button {
+                    color: @color_04;
+                    font-weight: 700;
+                    font-size: 1rem;
+                    line-height: 1.1875rem;
+                    border: 1px solid @color_04;
+                    background-color: inherit;
+                    padding: 19px 32px;
+                    margin-bottom: 55px;
+               }
+
+               img {
+                    margin-top: 45px;
+               }
+
+          }
+
+          .service_cards_item:not(:last-child) {
+               margin-right: 30px;
+          }
+
+     .item_in_center {
+          background-color: @color_04;
+
+          p {
+               color: @color_white;
+          }
+
+          button {
+               color: @color_white;
+               border: 1px solid @color_white;
+          }
+     }
+
+    }
+ 
+}
+    
+    
+    

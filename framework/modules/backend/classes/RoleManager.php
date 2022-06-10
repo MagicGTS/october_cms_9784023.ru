@@ -1,6 +1,7 @@
 <?php namespace Backend\Classes;
 
 use App;
+use System;
 use System\Classes\PluginManager;
 use October\Rain\Exception\SystemException;
 
@@ -108,10 +109,23 @@ class RoleManager
             return $this->permissionCache;
         }
 
-        // Load module items
+        // Load external items
+
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
+
+
+        // Load module items
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                $items = $provider->registerPermissions();
+                if (is_array($items)) {
+                    $this->registerPermissions('October.'.$module, $items);
+                }
+            }
+        }
+
 
         // Load plugin items
         foreach (PluginManager::instance()->getPlugins() as $id => $plugin) {

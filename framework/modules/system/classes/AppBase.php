@@ -1,9 +1,7 @@
 <?php namespace System\Classes;
 
 use App;
-use File;
-use View;
-use Config;
+use October\Rain\Support\ModuleServiceProvider;
 
 /**
  * AppBase class is an application level plugin
@@ -11,17 +9,8 @@ use Config;
  * @package october\system
  * @author Alexey Bobkov, Samuel Georges
  */
-class AppBase extends PluginBase
+class AppBase extends ModuleServiceProvider
 {
-    /**
-     * pluginDetails returns nothing because App is not a plugin.
-     * @return array
-     */
-    public function pluginDetails()
-    {
-        return [];
-    }
-
     /**
      * register method, called when the plugin is first registered.
      *
@@ -34,25 +23,25 @@ class AppBase extends PluginBase
 
         // Register configuration path
         $configPath = $appPath . '/config';
-        if (File::isDirectory($configPath)) {
-            Config::package($appNamespace, $configPath, $appNamespace);
+        if (is_dir($configPath)) {
+            $this->loadConfigFrom($configPath, $appNamespace);
         }
 
         // Register views path
         $viewsPath = $appPath . '/views';
-        if (File::isDirectory($viewsPath)) {
-            View::addNamespace($appNamespace, $viewsPath);
+        if (is_dir($viewsPath)) {
+            $this->loadViewsFrom($viewsPath, $appNamespace);
         }
 
         // Add init, if available
         $initFile = $appPath . '/init.php';
-        if (File::exists($initFile)) {
+        if (file_exists($initFile)) {
             require $initFile;
         }
 
         // Add routes, if available
         $routesFile = $appPath . '/routes.php';
-        if (File::exists($routesFile) && !App::routesAreCached()) {
+        if (!App::routesAreCached() && file_exists($routesFile)) {
             require $routesFile;
         }
     }
@@ -64,13 +53,5 @@ class AppBase extends PluginBase
      */
     public function boot()
     {
-    }
-
-    /**
-     * getConfigurationFromYaml returns nothing because App doesn't support YAML config.
-     */
-    protected function getConfigurationFromYaml($exceptionMessage = null)
-    {
-        return [];
     }
 }
