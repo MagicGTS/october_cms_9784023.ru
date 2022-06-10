@@ -8,6 +8,8 @@ function onStart()
 {
  
      $this['img_circle'] = 'themes/9784023/assets/img/jpg/bigSearch-electro.jpg';
+     $this['img_dubl_circle'] = 'themes/9784023/assets/img/jpg/bigSearch-electrodiscont.jpg';
+ 
  
 
      use \T9784023\Cources\Models\HighAltitudeWorks;
@@ -19,93 +21,375 @@ function onStart()
     $cource ['files_folder'] = Storage::allFiles($cource['files_folder']);
     $cource ['result_img_folder'] = Storage::allFiles($cource['result_img_folder']);
     $this['cource'] = $cource;
+    $cource = HighAltitudeWorks::with(['schedule', 'program'])->find(1)->toArray();
 
 }
 ?>
 ==
-<main>
-    <div class="page_wrapper">
+<section class="" name="body_header">   
+   <div class = "dublheader_electro">
+         <div class = "partial_dublheader_electro" name = ""> 
+              {% partial "dublheader"  %}
+         </div>
+         <div class = "dublheader_electro_info">
+               <div class="">                
+                         <h2 class="dublheader_electro_info_title">Обучение по Электробезопасности</h2>
+                         <p>ОЧУ ДПО «Учебный центр «Амулет» приглашает на обучение по электробезопасности на группу допуска от 2 до 5
+                       для проведения работ с электроустановками до и выше 1000 В. Наши слушатели проходят курс очно в учебных классах
+                       или дистанционно без посещения занятий в Москве. Благодаря наглядной подаче информации учащиеся эффективно усваивают
+                       программу при любом формате подготовки и приступают к исполнению трудовых обязанностей сразу по окончании обучения.</p>
+      
+                        <buttonn type ="button">Записаться</button>
+               </div>
+               <div >
+                    <div class = "dublheader_electro_infolist_foto">
+                        {% partial "circle" img=img_circle %}  
+                     </div>    
+                    <div class = "dublheader_electro_infolist">
+                          <div>
+                               <div class = "dublheader_electro_infolist_item">
+                                    <img  src="{{ 'assets/img/svg/future.svg'|theme }}" alt="" width="" height="">
+                                    <p>Срок обучения</p>
+                               </div>
+                               <p>от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</p>
+                              
+                          </div> 
+                          <div>
+                               <div class = "dublheader_electro_infolist_item">
+                                    <img  src="{{ 'assets/img/svg/teacher.svg'|theme }}" alt="" width="" height="">
+                                    <p>Форма обучения</p>
+                               </div>
+                               <p> {{cource.learning_form}} </p>
+                          </div>  
+                          <div>
+                               <div class = "dublheader_electro_infolist_item">
+                                    <img  src="{{ 'assets/img/svg/wallet.svg'|theme }}" alt="" width="" height="">
+                                    <p>Стоимость</p>
+                               </div>
+                               <p>от {{cource.cost_min}} за человека</p>
+                          </div>  
+                    </div>                 
+                   
+               </div>   
+         </div>
+    </div>     
 
-     <section class="" name="body_header">   
-     <div class = "dublheader_electro">
-          <div class = "partial_dublheader_electro" name = ""> 
-               {% partial "dublheader" %}
-          </div>
-          <div class = "dublheader_electro_info">
-                    <div class="">
-                         <div class="">
-                              <h2 class="dublheader_electro_info_title">Обучение по Электробезопасности</h2>
-                              <p>ОЧУ ДПО «Учебный центр «Амулет» приглашает на обучение по электробезопасности на группу допуска от 2 до 5
-                         для проведения работ с электроустановками до и выше 1000 В. Наши слушатели проходят курс очно в учебных классах
-                         или дистанционно без посещения занятий в Москве. Благодаря наглядной подаче информации учащиеся эффективно усваивают
-                         программу при любом формате подготовки и приступают к исполнению трудовых обязанностей сразу по окончании обучения.</p>
-          
-                              <button>Записаться</button>
-                         </div>
-                    </div>
-                    <div >
-                         <div class = "dublheader_electro_infolist_foto">
-                         {% partial "circle" img=img_circle %}  
-                         </div>    
-                         <div class = "dublheader_electro_infolist">
-                              <div>
-                                   <div class = "dublheader_electro_infolist_item">
-                                        <img  src="{{ 'assets/img/svg/future.svg'|theme }}" alt="" width="" height="">
-                                        <p>Срок обучения</p>
-                                   </div>
-                                   <p>от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</p>
-                                   
-                              </div> 
-                              <div>
-                                   <div class = "dublheader_electro_infolist_item">
-                                        <img  src="{{ 'assets/img/svg/teacher.svg'|theme }}" alt="" width="" height="">
-                                        <p>Форма обучения</p>
-                                   </div>
-                                   <p> {{cource.learning_form}} </p>
-                              </div>  
-                              <div>
-                                   <div class = "dublheader_electro_infolist_item">
-                                        <img  src="{{ 'assets/img/svg/wallet.svg'|theme }}" alt="" width="" height="">
-                                        <p>Стоимость</p>
-                                   </div>
-                                   <p>от {{cource.cost_min}} за человека</p>
-                              </div>  
-                         </div>
-                         
+</section>
+
+
+<section name="commercialoffer">
+   <div class = "block_commercialoffer">
+        <div class = "commercialoffer_addinfo">
+              <img  src="{{ 'assets/img/svg/studies.svg'|theme }}" alt="" width="" height="">
+              <p>Учебные программы разработаны в соответствии с правилами технической эксплуатации энергоустановок, 
+                  утвержденных нормативно-правовыми актами с учетом последних дополнений и изменений. Каждый курс одобрен инспекторами Ростехнадзора.</p>
+        </div>
+        <button class="commercialoffer_blank">
+             <a class="" href="{{'commercial-offer'|page }}">Коммерческое предложение</a> 
+        </button> 
+   </div>   
+</section>
+
+
+<section name="studyinstructions">
+   <div class = "block_studyinstructions">
+        <h3 class="studyinstructions_title">Как пройти обучение?</h3>
+        <div class="studyinstructions_steps">
+             <div class="studyinstructions_picture">
+                  <div class = "studyinstructions_picture_img"><img   src="{{ 'assets/img/svg/documents-vector.svg'|theme }}" alt="" width="" height=""></div>
+             </div>
+             <div>
+                  <img  src="{{ 'assets/img/svg/arrow.svg'|theme }}" alt="" width="" height="">
+             </div>
+             <div class="studyinstructions_picture">
+                 <div class = "studyinstructions_picture_img"><img   src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="" height=""></div>
+             </div>             
+             <div>
+                  <img  src="{{ 'assets/img/svg/arrow.svg'|theme }}" alt="" width="" height="">
+             </div>
+             <div class="studyinstructions_picture">               
+                  <div class = "studyinstructions_picture_img">
+                        <div>
+                             <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
+                             <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">
+                        </div>
+                        <div>
+                             <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
+                             <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">                        
+                        </div>
+                        <div>
+                             <img  src="{{ 'assets/img/svg/box.svg'|theme }}" alt="" width="" height="">
+                             <img  src="{{ 'assets/img/svg/checkbox.svg'|theme }}" alt="" width="" height="">                          
+                        </div>                   
+                  </div>
+             </div> 
+        </div>                   
+        <div class="studyinstructions_text">
+                  <div >
+                        <p>Скачайте и заполните заявку на нужную Вам программу.</p>
+                  </div>            
+                  <div >
+                        <p>Нажмите кнопку "ЗАПИСАТЬСЯ".</p>
+                  </div>           
+                  <div>
+                        <p>Заполните все поля. Нажмите кнопку отправить и ожидайте связи с менеджером.<p>                       
+                  </div
+         </div>    
+    
+       
+       </div>      
+       <div class="studyinstructions_dublinfo">
+            <div class="studyinstructions_dublinfo_text">Заранее можете прислать доп. информацию на почту 9784023@gmail.com.</div>
+        </div>           
+      
+</section>
+
+<section name="lesson-schedule">
+        <div class = "schedule">
+             <header class = "schedule_header">
+                     <div class = "schedul_header_date">Дата</div>
+                     <div class = "schedul_header_suminar">Семинар</div>
+                     <div class = "schedul_header_time">Время</div>
+                     <div class = "schedul_header_office">Кабинет</div>
+             </header>
+             <div class = "schedule_info" >
+                     <div class = "schedul_info_date">10.10.2020</div>
+                     <div class = "schedul_info_suminar">{{cource.name}}</div>
+                     <div class = "schedul_info_time">10.25</div>
+                     <div class = "schedul_info_office">Каб.26</div>
+                     <a class = "schedul_info_button" href ="#" download="" title=""><img  src="{{ 'assets/img/svg/primaryButton.svg'|theme }}"></a>           
+             </div>
+        
+        </div>
+</section>
+
+
+<section name = "attention">
+         <div class = "attention">
+              <p class = "attention_title">Внимание !</p>
+              <p class = "attention_article">а отсутствие необходимого и своевременного обучения согласно ч. 3 ст. 5.27.1 КоАП 
+              установлен штраф для работодателей от 110 000 руб. до 130 000 руб.</p>
+              <a class = "attention_articlelink" href ="#">Подробнее</a>
+         </div>
+</section>
+
+<section name="cost of services">
+         <div class="price_courses">
+               <h3 class="price_courses_title">Стоимость курсов обучения по электробезопасности</h3>
+           
+             <header class = "price_courses_header">
+                     <div class = "price_courses_courses">Программа обучения</div>
+                     <div class = "price_courses_clock">Кол-во часов</div>
+                     <div class = "price_courses_price">Стоимость за человека</div>
+                     
+             </header>
+             <div class = "price_courses_info" >
+                     <div class = "schedul_info_date">{{cource.name}}</div>
+                     <div class = "schedul_info_suminar">от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</div>
+                     <div class = "schedul_info_time"> {{cource.cost_min}} p</div>
                     
+                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="161px" height="57px"></a>           
+             </div>
+             <div class = "price_courses_info" >
+                     <div class = "schedul_info_date">{{cource.name}}</div>
+                     <div class = "schedul_info_suminar">от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</div>
+                     <div class = "schedul_info_time"> {{cource.cost_min}} p</div>
                     
-                    </div>   
+                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="161px" height="57px"></a>           
+             </div>
+             <div class = "price_courses_info" >
+                     <div class = "schedul_info_date">{{cource.name}}</div>
+                     <div class = "schedul_info_suminar">от  {{cource.hours_min}}  до  {{cource.hours_max}}   часов</div>
+                     <div class = "schedul_info_time"> {{cource.cost_min}} p</div>
+                    
+                     <a class = "schedul_info_button" href ="#"><img  src="{{ 'assets/img/svg/button.svg'|theme }}" alt="" width="161px" height="57px"></a>           
+             </div>
+        
+        
+       </div>
+       
+           <div class = "link_button">
+                 <a  href ="#">
+                     <button class = "button_open_more" type = "button">Открыть еще <i class="fa fa-angle-right" aria-hidden="true"></i></butten>             
+                 </a>
+           </div>     
+       
+        
+
+
+</section>
+
+<section name = "discounts info">
+        <div class = "discount_info">
+            <div class ="discount_infoblock">
+                 <div class = "discount_infoblock_title">
+                  <h3>Бюджетным и казенным учреждениями - скидки!</h3>
+                  <a class = "discount_infoblock_button" href ="#"><img  src="{{ 'assets/img/svg/buttonRegistration.svg'|theme }}" alt="" width="" height=""></a>  
+             </div>
+             <div class = "discount_infoblock_img">
+                  {% partial "circle" img=img_dubl_circle %}  
+             </div>
+
+            </div>
+             
+        </div>
+
+</section>
+
+
+
+
+<section name="plan of stady">
+         <div class="plan_stady">
+               <h3 class="plan_stady_title">Учебный план по обучению электробезопасности</h3>
+           
+             <header class = "plan_stady_header">
+                     <div class = "plan_stady_item">№</div>
+                     <div class = "">Наименование раздела</div>
+                     <div class = "plan_stady_item">Кол-во часов Л/ПЗ</div>
+                     
+             </header>
+             <div class = "plan_stady_info" >
+                     <div class = "plan_stady_item">1</div>
+                     <div class = "">Управление электрохозяйством. Подготовка персонала к эксплуатации электроустановок. Система управления электрохозяйством.</div>
+                     <div class = "plan_stady_item">4</div>                           
+             </div>
+             <div class = "plan_stady_info" >
+                     <div class = "plan_stady_item">1</div>
+                     <div class = "">Управление электрохозяйством. Подготовка персонала к эксплуатации электроустановок. Система управления электрохозяйством.</div>
+                     <div class = "plan_stady_item">4</div>                           
+             </div>
+             <div class = "plan_stady_info" >
+                     <div class = "plan_stady_item">1</div>
+                     <div class = "">Управление электрохозяйством. Подготовка персонала к эксплуатации электроустановок. Система управления электрохозяйством.</div>
+                     <div class = "plan_stady_item">4</div>                           
+             </div>         
+        </div>
+       <div class = "link_button">
+             <a  href ="#">
+                     <button class = "button_open_more" type = "button">Открыть еще <i class="fa fa-angle-right" aria-hidden="true"></i></butten>             
+             </a>    
+       </div>   
+</section>
+<section name = "dubl electro info">
+          <div class="dubl_electro_info">    
+               <a href="#">Кому нужно проходить обучение<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+               <a href="#">Чему учат на курсах?<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+               <a href="#">Электробезопасность следует посетить тем, кто<i class="fa fa-angle-right" aria-hidden="true"></i></a>
+               <a href="#">Как записаться на обучение?<i class="fa fa-angle-right" aria-hidden="true"></i></a>   
           </div>
-     </div>     
+</section>
 
-     
-     <div class = "block_commercialoffer">
-          <div class = "commercialoffer_addinfo">
-               <img  src="{{ 'assets/img/svg/studies.svg'|theme }}" alt="" width="" height="">
-               <p>Учебные программы разработаны в соответствии с правилами технической эксплуатации энергоустановок, 
-                    утвержденных нормативно-правовыми актами с учетом последних дополнений и изменений. Каждый курс одобрен инспекторами Ростехнадзора.</p>
-          </div>
-          <button class="commercialoffer_blank">
-               <a class="" href="#">Коммерческое предложение</a> 
-          </button> 
-     </div>
-     
-     </section>
+<section name = "result study">
+        <div class = "result_study wrap">
+            <div class ="result_studyblock container">
+                 <div class = "result_studyblock_info">
+                      <h3 class = "result_studyblock_title">Результат обучения</h3>
+                      <p >В завершающей части курса слушатели сдают экзамен аттестационной комиссии с участием представителя Ростехнадзора. </p>  
+                      <p >При успешной проверке знаний учащемуся выдают удостоверение или в действующем документе делается соответствующая
+                       запись. Повторно пройти обучение по электробезопасности необходимо с периодичностью раз в 1 или 3 года.</p>  
+                 </div>
+                 <div class = "result_studyblock_img">
+                     <div class = "result_studyblock_img_item">
+                        
+                          <img class = "backProfCard" src="{{ 'assets/img/svg/profCard-back.svg'|theme }}" alt="" >
+                          <img class = "profCard" src="{{ 'assets/img/svg/profCard.svg'|theme }}" alt="" >
+                          <img class = "titleProfCard" src="{{ 'assets/img/svg/profCard-title.svg'|theme }}" alt="" >
+                     </div>
+                  
+                 </div>
+
+            </div>
+             
+        </div>
+
+</section>
 
 
-     {% partial "how-to-get-training" %}
+<section name = "quick offer">
+        <div class = " wrap">
+            <div class ="quick_offer container">
+                 <div class = "quick_offer_dok">
+                      <div class = "quick_offer_dok_title">Документация</div>
+                      <div class = "quick_offer_dok_block">
+                           <div class = "quick_offer_dok_item">
+                                <div>Бланк заявки на бесплатный семинар по электробезопасности</div>
+                                <div> <img class = "" src="{{ 'assets/img/svg/documentW.svg'|theme }}" alt="" ></div>
+                           </div>
+                           <div class = "quick_offer_dok_item">
+                                <div>Бланк заявки на обучение по электробезопасности</div>
+                                <div> <img class = "" src="{{ 'assets/img/svg/documentW.svg'|theme }}" alt="" ></div>
+                           </div>
+                           <div class = "quick_offer_dok_item">
+                                <div>Договор на повышение квалификации по электробезопасности (Юр. лицо, 72 часа)</div>
+                                <div> <img class = "" src="{{ 'assets/img/svg/documentW.svg'|theme }}" alt="" ></div>
+                           </div>
+                           <div class = "quick_offer_dok_item">
+                                <div>Договор на повышение квалификации (Юр. лицо, 8 часов, дистанционное обучение)</div>
+                                <div> <img class = "" src="{{ 'assets/img/svg/documentW.svg'|theme }}" alt="" ></div>
+                           </div>
+                           <div class = "quick_offer_dok_item">
+                                <div>Договор на повышение квалификации (Юр. лицо, 36 часов, дистанционное обучение)</div>
+                                <div> <img class = "" src="{{ 'assets/img/svg/documentW.svg'|theme }}" alt="" ></div>
+                           </div>
+                           <div class = "quick_offer_dok_item">
+                                <div>Договор на повышение квалификации (Юр. лицо, 72 часов, дистанционное обучение)</div>
+                                <div> <img class = "" src="{{ 'assets/img/svg/documentW.svg'|theme }}" alt="" ></div>
+                           </div>
+                      </div>
+                  </div>
+                  <div class = "quick_offer_info">
+                      <div class = "quick_offer_info_title">Важно знать!</div>
+                      <div class = "quick_offer_info_item">
+                           <p>Ответственным за электрохозяйство в организации может быть назначен работник, имеющий допуск по электробезопасности не ниже IV группы.
+                           Нарушение этого требования влечет за собой крупные штрафы.</p>
+                           <p> Целевая группа допуска зависит от категории персонала:</p>
+                           <p>I гр. – выдается сотрудникам, чья деятельность не сопряжена с непосредственным выполнением работ на электроустановках, 
+                           но есть риск воздействия электротока при определенных обстоятельствах; II-IV гр. понадобится оперативно-ремонтным работникам, 
+                           оперативным, административно-техническим специалистам, а также другим представителям электротехнического и электротехнологического
+                           персонала.</p>
+                           <p>Лица, поступающие на предприятие для осуществления работ непосредственно на электрическом оборудовании, обязаны пройти профподготовку. 
+                           Программа курса и экзаменационные билеты разрабатываются в объеме должностных обязанностей. Подтверждением квалификации выступает
+                           удостоверение установленного образца с указанной группой допуска.</p>    
+                      </div>
+                </div>
 
-     {% partial "cost-of-courses" %}
+           
+             
+        </div>
 
-     {% partial "sign-up-training" %}
+</section>
 
-     {% partial "electrical-safety-plan" %}
+<section name = "video siminars">
+         <div class = "siminar_video wrap">
+              <div class ="siminar_video_title container">
+                   <h3>Видеосеминары по электробезопасности</h3>
+                   <a href ="#"><img class = "" src="{{ 'assets/img/svg/buttonVideo.svg'|theme }}" alt="" ></a>
+              </div>
+              <div class ="siminar_video_block">
+                   <div class ="siminar_video_block_item"> 
+                       <button type="button"><img class = "" src="{{ 'assets/img/svg/video.svg'|theme }}" alt="" ></button>
+                       <p>Состоялся обучающий семинар по электробезопасности, ПТЭЭП</p>
+                   </div>
+                   <div class ="siminar_video_block_item"> 
+                       <button type="button"><img class = "" src="{{ 'assets/img/svg/video.svg'|theme }}" alt="" ></button>
+                       <p>Состоялся обучающий семинар по электробезопасности, ПТЭЭП</p>
+                   </div>
+                   <div class ="siminar_video_block_item"> 
+                       <button type="button"><img class = "" src="{{ 'assets/img/svg/video.svg'|theme }}" alt="" ></button>
+                       <p>Состоялся обучающий семинар по электробезопасности, ПТЭЭП</p>
+                   </div>
+                   <div class ="siminar_video_block_item"> 
+                       <button type="button"><img class = "" src="{{ 'assets/img/svg/video.svg'|theme }}" alt="" ></button>
+                       <p>Состоялся обучающий семинар по электробезопасности, ПТЭЭП</p>
+                   </div>
+                   <div class ="siminar_video_block_item"> 
+                       <button type="button"><img class = "" src="{{ 'assets/img/svg/video.svg'|theme }}" alt="" ></button>
+                       <p>Состоялся обучающий семинар по электробезопасности, ПТЭЭП</p>
+                   </div>
+              </div>
+              
+              
+         </div>
 
-     {% partial "result-of-training" %}
-
-     {% partial "electrical-safety-documentation" %}
-
-     {% partial "electrical-safety-webinars" %}
-{{ dump(cource) }}
-    </div>
-</main>
+</section>

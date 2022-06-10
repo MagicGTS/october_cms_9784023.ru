@@ -1,5 +1,5 @@
 
-
+/* dublheader_electro*/
 .dublheader_electro{
      position: relative;
     background:  url('../../assets/img/png/lincoln-electrical.png') center no-repeat;
@@ -10,14 +10,10 @@
     background-size: cover;
     padding-top: 1.75em;
     padding-bottom: 2.5em;
-    // width: 1565px;
-    // height: 782px;
+    max-width: 1440px;
+    min-height: 782px;
     top: 0px;  
-
-
- }
-
-  
+ } 
 
 .partial_dublheader_electro{
     .dublnav_menu{
@@ -102,11 +98,14 @@
     }
 
 }
+
+
 /* ---Блок Комерческое предложение-----*/
 
 .block_commercialoffer{
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 3.75rem;
     max-width: 1112px;
     display: flex;
     justify-content: space-between;
@@ -145,6 +144,506 @@
 
     .commercialoffer_blank a:hover{
        color: @color_07;
+       
     }
 }
 
+
+/* block_studyinstructions*/
+
+.block_studyinstructions{
+     margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3.75rem;
+    width: 1112px;
+
+    .studyinstructions_title{
+        .fonts_h3; 
+        margin-bottom: 2.9rem;
+    }
+
+    .studyinstructions_steps{
+        display: flex;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+       justify-content: space-around;
+        align-items: center;
+        margin-bottom: 1.25rem;         
+   
+        .studyinstructions_picture{
+            height: 9.18rem;
+            width: 9.18rem;
+            border-radius: 50%;
+            background: @color_11;
+            text-align: center;
+            align-items: center;
+
+            .studyinstructions_picture_img{
+            display: block;
+            height: 4.4rem;
+            margin-top: 30%;
+            align-items: center;              
+
+            }
+        }
+      }  
+
+    .studyinstructions_text{
+          max-width: 1035px;
+          margin-left: auto;
+          margin-right: auto;
+          display: flex;
+          justify-content: space-between;
+          text-align: center;
+          color: @color_07;
+          margin-bottom: 1.5rem;
+
+          p{
+              .fonts(1.12rem; 1.5rem; 400);              
+               width: 16em;
+          }          
+      }
+      
+    .studyinstructions_dublinfo{
+      
+        min-width: 1112px;
+         .fonts(0.87rem; 1.18rem; 400);  
+         display: flex;
+         justify-content: right; 
+        .studyinstructions_dublinfo_text{           
+           width: 20rem;
+        }
+    }          
+
+}
+
+/* lesson-schedule*/
+.schedule{
+    max-width: 1112px;
+     margin-left: auto;
+     margin-right: auto;
+     margin-bottom: 2.8rem;
+     color: @color_07;
+     .fonts(0.87rem; 1.18rem; 400); 
+   
+     
+     .schedule_header{
+         height: 3.125rem;
+         padding: 0.93rem;
+         border-top: 0.06rem solid @color_52;
+          .fonts(0.87rem; 1.18rem; 400); 
+          font-weight: bold;
+          display: grid;
+          grid-template-columns: 2fr 6fr 1fr 1fr 2fr;
+     }
+     .schedule_info{
+         min-height: 3.125rem;
+         padding: 0.45em 0.93rem;
+         background: @color_11;          
+         display: grid;
+          grid-template-columns: 2fr 6fr 1fr 1fr 2fr;
+          .schedul_info_date{              
+               font-weight: bold;               
+          }
+     }
+  }
+
+/* attention */
+
+.attention{
+    max-width: 1102px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8.12rem;
+    height: 2.81rem;
+    border: 0.06rem solid @color_09;
+    border-radius: 0.19rem;    
+     display: flex;
+     justify-content: space-around;
+    
+
+     .attention_title{
+         height: 100%;
+         padding-top: 0.6rem;
+         padding-right: 2rem;
+         width: 8.5em;
+        border-right: 0.06rem solid @color_09;
+         color: @color_09;
+         .fonts(1rem; 1.5rem; 600);         
+     }
+     .attention_article{
+         height: 100%;         
+         width: 50.3em;        
+         padding-right: 2rem;       
+         color: @color_02;
+         .fonts(0.87rem; 1.18rem; 400);         
+         
+     }
+     .attention_articlelink{
+         height: 100%;       
+         width: 8em;
+         padding-right: 2rem;
+         padding-top: 0.6rem;
+         color: @color_02;
+         .fonts(0.87rem; 1.18rem; 400);   
+         font-weight: bold;
+         text-decoration: none;
+     }
+
+}
+
+/* cost of services"*/
+.price_courses{
+    max-width: 1112px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0.9rem;
+    .price_courses_title{
+        .fonts_h3; 
+        color: @color_07;
+        height: 5.87rem;
+        width: 39.43rem;
+        margin-bottom: 10.93rem;
+    }
+    .price_courses_header{
+        width: 100%;
+        height: 6.65rem;         
+         border-top: 0.06rem solid @color_11;
+         .fonts(1rem; 1.125rem; 700); 
+         display: grid;
+         grid-template-columns: 5fr 2fr 2fr 3fr;
+         align-items: center;
+         > * {
+             padding-left: 5em;
+             
+         }        
+    }
+    .price_courses_info{
+        height: 6.65rem;         
+           width: 100%;
+         .fonts(1rem; 1.125rem; 400); 
+         display: grid;
+         grid-template-columns: 5fr 2fr 2fr 3fr;
+         align-items: center;
+         > * {
+             padding-left: 5em;
+         }        
+    }
+    .price_courses_info:nth-child(odd){
+        background-color:  @color_11; 
+    }  
+}    
+
+
+/* button_link */
+    .link_button{
+         max-width: 1102px;
+         margin-left: auto;
+         margin-right: auto;
+          display: flex;
+          a{
+              text-decoration: none;
+               color: @color_02;
+               .fonts(1rem; 1.125rem; 700); 
+                &:hover {
+                transition: 500ms;
+                color: @color_06;
+                text-decoration: underline;
+                font-weight: 700;
+        }             
+     }    
+    
+    .button_open_more{
+        margin-left: auto;
+        margin-right: auto;
+        width: 12.3em;
+        height: 3.56rem;       
+        background: @color_50;   
+        border: 0.06rem solid @color_02;
+        border-radius: 0.19rem;      
+        i {
+            padding-left: 0.8em;
+        }
+    }           
+    }
+  /* discounts for orgo */
+
+   .discount_info{
+       max-width: 1440px;
+       margin-left: auto;
+       margin-right: auto;
+       height: auto;
+       .discount_infoblock{
+           margin: 6.68rem auto;                 
+          padding-right: 8.75em;
+          padding-left: 8.75em;
+           height: 18rem;
+           background-color: @color_04;
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           .discount_infoblock_title{
+               max-width: 36em;
+               .fonts_h3; 
+                color: @color_white;
+                h3{
+                    margin-bottom: 1.5rem;
+                }                
+           }
+           .discount_infoblock_img{
+               .bigsearch{
+                   width: 28.75em;
+                   height: 28.75rem;
+               }
+
+
+           }
+
+       }
+
+   }
+
+
+
+
+
+  /* plan of stady */
+    .plan_stady{
+    max-width: 1112px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0.9rem;
+    
+    .plan_stady_title{
+        .fonts_h3; 
+        color: @color_07;
+        height: 5.87rem;
+        width: 39.43rem;
+        margin-bottom: 2.25rem;
+
+    }
+    .plan_stady_header{
+        width: 100%;
+        height: 6.65rem;         
+        .fonts(1rem; 1.125rem; 700); 
+         display: grid;
+         grid-template-columns: 1fr 9fr 2fr;
+         align-items: center;
+          background-color:  @color_white;          
+    }
+    .plan_stady_info{
+         min-height: 6.65rem;         
+         width: 100%;
+         .fonts(1rem; 1.125rem; 400); 
+         display: grid;
+         grid-template-columns: 1fr 9fr 2fr;
+         align-items: center;           
+    }
+    .plan_stady_item{
+        text-align: center;
+    }
+   
+    .plan_stady_info:nth-child(odd){
+        background-color:  @color_11; 
+    }
+    .plan_stady_info:nth-child(2n){
+        background-color:  @color_white; 
+    }    
+}    
+/* dubl electro info */
+    .dubl_electro_info{
+        margin: 1.89rem auto;        
+        max-width: 1110px;       
+        display: flex; 
+        flex-wrap: wrap;   
+
+        a{         
+          height: 2.5rem;
+          width: 33em;
+          border: 0.0001rem solid @color_02;
+          box-sizing: border-box;
+          border-radius: 0.19rem;
+          padding-right: 1rem;
+          padding-left: 1rem;
+          padding-top: 0.69em;        
+          color: @color_07;
+          .fonts(1em; 1.19em; 700;);        
+          display: block;
+          text-decoration: none;
+          margin-bottom: 0.875rem;
+          margin-right: 1.5em;
+          &:hover {
+                transition: 500ms;
+                color: @color_06;
+                text-decoration: underline;
+                font-weight: 700;
+         }             
+          i {         
+            float: right;
+            color: @color_02;        
+            }
+        }        
+    }
+
+    /* result study */
+    .result_study {
+        height: 22.25rem;
+        background: @color_11;
+        margin-bottom: 3.43rem;
+
+        .result_studyblock{
+            height: 100%;
+            display: flex;            
+            color: @color_07;          
+            padding-top: 1.5rem;
+
+            .result_studyblock_info{
+                width: 37.43em;
+                .result_studyblock_title{
+                     .fonts_h3; 
+                }
+                p{
+                  .fonts(1.125em; 1.5em; 400;);    
+                  max-width: 539px;    
+                }
+            }
+            .result_studyblock_info > *{
+                padding-bottom: 1.5rem;
+            }
+
+            .result_studyblock_img{
+                width: 30rem; 
+                display: flex;                
+                align-items: center;
+                
+                .result_studyblock_img_item{              
+                    margin-left: auto;
+                    margin-right: auto;
+                    width: 272px;
+                    height: 155px;
+                    position: relative;
+                    & > *{
+                        position: absolute;                 
+                    }
+                    .profCard {
+                        left: 4.68rem;
+                    }
+                    .titleProfCard{
+                        left: 6.81em;
+                        top: 3.41rem;
+                    }
+                }
+            }
+        }
+    }
+    
+    /* quick offer */
+
+    .quick_offer{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4.63rem;
+
+        
+        .quick_offer_dok{
+            width: 34.62em;
+            height: 36.18rem;            
+            border: 0.0625rem solid @color_07;
+            box-sizing: border-box;
+            border-radius: 0.25rem;
+                        
+           .quick_offer_dok_title{
+                padding-top: 1.125rem;
+               padding-left: 1.375em;
+               color: @color_07;
+               .fonts(1em; 1.19em; 700;);   
+               height: 2.875rem;
+               border-bottom: 0.0625rem solid @color_07;             
+              }
+
+             .quick_offer_dok_block{
+               padding-top: 1.125rem;
+               padding-right: 2.06em;
+               padding-left: 1.375em;
+             } 
+
+             .quick_offer_dok_item{   
+                margin-bottom: 2rem;          
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .fonts(1.125em; 1.5em; 400;);
+                color: @color_07;  
+              }
+        }
+        .quick_offer_info{
+            width: 31.18em;
+            height: 26rem;       
+            border: 0.0625rem solid @color_09;
+            box-sizing: border-box;
+            border-radius: 0.25rem;
+
+            .quick_offer_info_title{
+                 padding-left: 1.68em;
+                 padding-top: 1.125rem;
+                 color: @color_09;
+                .fonts(1em; 1.19em; 600;);   
+                 height: 2.875rem;
+                 border-bottom: 0.0625rem solid @color_09;        
+            }
+            .quick_offer_info_item{
+                  padding-top: 1rem;   
+                 padding-left: 1.68em;
+                 .fonts(0.875em; 1.18em; 400;);  
+                 color: @color_02; 
+                 p{
+                     padding-bottom: 0.75rem;
+                 }
+            }
+        }
+    }
+
+    /* video siminars */
+    .siminar_video{
+        margin-bottom: 4.18rem;
+
+        .siminar_video_title{
+            margin-bottom: 4.65rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 5.875rem;
+            h3{
+               .fonts_h3; 
+                color: @color_07;
+            }
+        }
+
+        .siminar_video_block{
+            margin-left: -1.5em;
+            margin-right: -1.5em;
+            display: flex;
+
+            .siminar_video_block_item{
+                height: 17.625rem;
+                width: 17.375em;
+
+                button{
+                    height: 13rem;
+                    width: 17.5em;
+                    border-radius: 1rem;
+                    background: @color_02;
+                    border: none;
+                    margin-bottom: 1rem;
+                }
+                p{
+                    .fonts(0.875em; 1.125em; 400;);  
+                    color: @color_02; 
+                    width: 16em;
+                }
+            }
+         
+        }
+
+    }

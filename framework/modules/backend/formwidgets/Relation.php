@@ -4,6 +4,7 @@ use Db;
 use DbDongle;
 use Backend\Classes\FormField;
 use Backend\Classes\FormWidgetBase;
+use SystemException;
 
 /**
  * Relation renders a field prepopulated with a belongsTo and belongsToHasMany relation
@@ -141,8 +142,11 @@ class Relation extends FormWidgetBase
         if (in_array($relationType, ['belongsToMany', 'morphToMany', 'morphedByMany', 'hasMany'])) {
             $field->type = 'checkboxlist';
         }
-        elseif (in_array($relationType, ['belongsTo', 'hasOne'])) {
+        elseif (in_array($relationType, ['belongsTo', 'hasOne', 'morphOne'])) {
             $field->type = 'dropdown';
+        }
+        else {
+            throw new SystemException("Could not translate relation type '${relationType}' to a valid field type");
         }
 
         // Order query by the configured option.

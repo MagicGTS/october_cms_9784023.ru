@@ -1468,8 +1468,8 @@ class Lists extends WidgetBase implements ListElement
 
         // Limit by chars and estimate word count
         if (!$limitWords) {
-            $limitStr = Str::limit($result, $limitChars, '');
-            $limitWords = substr_count($limitStr, ' ') + 1;
+            $result = Str::limit($result, $limitChars, '');
+            $limitWords = substr_count($result, ' ') + 1;
         }
 
         // Strip HTML, limit to words

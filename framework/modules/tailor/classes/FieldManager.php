@@ -1,6 +1,8 @@
 <?php namespace Tailor\Classes;
 
+use App;
 use Str;
+use System;
 use Tailor\Classes\Fieldset;
 use Tailor\Classes\BlueprintIndexer;
 use Tailor\Classes\ContentFieldBase;
@@ -80,30 +82,44 @@ class FieldManager
 
         $this->customFields = [];
 
-        // Load module fields
+        // Load external fields
         foreach ($this->customFieldCallbacks as $callback) {
             $callback($this);
         }
 
-        // Load plugin fields
-        $plugins = $this->pluginManager->getPlugins();
-
-        foreach ($plugins as $plugin) {
-            if (!method_exists($plugin, 'registerContentFields')) {
-                continue;
-            }
-
-            $fields = $plugin->registerContentFields();
-            if (!is_array($fields)) {
-                continue;
-            }
-
-            foreach ($fields as $className => $widgetInfo) {
-                $this->registerCustomField($className, $widgetInfo);
+        // Load module fields
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                $this->loadCustomFieldsFromArray($provider->registerContentFields());
             }
         }
 
+        // Load plugin fields
+        $plugins = $this->pluginManager->getPlugins();
+        foreach ($plugins as $plugin) {
+            $this->loadCustomFieldsFromArray($plugin->registerContentFields());
+        }
+
+        // Load app items
+        if ($app = App::getProvider(\App\Provider::class)) {
+            $this->loadCustomFieldsFromArray($app->registerContentFields());
+        }
+
         return $this->customFields;
+    }
+
+    /**
+     * loadExtensionsFromArray helper
+     */
+    protected function loadCustomFieldsFromArray($fields)
+    {
+        if (!is_array($fields)) {
+            return;
+        }
+
+        foreach ($fields as $className => $fieldInfo) {
+            $this->registerCustomField($className, $fieldInfo);
+        }
     }
 
     /**

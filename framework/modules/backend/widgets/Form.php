@@ -659,9 +659,11 @@ class Form extends WidgetBase implements FormElement
         $this->processFieldOptionValues($this->allFields);
         $this->processRequiredAttributes($this->allFields);
 
-        // Set field values from data source
+        // Set field values from data source, if not from the outside
         foreach ($this->allFields as $field) {
-            $field->value = $this->getFieldValue($field);
+            if ($field->value === null) {
+                $field->value = $this->getFieldValue($field);
+            }
         }
 
         // Convert automatic spanned fields

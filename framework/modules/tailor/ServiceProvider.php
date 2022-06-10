@@ -1,14 +1,8 @@
 <?php namespace Tailor;
 
-use App;
 use Event;
-use BackendMenu;
 use Backend\Models\UserRole;
-use Cms\Classes\ComponentManager;
-use Tailor\Classes\FieldManager;
 use Tailor\Classes\BlueprintIndexer;
-use Backend\Classes\RoleManager;
-use System\Classes\SettingsManager;
 use October\Rain\Support\ModuleServiceProvider;
 
 /**
@@ -23,10 +17,11 @@ class ServiceProvider extends ModuleServiceProvider
     {
         parent::register('tailor');
 
-        $this->registerContentFields();
-        $this->registerDeferredContentBinding();
-        $this->bootEditorEvents();
+        $this->registerEditorEvents();
         $this->registerConsole();
+
+        $this->extendMigrateCommand();
+        $this->extendDeferredBindingForContent();
     }
 
     /**
@@ -35,12 +30,6 @@ class ServiceProvider extends ModuleServiceProvider
     public function boot()
     {
         parent::boot('tailor');
-
-        // Migrate blueprints
-        Event::listen('system.updater.migrate', function ($updateManager) {
-            BlueprintIndexer::instance()
-                ->setNotesOutput($updateManager->getNotesOutput())->migrate();
-        });
     }
 
     /**
@@ -54,16 +43,6 @@ class ServiceProvider extends ModuleServiceProvider
            \Tailor\Components\CollectionComponent::class => 'collection',
            \Cms\Components\Resources::class => 'resources'
         ];
-    }
-
-    /**
-     * registerDeferredContentBinding
-     */
-    protected function registerDeferredContentBinding()
-    {
-        \Tailor\Models\EntryRecord::registerDeferredContentModel();
-        \Tailor\Models\RepeaterItem::registerDeferredContentModel();
-        \Tailor\Models\GlobalRecord::registerDeferredContentModel();
     }
 
     /**
@@ -111,29 +90,56 @@ class ServiceProvider extends ModuleServiceProvider
     /**
      * registerContentFields
      */
-    protected function registerContentFields()
+    public function registerContentFields()
     {
-        FieldManager::instance()->registerCustomFields(function ($manager) {
-            $manager->registerCustomField(\Tailor\ContentFields\MixinField::class, 'mixin');
-            $manager->registerCustomField(\Tailor\ContentFields\EntriesField::class, 'entries');
-            $manager->registerCustomField(\Tailor\ContentFields\RepeaterField::class, 'repeater');
-            $manager->registerCustomField(\Tailor\ContentFields\RichEditorField::class, 'richeditor');
-            $manager->registerCustomField(\Tailor\ContentFields\MarkdownField::class, 'markdown');
-            $manager->registerCustomField(\Tailor\ContentFields\FileUploadField::class, 'fileupload');
-            $manager->registerCustomField(\Tailor\ContentFields\MediaFinderField::class, 'mediafinder');
-            $manager->registerCustomField(\Tailor\ContentFields\CheckboxField::class, 'checkbox');
-            $manager->registerCustomField(\Tailor\ContentFields\DataTableField::class, 'datatable');
-            $manager->registerCustomField(\Tailor\ContentFields\TextareaField::class, 'textarea');
+        return [
+            \Tailor\ContentFields\MixinField::class => 'mixin',
+            \Tailor\ContentFields\EntriesField::class => 'entries',
+            \Tailor\ContentFields\RepeaterField::class => 'repeater',
+            \Tailor\ContentFields\RichEditorField::class => 'richeditor',
+            \Tailor\ContentFields\MarkdownField::class => 'markdown',
+            \Tailor\ContentFields\FileUploadField::class => 'fileupload',
+            \Tailor\ContentFields\MediaFinderField::class => 'mediafinder',
+            \Tailor\ContentFields\CheckboxField::class => 'checkbox',
+            \Tailor\ContentFields\DataTableField::class => 'datatable',
+            \Tailor\ContentFields\TextareaField::class => 'textarea'
+        ];
+    }
+
+    /**
+     * registerEditorEvents handles Editor events
+     */
+    protected function registerEditorEvents()
+    {
+        Event::listen('editor.extension.register', function () {
+            return \Tailor\Classes\EditorExtension::class;
         });
     }
 
     /**
-     * bootEditorEvents handles Editor events
+     * extendMigrateCommand to migrate blueprints
      */
-    protected function bootEditorEvents()
+    public function extendMigrateCommand()
     {
-        Event::listen('editor.extension.register', function () {
-            return \Tailor\Classes\EditorExtension::class;
+        Event::listen('system.updater.migrate', function ($updateManager) {
+            BlueprintIndexer::instance()
+                ->setNotesOutput($updateManager->getNotesOutput())->migrate();
+        });
+    }
+
+    /**
+     * extendDeferredBindingForContent
+     */
+    protected function extendDeferredBindingForContent()
+    {
+        Event::listen('deferredBinding.newMasterInstance', function($model, $masterObject) {
+            if (
+                $masterObject instanceof \Tailor\Models\EntryRecord ||
+                $masterObject instanceof \Tailor\Models\RepeaterItem ||
+                $masterObject instanceof \Tailor\Models\GlobalRecord
+            ) {
+                $masterObject->extendDeferredContentModel($model);
+            }
         });
     }
 }

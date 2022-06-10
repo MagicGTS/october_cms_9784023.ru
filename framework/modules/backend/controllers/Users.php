@@ -283,7 +283,6 @@ class Users extends SettingsController
             }
 
             BackendAuth::login($this->user->reload(), (bool) $remember);
-
         }
 
         return $result;

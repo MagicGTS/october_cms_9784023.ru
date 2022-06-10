@@ -22,11 +22,6 @@ class MailManager
     use \October\Rain\Support\Traits\Singleton;
 
     /**
-     * @var array Cache of registration callbacks.
-     */
-    protected $callbacks = [];
-
-    /**
      * @var array A cache of customised mail templates.
      */
     protected $templateCache = [];
@@ -50,6 +45,11 @@ class MailManager
      * @var bool Internal marker for rendering mode
      */
     protected $isHtmlRenderMode = false;
+
+    /**
+     * @var array Cache of registration callbacks.
+     */
+    protected static $callbacks = [];
 
     /**
      * addContentFromEvent handles adding content from the `mailer.beforeAddContent` event
@@ -185,7 +185,6 @@ class MailManager
         $html = $this->parseTwig($content, $data);
         $html = Markdown::parseIndent($html);
 
-
         return $html;
     }
 
@@ -308,7 +307,7 @@ class MailManager
     public function loadRegisteredTemplates()
     {
         // Load external templates
-        foreach ($this->callbacks as $callback) {
+        foreach (static::$callbacks as $callback) {
             $callback($this);
         }
 
@@ -411,9 +410,9 @@ class MailManager
      *
      * @param callable $callback A callable function.
      */
-    public function registerCallback(callable $callback)
+    public static function registerCallback(callable $callback)
     {
-        $this->callbacks[] = $callback;
+        self::$callbacks[] = $callback;
     }
 
     /**
