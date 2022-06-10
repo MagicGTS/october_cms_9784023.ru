@@ -113,7 +113,7 @@ class RoleManager
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
-
+      
         // Load module items
         foreach (System::listModules() as $module) {
             if ($provider = App::getProvider($module . '\\ServiceProvider')) {
