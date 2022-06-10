@@ -7,5 +7,11 @@
   "Draft Saved": "Osnutek je shranjen",
   "Draft Applied": "Uporabljen osnutek",
   "Draft Created": "Osnutek ustvarjen",
-  "Draft Discarded": "Osnutek zavržen"
+  "Draft Discarded": "Osnutek zavržen",
+  "Create Entry": "Ustvari vnos",
+  "Publish Entry": "Objavi vnos",
+  "Delete Entry": "Izbriši vnos",
+  "Entries have been disabled": "Vnosi so bili onemogočeni",
+  "Entries have been enabled": "Vnosi so omogočeni",
+  "Entries have been deleted": "Vnosi so bili izbrisani"
 }

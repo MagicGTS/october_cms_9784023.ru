@@ -65,6 +65,8 @@ class DraftController extends ControllerBehavior
     {
         $model = $this->controller->formCreateModelObject();
 
+        $model->is_enabled = true;
+
         $model->saveAsFirstDraft(['name' => __('First Draft')]);
 
         return $this->draftGetRedirectUrl(FormController::CONTEXT_UPDATE, $model);

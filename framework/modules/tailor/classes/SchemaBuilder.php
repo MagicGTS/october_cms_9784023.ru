@@ -55,6 +55,11 @@ class SchemaBuilder
     protected $tableColumns;
 
     /**
+     * @var int actionCount number of actions that occured.
+     */
+    protected $actionCount = 0;
+
+    /**
      * @var array reservedFieldNames are field names that cannot be used.
      */
     protected $reservedFieldNames = [
@@ -103,12 +108,11 @@ class SchemaBuilder
     /**
      * migrateBlueprint
      */
-    public static function migrateBlueprint(Blueprint $blueprint, Fieldset $fieldset): SchemaBuilder
+    public static function migrateBlueprint(Blueprint $blueprint, Fieldset $fieldset)
     {
         $builder = new self;
         $builder->initBlueprint($blueprint, $fieldset);
-        $builder->migrate();
-        return $builder;
+        return $builder->migrate();
     }
 
     /**
@@ -134,13 +138,19 @@ class SchemaBuilder
      */
     public function migrate()
     {
+        $this->actionCount = 0;
+
         $this->migrateFields();
         $this->migrateJoins();
         $this->migrateRepeaters();
         $this->migrateRenameColumns();
         $this->migrateDropColumns();
 
-        $this->getContentSchema()->commitChanges();
+        if ($this->actionCount > 0) {
+            $this->getContentSchema()->commitChanges();
+        }
+
+        return $this->actionCount;
     }
 
     /**
@@ -166,6 +176,11 @@ class SchemaBuilder
 
             $this->defineFieldColumns($table);
             $this->defineEndColumns($table);
+
+            // Increment actions
+            if ($table->getColumns() || $table->getCommands()) {
+                $this->actionCount++;
+            }
         });
     }
 
@@ -194,6 +209,8 @@ class SchemaBuilder
             });
 
             $schemaObj->setDroppedColumn($fieldName, $droppedName);
+
+            $this->actionCount++;
         }
     }
 
@@ -234,6 +251,8 @@ class SchemaBuilder
 
                 $schemaObj->setDroppedColumn($fieldName, $droppedName);
             }
+
+            $this->actionCount++;
         }
     }
 

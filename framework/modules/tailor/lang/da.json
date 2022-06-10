@@ -7,5 +7,11 @@
   "Draft Saved": "Udkast gemt",
   "Draft Applied": "Udkast anvendt",
   "Draft Created": "Udkast oprettet",
-  "Draft Discarded": "Udkast kasseret"
+  "Draft Discarded": "Udkast kasseret",
+  "Create Entry": "Opret indgang",
+  "Publish Entry": "Udgiv indlæg",
+  "Delete Entry": "Slet post",
+  "Entries have been disabled": "Indgange er blevet deaktiveret",
+  "Entries have been enabled": "Indgange er blevet aktiveret",
+  "Entries have been deleted": "Indlæg er blevet slettet"
 }

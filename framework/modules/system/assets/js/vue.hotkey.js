@@ -144,6 +144,10 @@
         }
     });
 
+    if ($.oc === undefined) {
+        $.oc = {}
+    }
+
     $.oc.vueHotkeyMixin = {
         data: function() {
             return {
@@ -163,4 +167,5 @@
             });
         }
     };
-})($)
+})($);
+

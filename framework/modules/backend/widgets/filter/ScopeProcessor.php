@@ -20,7 +20,7 @@ trait ScopeProcessor
             }
 
             // Specified explicitly on the object already
-            if ($scope->hasOptions() && is_array($scope->options)) {
+            if ($scope->hasOptions()) {
                 continue;
             }
 
@@ -58,7 +58,7 @@ trait ScopeProcessor
         foreach ($scopes as $scopeName => $scope) {
             if (
                 $scope->permissions &&
-                !BackendAuth::getUser()->hasAccess($scope->permissions, false)
+                !BackendAuth::userHasAccess($scope->permissions, false)
             ) {
                 $this->removeScope($scopeName);
             }

@@ -161,6 +161,7 @@ class Filter extends WidgetBase implements FilterElement
         $this->fireSystemEvent('backend.filter.extendScopesBefore');
 
         // All scopes
+        //
         if (!isset($this->scopes) || !is_array($this->scopes)) {
             $this->scopes = [];
         }
@@ -192,6 +193,7 @@ class Filter extends WidgetBase implements FilterElement
         $this->fireSystemEvent('backend.filter.extendScopes');
 
         // Apply post processing
+        //
         $this->processLegacyDefinitions($this->allScopes);
         $this->processScopeModels($this->allScopes);
         $this->processPermissionCheck($this->allScopes);
@@ -199,6 +201,7 @@ class Filter extends WidgetBase implements FilterElement
         $this->processFieldOptionValues($this->allScopes);
 
         // Set scope values from data source
+        //
         foreach ($this->allScopes as $scope) {
             $scope->setScopeValue($this->getScopeValue($scope));
         }

@@ -2,12 +2,12 @@
 
 use App;
 use Event;
-use BackendAuth;
 use BackendMenu;
 use Backend\Models\UserRole;
 use Cms\Classes\ComponentManager;
 use Tailor\Classes\FieldManager;
 use Tailor\Classes\BlueprintIndexer;
+use Backend\Classes\RoleManager;
 use System\Classes\SettingsManager;
 use October\Rain\Support\ModuleServiceProvider;
 
@@ -23,18 +23,10 @@ class ServiceProvider extends ModuleServiceProvider
     {
         parent::register('tailor');
 
-        $this->registerConsole();
         $this->registerContentFields();
-        $this->registerComponents();
         $this->registerDeferredContentBinding();
         $this->bootEditorEvents();
-
-        // Backend specific
-        if (App::runningInBackend()) {
-            $this->registerBackendNavigation();
-            $this->registerBackendPermissions();
-            $this->registerBackendSettings();
-        }
+        $this->registerConsole();
     }
 
     /**
@@ -54,14 +46,14 @@ class ServiceProvider extends ModuleServiceProvider
     /**
      * registerComponents
      */
-    protected function registerComponents()
+    public function registerComponents()
     {
-        ComponentManager::instance()->registerComponents(function ($manager) {
-            $manager->registerComponent(\Tailor\Components\GlobalComponent::class, 'global', $this);
-            $manager->registerComponent(\Tailor\Components\SectionComponent::class, 'section', $this);
-            $manager->registerComponent(\Tailor\Components\CollectionComponent::class, 'collection', $this);
-            $manager->registerComponent(\Cms\Components\Resources::class, 'resources', $this);
-        });
+        return [
+           \Tailor\Components\GlobalComponent::class => 'global',
+           \Tailor\Components\SectionComponent::class => 'section',
+           \Tailor\Components\CollectionComponent::class => 'collection',
+           \Cms\Components\Resources::class => 'resources'
+        ];
     }
 
     /**
@@ -75,58 +67,36 @@ class ServiceProvider extends ModuleServiceProvider
     }
 
     /**
-     * registerBackendNavigation
+     * registerNavigation
      */
-    protected function registerBackendNavigation()
+    public function registerNavigation()
     {
-        BackendMenu::registerCallback(function ($manager) {
-            $manager->registerMenuItems(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getNavigationContentMainMenu()
-            );
-
-            $manager->registerMenuItems(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getNavigationMainMenu()
-            );
-        });
+        return BlueprintIndexer::instance()->getNavigationMainMenu() +
+            BlueprintIndexer::instance()->getNavigationContentMainMenu();
     }
 
     /**
-     * registerBackendSettings
+     * registerSettings
      */
-    protected function registerBackendSettings()
+    public function registerSettings()
     {
-        SettingsManager::instance()->registerCallback(function ($manager) {
-            $manager->registerSettingItems(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getNavigationSettingsMenu()
-            );
-        });
+        return BlueprintIndexer::instance()->getNavigationSettingsMenu();
     }
 
     /**
-     * registerBackendPermissions
+     * registerPermissions
      */
-    protected function registerBackendPermissions()
+    public function registerPermissions()
     {
-        BackendAuth::registerCallback(function ($manager) {
-            $manager->registerPermissions('October.Tailor', [
-                'tailor.manage_blueprints' => [
-                    'label' => 'tailor::lang.permissions.manage_blueprints',
-                    'tab' => 'tailor::lang.permissions.name',
-                    'roles' => UserRole::CODE_DEVELOPER,
-                    'order' => 100
-                ]
-            ]);
-        });
-
-        BackendAuth::registerCallback(function ($manager) {
-            $manager->registerPermissions(
-                'October.Tailor',
-                BlueprintIndexer::instance()->getPermissionDefinitions()
-            );
-        });
+        return [
+            // Editor
+            'editor.tailor_blueprints' => [
+                'label' => 'tailor::lang.permissions.manage_blueprints',
+                'tab' => 'Editor',
+                'roles' => UserRole::CODE_DEVELOPER,
+                'order' => 100
+            ]
+        ] + BlueprintIndexer::instance()->getPermissionDefinitions();
     }
 
     /**

@@ -88,7 +88,7 @@ class PluginInstall extends Command
 
             // Migrate database
             $errCode = null;
-            passthru('php artisan october:migrate', $errCode);
+            passthru(PHP_BINARY.' artisan october:migrate', $errCode);
 
             if ($errCode !== 0) {
                 $this->output->error('Migration failed. Check output above');

@@ -2,6 +2,7 @@
 
 use App;
 use Event;
+use System;
 use Backend;
 use BackendAuth;
 use SystemException;
@@ -81,30 +82,27 @@ class SettingsManager
     ];
 
     /**
-     * @var System\Classes\PluginManager
-     */
-    protected $pluginManager;
-
-    /**
-     * init initializes this singleton
-     */
-    protected function init()
-    {
-        $this->pluginManager = PluginManager::instance();
-    }
-
-    /**
      * loadItems
      */
     protected function loadItems()
     {
-        // Load module items
+        // Load external items
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
 
+        // Load module items
+        foreach (System::listModules() as $module) {
+            if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                $items = $provider->registerSettings();
+                if (is_array($items)) {
+                    $this->registerSettingItems('October.'.$module, $items);
+                }
+            }
+        }
+
         // Load plugin items
-        foreach ($this->pluginManager->getPlugins() as $id => $plugin) {
+        foreach (PluginManager::instance()->getPlugins() as $id => $plugin) {
             $items = $plugin->registerSettings();
             if (is_array($items)) {
                 $this->registerSettingItems($id, $items);

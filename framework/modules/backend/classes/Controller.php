@@ -19,6 +19,7 @@ use October\Rain\Exception\ApplicationException;
 use October\Rain\Extension\Extendable;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Http\RedirectResponse;
+use ForbiddenException;
 
 /**
  * Controller is a backend base controller class used by all Backend controllers
@@ -178,14 +179,25 @@ class Controller extends Extendable
                     : Backend::redirectGuest('backend/auth');
             }
 
+            // Check general permission to backend
+            if (!BackendAuth::userHasAccess('general.backend')) {
+                throw new ForbiddenException;
+            }
+
             // Check access groups against the page definition
             if ($this->requiredPermissions && !$this->user->hasAnyAccess($this->requiredPermissions)) {
-                return Response::make(View::make('backend::access_denied'), 403);
+                throw new ForbiddenException;
+            }
+
+            if (System::hasModule('Cms') && \Cms\Models\MaintenanceSetting::isEnabledForBackend()) {
+                return View::make('backend::in_maintenance');
             }
         }
 
         // Logic hook for all actions
-        $this->beforeDisplay();
+        if ($hook = $this->beforeDisplay()) {
+            return $hook;
+        }
 
         /**
          * @event backend.page.beforeDisplay

@@ -15,7 +15,7 @@ trait HasRelationStore
     protected function getLoadValueFromRelation($names)
     {
         // Take value from options
-        if ($this->formField->hasOptions()) {
+        if ($this->useOptions) {
             if (!$names) {
                 return [];
             }
@@ -67,7 +67,7 @@ trait HasRelationStore
         $relationModel = $this->getRelationModel();
 
         // Options from form field
-        if ($this->formField->hasOptions()) {
+        if ($this->useOptions) {
             $existingTags = (new Collection($this->formField->options()))
                 ->reject(function($value, $key) use ($names) {
                     return !in_array($value, $names);
@@ -89,7 +89,7 @@ trait HasRelationStore
             $newTags = array_diff($names, $existingTags);
 
             // Cannot create new tags when read-only options are supplied
-            if ($newTags && $this->formField->hasOptions()) {
+            if ($newTags && $this->useOptions) {
                 throw new SystemException("[{$this->valueFrom}] Options are read-only so new tags cannot be created. Try setting customTags: false in the field configuration.");
             }
 

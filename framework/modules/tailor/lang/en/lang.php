@@ -30,7 +30,7 @@ return [
     ],
     'permissions' => [
         'name' => 'Tailor',
-        'manage_blueprints' => 'Manage blueprints'
+        'manage_blueprints' => 'Manage Blueprints'
     ],
     'blueprint' => [
         'saved' => 'Blueprint saved',

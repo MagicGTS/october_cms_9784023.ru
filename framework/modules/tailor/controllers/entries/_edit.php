@@ -29,7 +29,6 @@
                             <tailor-component-publishingcontrols
                                 :lang="state.lang"
                                 :entry-state="state"
-                                :has-date-controls="true"
                                 ref="publishingControls"
                                 @statechanged="onPublishingStateChanged"
                                 @publishdraftclick="onPublishDraftClick"

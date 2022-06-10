@@ -2,6 +2,7 @@
 
 use App;
 use Str;
+use System;
 
 /**
  * HasFormWidgets
@@ -36,9 +37,21 @@ trait HasFormWidgets
         if ($this->formWidgets === null) {
             $this->formWidgets = [];
 
-            // Load module widgets
+            // Load external widgets
             foreach ($this->formWidgetCallbacks as $callback) {
                 $callback($this);
+            }
+
+            // Load module items
+            foreach (System::listModules() as $module) {
+                if ($provider = App::getProvider($module . '\\ServiceProvider')) {
+                    $widgets = $provider->registerFormWidgets();
+                    if (is_array($widgets)) {
+                        foreach ($widgets as $className => $widgetInfo) {
+                            $this->registerFormWidget($className, $widgetInfo);
+                        }
+                    }
+                }
             }
 
             // Load plugin widgets

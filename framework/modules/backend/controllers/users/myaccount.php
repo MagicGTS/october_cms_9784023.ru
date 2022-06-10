@@ -1,4 +1,4 @@
-<?php if ($this->user->hasAccess('backend.manage_users')): ?>
+<?php if ($this->user->hasAccess('admins.manage')): ?>
     <?php Block::put('breadcrumb') ?>
         <ul>
             <li><a href="<?= Backend::url('backend/users') ?>"><?= e(trans('backend::lang.user.menu_label')) ?></a></li>
@@ -28,7 +28,7 @@
                         class="btn btn-primary">
                         <?= e(trans('backend::lang.form.save')) ?>
                     </button>
-                    <?php if ($this->user->hasAccess('backend.manage_users')): ?>
+                    <?php if ($this->user->hasAccess('admins.manage')): ?>
                         <button
                             type="button"
                             data-request="onSave"

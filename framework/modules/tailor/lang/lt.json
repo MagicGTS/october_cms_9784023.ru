@@ -7,5 +7,11 @@
   "Draft Saved": "Juodraštis išsaugotas",
   "Draft Applied": "Taikomas juodraštis",
   "Draft Created": "Sukurtas juodraštis",
-  "Draft Discarded": "Juodraštis atmestas"
+  "Draft Discarded": "Juodraštis atmestas",
+  "Create Entry": "Sukurti įrašą",
+  "Publish Entry": "Paskelbti įrašą",
+  "Delete Entry": "Ištrinti įrašą",
+  "Entries have been disabled": "Įrašai buvo išjungti",
+  "Entries have been enabled": "Įrašai įjungti",
+  "Entries have been deleted": "Įrašai buvo ištrinti"
 }

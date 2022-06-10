@@ -15,6 +15,7 @@ use System\Classes\SettingsManager;
  * @method NavigationItem handle(string $handle) handle sourced from the blueprint
  * @method NavigationItem parent(string $parent) parent is a parent uuid and used by secondary modes
  * @method NavigationItem parentCode(string $parentCode) parentCode is a parent code and used by secondary modes
+ * @method NavigationItem permissionCode(string $permissionCode) permissionCode for a secondary item
  *
  * @package october\tailor
  * @author Alexey Bobkov, Samuel Georges
@@ -72,13 +73,19 @@ class NavigationItem extends ItemDefinition
      */
     public function toBackendMenuArray(): array
     {
-        return [
+        $result = [
             'label' => $this->label,
             'icon' => $this->icon,
             'iconSvg' => $this->iconSvg,
             'url' => Backend::url($this->url),
             'order' => $this->order,
         ];
+
+        if ($this->permissionCode) {
+            $result['permissions'] = [$this->permissionCode];
+        }
+
+        return $result;
     }
 
     /**
@@ -86,7 +93,7 @@ class NavigationItem extends ItemDefinition
      */
     public function toBackendSettingsArray(): array
     {
-        return [
+        $result = [
             'label' => $this->label,
             'description' => $this->description,
             'category' => $this->category,
@@ -94,8 +101,17 @@ class NavigationItem extends ItemDefinition
             'url' => Backend::url($this->url),
             'order' => $this->order,
         ];
+
+        if ($this->permissionCode) {
+            $result['permissions'] = [$this->permissionCode];
+        }
+
+        return $result;
     }
 
+    /**
+     * setBackendControllerContext
+     */
     public function setBackendControllerContext()
     {
         if ($this->mode === static::MODE_SETTINGS) {

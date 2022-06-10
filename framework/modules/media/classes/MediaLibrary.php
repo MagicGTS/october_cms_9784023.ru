@@ -326,6 +326,18 @@ class MediaLibrary
     }
 
     /**
+     * has checks for existence.
+     * @param string $path
+     * @return bool
+     */
+    public function has($path)
+    {
+        $path = self::validatePath($path);
+        $fullPath = $this->getMediaPath($path);
+        return $this->getStorageDisk()->has($fullPath);
+    }
+
+    /**
      * get returns a file contents.
      * @param string $path Specifies the file path relative the the Library root.
      * @return string Returns the file contents
