@@ -107,6 +107,16 @@ class Users extends SettingsController
             if ($groupField = $form->getField('groups')) {
                 $groupField->value($defaultGroupIds);
             }
+
+        }
+
+        // Mark default groups
+        if (!$form->model->exists) {
+            $defaultGroupIds = UserGroup::where('is_new_user_default', true)->pluck('id')->all();
+
+            if ($groupField = $form->getField('groups')) {
+                $groupField->value($defaultGroupIds);
+            }
         }
     }
 
@@ -119,6 +129,15 @@ class Users extends SettingsController
     }
 
     /**
+     * listExtendQuery extends the list query to hide superusers if the current user is not a superuser themselves
+     */
+    public function listExtendQuery($query)
+    {
+        $this->applyRankPermissionsToQuery($query);
+    }
+
+    /**
+
      * listFilterExtendScopes prevents non-superusers from even seeing the is_superuser filter
      */
     public function listFilterExtendScopes($filterWidget)
@@ -264,6 +283,7 @@ class Users extends SettingsController
             }
 
             BackendAuth::login($this->user->reload(), (bool) $remember);
+
         }
 
         return $result;

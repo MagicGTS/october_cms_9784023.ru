@@ -110,9 +110,11 @@ class RoleManager
         }
 
         // Load external items
+
         foreach ($this->callbacks as $callback) {
             $callback($this);
         }
+
 
         // Load module items
         foreach (System::listModules() as $module) {
@@ -123,6 +125,7 @@ class RoleManager
                 }
             }
         }
+
 
         // Load plugin items
         foreach (PluginManager::instance()->getPlugins() as $id => $plugin) {

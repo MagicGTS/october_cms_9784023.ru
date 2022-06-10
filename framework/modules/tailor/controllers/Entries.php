@@ -563,6 +563,18 @@ class Entries extends WildcardController
     }
 
     /**
+     * formExtendFields
+     */
+    public function formExtendFields($widget)
+    {
+        if (!$this->hasSourcePermission('publish')) {
+            $widget->getField('is_enabled')->hidden();
+            $widget->getField('published_at')->hidden();
+            $widget->getField('expired_at')->hidden();
+        }
+    }
+
+    /**
      * importExportExtendModel
      */
     public function importExportExtendModel($model)

@@ -8,8 +8,7 @@ function onStart()
 {
     use \T9784023\Cources\Models\HighAltitudeWorks;
     $filesystem = Storage::getConfig();
-    Storage::put('1234567890.txt', "12345");
-    $cource = HighAltitudeWorks::find(1)->toArray();
+    $cource = HighAltitudeWorks::with(['schedule', 'program'])->find(1)->toArray();
     $cource ['img_background'] = $filesystem['url'].'/'.$cource['img_background'];
     $cource ['img_rounded'] = $filesystem['url'].'/'.$cource['img_rounded'];
     $cource ['files_folder'] = Storage::allFiles($cource['files_folder']);

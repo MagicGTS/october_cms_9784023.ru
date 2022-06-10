@@ -183,8 +183,8 @@ class MailManager
         }
 
         $html = $this->parseTwig($content, $data);
-
         $html = Markdown::parseIndent($html);
+
 
         return $html;
     }
