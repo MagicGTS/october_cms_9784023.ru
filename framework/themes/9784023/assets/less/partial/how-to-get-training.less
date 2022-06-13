@@ -94,48 +94,44 @@
      
 
      .how_to_get_training_calendar {
-          display: flex;
-          justify-content: space-between;
           margin-top: 3rem;
 
-          .how_to_get_training_calendar_item {
+          .how_to_get_training_calendar_table {
+               width: 100%;
 
-               .how_to_get_training_calendar_item_name {
-                    margin-bottom: 2rem;
+               .how_to_get_training_calendar_titles {
                     font-weight: 700;
                     font-size: 1rem;
                     line-height: 1.1875rem;
                     color: @color_07;
                }
 
-               .how_to_get_training_calendar_item_value {
+               .how_to_get_training_calendar_item {
                     font-weight: 400;
                     font-size: 0.875rem;
                     line-height: 1.1875rem;
+
+                    .how_to_get_training_calendar_item_btn_wrapper {
+                         display: flex;
+                         justify-content: end;
+                         
+                         button {
+                              border: 1px solid @color_04;
+                              border-radius: 4px;
+                              font-weight: 600;
+                              font-size: 1rem;
+                              line-height: 1.1875rem;
+                              color: @color_04;
+                              display: flex;
+                              align-items: center;
+                              padding: 10px 12px;
+                         }
+
+                    }
+                    
                }
-
-               button {
-                    border: 1px solid @color_04;
-                    border-radius: 4px;
-                    font-weight: 600;
-                    font-size: 1rem;
-                    line-height: 1.1875rem;
-                    color: @color_04;
-                    display: flex;
-                    align-items: center;
-                    padding: 10px 12px;
-
-               }
           }
 
-          .how_to_get_training_calendar_item:nth-child(2) {
-               flex: 19% 0 0;
-          }
-
-          .how_to_get_training_calendar_item:last-child {
-               display: flex;
-               align-items: end;
-          }
      }
 
      .how_to_get_training_attention {
